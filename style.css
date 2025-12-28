@@ -1,0 +1,706 @@
+:root {
+    --f1-red: #E10600;
+    --red-bull-blue: #3671C6;
+    --mercedes-teal: #00D2BE;
+    --mclaren-orange: #FF8700;
+    --aston-martin-green: #006F62;
+    --alpine-blue: #0090FF;
+    --williams-blue: #005AFF;
+    --vcarb-blue: #6692FF;
+    --sauber-green: #52E252;
+    --haas-gray: #B6BABD;
+    --player-color: #FFD700; /* Gold for player in game */
+    --dark-bg: #1a1a1a;
+    --light-gray: #f0f0f0;
+    --medium-gray: #333;
+    --darker-bg: #111111;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background-color: var(--darker-bg);
+    color: var(--light-gray);
+    line-height: 1.6;
+}
+
+/* ========================================= */
+/* === 導覽列 (Header & Nav) === */
+/* ========================================= */
+
+#mainHeader {
+    background-color: var(--medium-gray);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    transition: background-color 0.3s ease;
+}
+
+#mainHeader.scrolled-header {
+    background-color: #000;
+}
+
+#mainHeader .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+}
+
+.logo {
+    color: var(--f1-red);
+    font-size: 1.5em;
+    font-weight: bold;
+    text-decoration: none;
+    letter-spacing: 1px;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+}
+
+.nav-links li a {
+    color: var(--light-gray);
+    text-decoration: none;
+    padding: 10px 15px;
+    display: block;
+    transition: color 0.3s, background-color 0.3s;
+    border-bottom: 3px solid transparent;
+}
+
+.nav-links li a:hover,
+.nav-links li a.active {
+    color: var(--f1-red);
+    border-bottom: 3px solid var(--f1-red);
+}
+
+.burger-menu {
+    display: none;
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+/* ========================================= */
+/* === 主要內容 (Main Content) === */
+/* ========================================= */
+
+main.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+.page-content {
+    display: none;
+    padding: 20px 0;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.page-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.section-title {
+    color: var(--f1-red);
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2em;
+    border-bottom: 2px solid var(--medium-gray);
+    padding-bottom: 10px;
+}
+
+/* ========================================= */
+/* === 數據網格 (Data Grid - 車手/車隊) === */
+/* ========================================= */
+
+.data-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.data-card {
+    background-color: #222;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    border-top: 5px solid var(--f1-red); /* 預設邊框色 */
+}
+
+.data-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+.card-header {
+    position: relative;
+    height: 180px;
+    overflow: hidden;
+}
+
+.card-header img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+
+.data-card:hover .card-header img {
+    transform: scale(1.05);
+}
+
+.card-tag {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: var(--f1-red);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: bold;
+    z-index: 10;
+}
+
+.card-content {
+    padding: 15px;
+}
+
+.card-content h3 {
+    margin-bottom: 5px;
+    font-size: 1.2em;
+    color: var(--light-gray);
+}
+
+.card-content p {
+    font-size: 0.9em;
+    color: #aaa;
+}
+
+/* ========================================= */
+/* === 賽道地圖 (Home Map) === */
+/* ========================================= */
+
+.map-hero {
+    text-align: center;
+    padding: 40px 0;
+}
+
+.map-title {
+    font-size: 2.5em;
+    color: var(--light-gray);
+    margin-bottom: 20px;
+}
+
+.map-container {
+    position: relative;
+    width: 100%;
+    /* 假設地圖圖片比例為 16:9 */
+    padding-bottom: 56.25%; 
+    background-image: url('https://i.imgur.com/g0n4X7X.png'); /* 替換為您的世界地圖圖片 */
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    margin-bottom: 30px;
+}
+
+.track-hotspot {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background-color: var(--f1-red);
+    border-radius: 50%;
+    cursor: pointer;
+    transform: translate(-50%, -50%);
+    transition: transform 0.2s, box-shadow 0.2s;
+    z-index: 5;
+}
+
+.track-hotspot:hover {
+    transform: translate(-50%, -50%) scale(1.5);
+    box-shadow: 0 0 10px var(--f1-red);
+}
+
+.hotspot-label {
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.7em;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+}
+
+.track-hotspot:hover .hotspot-label {
+    opacity: 1;
+}
+
+/* ========================================= */
+/* === 賽道頁面 (Tracks Page) === */
+/* ========================================= */
+
+.track-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--medium-gray);
+}
+
+.track-tab-button {
+    background: none;
+    border: none;
+    color: #aaa;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: color 0.3s, border-bottom 0.3s;
+    border-bottom: 3px solid transparent;
+    margin: 0 5px;
+    white-space: nowrap;
+}
+
+.track-tab-button:hover,
+.track-tab-button.active {
+    color: var(--light-gray);
+    border-bottom: 3px solid var(--f1-red);
+}
+
+.track-content-item {
+    display: none;
+    padding: 20px;
+    background-color: #222;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+.track-content-item.active {
+    display: flex;
+}
+
+.track-info {
+    flex: 1;
+}
+
+.track-info h3 {
+    color: var(--f1-red);
+    font-size: 1.8em;
+    margin-bottom: 10px;
+}
+
+.track-info p {
+    margin-bottom: 20px;
+    color: #ccc;
+}
+
+.track-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+}
+
+.track-stat-item {
+    background-color: #333;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.track-stat-item h4 {
+    font-size: 0.9em;
+    color: var(--f1-red);
+    margin-bottom: 5px;
+}
+
+.track-stat-item span {
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+.track-map {
+    flex: 1;
+    max-width: 50%;
+    text-align: center;
+}
+
+.track-map-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+/* ========================================= */
+/* === 遊戲頁面 (Game Page) - 燈滅起跑 === */
+/* ========================================= */
+
+.game-area-lights-out {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+    padding: 30px 0;
+}
+
+.lights-out-game-container {
+    flex: 2;
+    background-color: var(--dark-bg);
+    padding: 30px;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid var(--medium-gray);
+}
+
+.leaderboard-container {
+    flex: 1;
+    background-color: var(--dark-bg);
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid var(--medium-gray);
+}
+
+.leaderboard-container h3 {
+    color: var(--f1-red);
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.lights-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    height: 60px;
+}
+
+.light {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #333; /* 預設關閉 */
+    border: 3px solid #555;
+    transition: background-color 0.1s ease-in-out;
+}
+
+.light.on {
+    background-color: var(--f1-red);
+    box-shadow: 0 0 20px var(--f1-red);
+}
+
+#gameStatus {
+    color: var(--light-gray);
+    margin-bottom: 15px;
+    font-size: 1.5em;
+}
+
+.timer-display {
+    font-size: 3em;
+    font-weight: bold;
+    color: var(--mercedes-teal);
+    margin-bottom: 20px;
+}
+
+/* ========================================= */
+/* === 通用元件 (General Components) === */
+/* ========================================= */
+
+.cta-button {
+    background-color: var(--f1-red);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.1s;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.cta-button:hover {
+    background-color: #c00500;
+    transform: translateY(-1px);
+}
+
+.leaderboard-list {
+    list-style: none;
+    padding: 0;
+}
+
+.leaderboard-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #333;
+    font-size: 1.1em;
+}
+
+.leaderboard-list li:last-child {
+    border-bottom: none;
+}
+
+.leaderboard-list .pos {
+    font-weight: bold;
+    width: 30px;
+}
+
+.leaderboard-list .name {
+    flex-grow: 1;
+    text-align: left;
+    padding-left: 10px;
+}
+
+.leaderboard-list .time {
+    font-weight: bold;
+    color: var(--mercedes-teal);
+}
+
+/* ========================================= */
+/* === 彈跳視窗 (Modal) === */
+/* ========================================= */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.modal-overlay.show {
+    display: flex;
+}
+
+.modal-content {
+    background-color: #111;
+    border-radius: 10px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
+    max-width: 800px;
+    width: 90%;
+    display: flex;
+    position: relative;
+    border-left: 10px solid var(--f1-red);
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(-50px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 2em;
+    color: #aaa;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.modal-close:hover {
+    color: var(--f1-red);
+}
+
+.modal-left {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #181818;
+}
+
+.modal-driver-img, .modal-team-logo {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.modal-right {
+    flex: 2;
+    padding: 30px;
+}
+
+.modal-driver-number {
+    font-size: 4em;
+    font-weight: bold;
+    color: var(--f1-red);
+    line-height: 1;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.modal-driver-name {
+    font-size: 2.5em;
+    color: var(--light-gray);
+    margin-bottom: 10px;
+}
+
+.modal-driver-team {
+    display: inline-block;
+    background-color: var(--f1-red);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.modal-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.stat-item {
+    background-color: #222;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.stat-item h4 {
+    font-size: 0.8em;
+    color: #aaa;
+    margin-bottom: 3px;
+}
+
+.stat-item span {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--mercedes-teal);
+}
+
+.modal-bio {
+    font-size: 1em;
+    color: #ccc;
+    border-top: 1px solid #333;
+    padding-top: 15px;
+}
+
+/* ========================================= */
+/* === 響應式設計 (Responsive Design) === */
+/* ========================================= */
+
+@media (max-width: 900px) {
+    .track-content-item {
+        flex-direction: column;
+    }
+    .track-map {
+        max-width: 100%;
+    }
+    .game-area-lights-out {
+        flex-direction: column;
+    }
+    .lights-out-game-container, .leaderboard-container {
+        flex: none;
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background-color: #000;
+        box-shadow: 0 5px 5px rgba(0, 0, 0, 0.5);
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .nav-links li a {
+        padding: 15px 20px;
+        border-bottom: none;
+        border-left: 5px solid transparent;
+    }
+
+    .nav-links li a:hover,
+    .nav-links li a.active {
+        border-bottom: none;
+        border-left: 5px solid var(--f1-red);
+        background-color: #222;
+    }
+
+    .burger-menu {
+        display: block;
+    }
+
+    .modal-content {
+        flex-direction: column;
+        max-width: 90%;
+    }
+
+    .modal-left {
+        padding: 10px;
+    }
+
+    .modal-right {
+        padding: 20px;
+    }
+
+    .modal-driver-number {
+        font-size: 3em;
+    }
+
+    .modal-driver-name {
+        font-size: 2em;
+    }
+}
+
+@media (max-width: 480px) {
+    .data-grid {
+        grid-template-columns: 1fr;
+    }
+    .track-tabs {
+        justify-content: flex-start;
+    }
+    .track-tab-button {
+        margin: 5px 0;
+        width: 100%;
+        text-align: left;
+    }
+    .track-stats {
+        grid-template-columns: 1fr;
+    }
+}
