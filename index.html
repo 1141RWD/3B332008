@@ -3,22 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>F1 資料庫 - 2025 賽季</title>
+    <title>F1 2025 賽季資料庫</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+    <section id="hero">
+        <div id="particles-js"></div>
+        <div class="hero-content">
+            <h1 class="f1-title">F1 DATABASE <span>2025</span></h1>
+            <p class="f1-subtitle">感受極速，探索一級方程式的巔峰世界</p>
+            <button class="enter-btn" onclick="enterSite()">進入賽季資料庫</button>
+        </div>
+    </section>
+
     <header id="mainHeader">
         <div class="container">
             <nav>
-                <a href="#" class="logo">F1 DATABASE <span style="font-size:0.5em; color:white;">2025</span></a>
+                <a href="#" class="logo" onclick="navigateTo('home')">F1 DATABASE <span>2025</span></a>
                 <ul class="nav-links" id="navLinks">
-                    <li><a href="#home" data-page="home" class="active">主頁</a></li>
-                    <li><a href="#drivers" data-page="drivers">車手陣容</a></li>
-                    <li><a href="#teams" data-page="teams">車隊資訊</a></li>
-                    <li><a href="#tracks" data-page="tracks">全球賽道</a></li>
-                    <!-- 標題從「模擬賽事」改為「小遊戲」 -->
-                    <li><a href="#game" data-page="game">🕹️ 小遊戲</a></li>
+                    <li><a href="#" data-page="home" class="active">主頁</a></li>
+                    <li><a href="#" data-page="drivers">車手陣容</a></li>
+                    <li><a href="#" data-page="teams">車隊資訊</a></li>
+                    <li><a href="#" data-page="tracks">全球賽道</a></li>
+                    <li><a href="#" data-page="game">🕹️ 小遊戲</a></li>
+                    <li class="search-wrapper">
+                        <input type="text" id="globalSearch" placeholder="搜尋...">
+                    </li>
                 </ul>
                 <div class="burger-menu" id="burgerMenu">&#9776;</div>
             </nav>
@@ -26,132 +40,55 @@
     </header>
 
     <main class="container">
-        
-        <!-- ========================================= -->
-        <!-- === 1. 主頁 (Home Page) === -->
-        <!-- ========================================= -->
-        <div id="home-page" class="page-content active">
-            <section class="map-hero">
-                <h1 class="map-title">🌎 F1 2025 賽季全球賽道地圖</h1>
-                <div class="map-container" id="mapContainer"></div>
-                <a href="#tracks" data-page="tracks" class="cta-button" style="margin-top: 30px;">查看完整賽程</a>
-            </section>
-            
-            <section style="padding: 50px 0;">
-                <h2 class="section-title">🔬 F1 賽車科技</h2>
-                <div class="data-grid">
-                    <div class="data-card" onclick="alert('ERS 負責收集熱能與動能。')">
-                        <div class="card-header"><span class="card-tag">動力單元</span><img src="https://media.formula1.com/image/upload/content/dam/fom-website/manual/Misc/2021-Manual/2026-PU/2026-PU-Render.jpg.transform/9col/image.jpg"></div>
-                        <div class="card-content"><h3>能量回收系統 (ERS)</h3><p>將賽車產生的廢熱(MGU-H)和煞車動能(MGU-K)轉化為電能儲存並瞬間釋放。</p></div>
-                    </div>
-                    <div class="data-card" onclick="alert('DRS 啟用時，尾翼開啟，減少阻力。')">
-                        <div class="card-header"><span class="card-tag">空氣動力</span><img src="https://media.formula1.com/image/upload/content/dam/fom-website/manual/Misc/2022-Manual/2022-Car-Images/Rear-Wing-DRS.jpg.transform/9col/image.jpg"></div>
-                        <div class="card-content"><h3>減阻系統 (DRS)</h3><p>車手在特定區域且距離前車一秒內可開啟尾翼，減少空氣阻力以利超車。</p></div>
-                    </div>
-                    <div class="data-card" onclick="alert('地面效應是利用底板設計，產生巨大的負壓吸附地面。')">
-                        <div class="card-header"><span class="card-tag">物理效應</span><img src="https://media.formula1.com/image/upload/v1678378909/fom-website/2023/Misc/ground-effect-graphic.jpg.transform/9col/image.jpg"></div>
-                        <div class="card-content"><h3>地面效應 (Ground Effect)</h3><p>利用文丘里效應在車底形成低壓區，像磁鐵一樣將賽車吸附在路面上，大幅提升過彎速度。</p></div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <!-- ========================================= -->
-        <!-- === 2. 車手頁面 (Drivers Page) - 改為網格佈局 === -->
-        <!-- ========================================= -->
-        <div id="drivers-page" class="page-content">
-            <h2 class="section-title">👤 2025 頂尖車手陣容</h2>
-            <!-- 移除滾動式結構，改為 data-grid -->
-            <div class="data-grid" id="driverGridContainer">
-                <!-- 車手卡片將由 JS 渲染 -->
+        <!-- 主頁 -->
+        <section id="home-page" class="page-content active">
+            <h2 class="section-title map-title">歡迎來到 2025 賽季</h2>
+            <div class="reveal">
+                <p style="text-align: center; font-size: 1.2rem; line-height: 1.8; max-width: 800px; margin: 0 auto;">
+                    2025 年是一級方程式賽車歷史上最令人期待的賽季之一。隨著 Lewis Hamilton 轉投法拉利，以及多位超級新秀的加入，賽道上的競爭將進入全新境界。
+                </p>
             </div>
-            <p style="text-align: center; color: #666; font-size: 0.9em; margin-top: 20px;">
-                <span style="display:inline-block; border:1px solid #666; padding:2px 8px; border-radius:4px;">提示</span> 點擊卡片查看詳細介紹
-            </p>
-        </div>
+        </section>
 
-        <!-- ========================================= -->
-        <!-- === 3. 車隊頁面 (Teams Page) === -->
-        <!-- ========================================= -->
-        <div id="teams-page" class="page-content">
-            <h2 class="section-title">⚙️ 10 支冠軍車隊</h2>
-            <div class="data-grid" id="teamGridContainer">
-                <!-- 車隊卡片將由 JS 渲染 -->
-            </div>
-        </div>
+        <!-- 車手頁面 -->
+        <section id="drivers-page" class="page-content">
+            <h2 class="section-title">2025 車手陣容</h2>
+            <div class="data-grid" id="driverGridContainer"></div>
+        </section>
 
-        <!-- ========================================= -->
-        <!-- === 4. 賽道頁面 (Tracks Page) === -->
-        <!-- ========================================= -->
-        <div id="tracks-page" class="page-content">
-            <h2 class="section-title">🗺️ 傳奇賽道巡禮</h2>
-            <div class="track-tabs" id="trackTabs">
-                <!-- 賽道 Tab 按鈕將由 JS 渲染 -->
-            </div>
-            <div id="trackContents">
-                <!-- 賽道內容將由 JS 渲染 -->
-            </div>
-        </div>
+        <!-- 車隊頁面 -->
+        <section id="teams-page" class="page-content">
+            <h2 class="section-title">車隊資訊</h2>
+            <div class="data-grid" id="teamGridContainer"></div>
+        </section>
 
-        <!-- ========================================= -->
-        <!-- === 5. 遊戲頁面 (Game Page) - 改為「燈滅起跑」遊戲 === -->
-        <!-- ========================================= -->
-        <div id="game-page" class="page-content">
-            <h2 class="section-title">🕹️ 燈滅起跑小遊戲</h2>
-            <div class="game-area-lights-out">
-                <div class="lights-out-game-container">
-                    <div class="lights-container" id="lightsContainer">
-                        <!-- 5 個紅燈將由 JS 渲染 -->
-                    </div>
-                    <h3 id="gameStatus">點擊「準備」開始遊戲</h3>
-                    <p id="timerDisplay" class="timer-display">0.000 秒</p>
-                    <button id="gameButton" class="cta-button">準備</button>
-                </div>
-                
-                <div class="leaderboard-container">
-                    <h3>🏆 排行榜 (反應時間)</h3>
-                    <ol id="reactionLeaderboard" class="leaderboard-list"></ol>
-                </div>
-            </div>
-        </div>
+        <!-- 賽道頁面 -->
+        <section id="tracks-page" class="page-content">
+            <h2 class="section-title">全球賽道</h2>
+            <div class="track-tabs" id="trackTabs"></div>
+            <div id="trackContents"></div>
+        </section>
 
+        <!-- 遊戲頁面 -->
+        <section id="game-page" class="page-content">
+            <h2 class="section-title">燈滅起跑反應測試</h2>
+            <div class="lights-out-game-container">
+                <div class="lights-container" id="lightsContainer"></div>
+                <h3 id="gameStatus">準備好後點擊按鈕</h3>
+                <div id="timerDisplay">0.000 秒</div>
+                <button id="gameButton" class="enter-btn">準備</button>
+            </div>
+        </section>
     </main>
 
-    <!-- ========================================= -->
-    <!-- === 彈跳視窗 (Modal) - 統一用於車手和車隊 === -->
-    <!-- ========================================= -->
-    <div id="infoModal" class="modal-overlay">
+    <!-- Modal -->
+    <div class="modal-overlay" id="infoModal">
         <div class="modal-content" id="modalContent">
-            <div class="modal-close" onclick="closeInfoModal()">&times;</div>
-            <div class="modal-left" id="modalLeft">
-                <!-- 圖片/Logo -->
-            </div>
-            <div class="modal-right" id="modalRight">
-                <!-- 資訊內容 -->
-            </div>
-        </div>
-    </div>
-    
-    <!-- ========================================= -->
-    <!-- === 彈跳視窗 (Modal) - 遊戲結果輸入名字 -->
-    <!-- ========================================= -->
-    <div id="nameModal" class="modal-overlay">
-        <div class="modal-content" style="max-width: 400px;">
-            <h3>恭喜您！</h3>
-            <p>您的反應時間是 <span id="finalTimeDisplay" style="font-weight: bold; color: var(--f1-red);">0.000 秒</span>。</p>
-            <label for="playerName">請輸入您的名字：</label>
-            <input type="text" id="playerName" placeholder="您的名字" maxlength="15" style="width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #333; background: #111; color: white;">
-            <button id="submitScoreButton" class="cta-button" style="width: 100%;">提交成績</button>
+            <div class="modal-left" id="modalLeft"></div>
+            <div class="modal-right" id="modalRight"></div>
         </div>
     </div>
 
-
-    <footer>
-        <p>Formula 1 數據庫擴展版 | 2025 賽季地圖整合版</p>
-        <p>&copy; 2025 F1 Database Pro. For Educational Purposes.</p>
-    </footer>
-
-    <!-- 確保使用相對路徑，假設 script.js 在同一個資料夾 -->
     <script src="script.js"></script>
 </body>
 </html>
