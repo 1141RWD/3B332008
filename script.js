@@ -6,7 +6,6 @@ function enterSite() {
         hero.style.display = 'none';
         document.body.classList.remove('site-hidden');
         initApp(); 
-        typeWriter();
     }, 800);
 }
 
@@ -14,460 +13,458 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.classList.add('site-hidden');
     initParticles();
     initMouseGlow();
+    
+    // 漢堡選單與下拉選單邏輯
+    const burgerMenu = document.getElementById('burgerMenu');
+    const navLinks = document.getElementById('navLinks');
+    const dropdown = document.querySelector('.dropdown');
+
+    if (burgerMenu) {
+        burgerMenu.addEventListener('click', () => {
+            burgerMenu.classList.toggle('open');
+            navLinks.classList.toggle('active');
+        });
+    }
+
+    // 手機版下拉點擊 (點擊 "關於 F1" 展開子選單)
+    const dropbtn = document.querySelector('.dropbtn');
+    if (dropbtn) {
+        dropbtn.addEventListener('click', (e) => {
+            if (window.innerWidth <= 900) {
+                e.preventDefault();
+                dropdown.classList.toggle('open');
+            }
+        });
+    }
+
+    // 點擊連結後自動關閉菜單 (手機版)
+    document.querySelectorAll('.nav-links a:not(.dropbtn)').forEach(link => {
+        link.addEventListener('click', () => {
+            if (navLinks) navLinks.classList.remove('active');
+            if (burgerMenu) burgerMenu.classList.remove('open');
+        });
+    });
 });
 
+function initApp() {
+    renderStandings(); // 渲染積分榜與領獎台
+    renderDrivers();   // 渲染車手卡片
+    renderTeams();     // 渲染車隊卡片
+    renderTracks();    // 渲染賽道資訊
+    initGame();        // 初始化反應遊戲
+}
+
 // =========================================
-// === 完整數據定義 (包含紀錄保持人) ===
+// === 導覽邏輯 (頁面切換) ===
 // =========================================
 
+function navigateTo(pageId) {
+    // 隱藏所有頁面
+    document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+    
+    // 顯示目標頁面 (對應 id 為 pageId + "-page")
+    const target = document.getElementById(pageId + '-page');
+    if (target) {
+        target.classList.add('active');
+    }
+
+    // 更新導覽列 Active 狀態
+    document.querySelectorAll('.nav-links a').forEach(a => {
+        a.classList.remove('active');
+        if (a.getAttribute('onclick') && a.getAttribute('onclick').includes(`'${pageId}'`)) {
+            a.classList.add('active');
+        }
+    });
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// 切換「關於 F1」內部的標籤頁
+function switchAboutTab(tabId) {
+    document.querySelectorAll('.about-menu li').forEach(li => li.classList.remove('active'));
+    document.querySelectorAll('.about-tab-panel').forEach(panel => panel.classList.remove('active'));
+    
+    const targetTab = document.getElementById('tab-' + tabId);
+    const targetContent = document.getElementById('content-' + tabId);
+    if(targetTab) targetTab.classList.add('active');
+    if(targetContent) targetContent.classList.add('active');
+}
+
+// 跳轉到「關於 F1」大頁面並切換標籤
+function navigateToAbout(tabId) {
+    navigateTo('about-f1'); 
+    switchAboutTab(tabId);            
+}
+
+// =========================================
+// === 首頁圖片輪播邏輯 ===
+// =========================================
+
+let currentSlide = 0;
+function moveSlide(n) {
+    const slides = document.querySelectorAll('.slide');
+    if (slides.length === 0) return;
+    
+    slides[currentSlide].classList.remove('active');
+    currentSlide = (currentSlide + n + slides.length) % slides.length;
+    slides[currentSlide].classList.add('active');
+}
+
+setInterval(() => {
+    moveSlide(1);
+}, 5000);
+
+// =========================================
+// === 數據定義 ===
+// =========================================
+
+const tracks = [
+    { name: "第一輪：澳洲", location: "Melbourne", length: "5.278 km", laps: 58, record: "1:19.813", layout: "01澳洲.jpg" },
+    { name: "第二輪：中國", location: "Shanghai", length: "5.451 km", laps: 56, record: "1:32.238", layout: "02中國.jpg" },
+    { name: "第三輪：日本", location: "Suzuka", length: "5.807 km", laps: 53, record: "1:30.983", layout: "03日本.jpg" },
+    { name: "第四輪：巴林", location: "Sakhir", length: "5.412 km", laps: 57, record: "1:31.447", layout: "04巴林.jpg" },
+    { name: "第五輪：沙烏地阿拉伯", location: "Jeddah", length: "6.174 km", laps: 50, record: "1:30.734", layout: "05沙烏地阿拉伯.jpg" },
+    { name: "第六輪：邁阿密", location: "Miami", length: "5.412 km", laps: 57, record: "1:29.708", layout: "06邁阿密.jpg" },
+    { name: "第七輪：義大利", location: "Imola", length: "4.909 km", laps: 63, record: "1:15.484", layout: "07伊莫拉.jpg" },
+    { name: "第八輪：摩納哥", location: "Monte Carlo", length: "3.337 km", laps: 78, record: "1:12.909", layout: "08摩納哥.jpg" },
+    { name: "第九輪：西班牙", location: "Barcelona", length: "4.657 km", laps: 66, record: "1:18.149", layout: "09巴塞隆納.jpg" },
+    { name: "第十輪：加拿大", location: "Montreal", length: "4.361 km", laps: 70, record: "1:13.078", layout: "10加拿大.jpg" },
+    { name: "第十一輪：奧地利", location: "Spielberg", length: "4.318 km", laps: 71, record: "1:05.619", layout: "11奧地利.jpg" },
+    { name: "第十二輪：英國", location: "Silverstone", length: "5.891 km", laps: 52, record: "1:27.097", layout: "12銀石賽道.jpg" },
+    { name: "第十三輪：比利時", location: "Spa", length: "7.004 km", laps: 44, record: "1:46.286", layout: "13SPA.jpg" },
+    { name: "第十四輪：匈牙利", location: "Budapest", length: "4.381 km", laps: 70, record: "1:16.627", layout: "14匈牙利.jpg" },
+    { name: "第十五輪：荷蘭", location: "Zandvoort", length: "4.259 km", laps: 72, record: "1:11.097", layout: "15荷蘭.jpg" },
+    { name: "第十六輪：義大利", location: "Monza", length: "5.793 km", laps: 53, record: "1:21.046", layout: "16Monza.jpg" },
+    { name: "第十七輪：亞塞拜然", location: "Baku", length: "6.003 km", laps: 51, record: "1:43.009", layout: "17巴庫城市賽.jpg" },
+    { name: "第十八輪：新加坡", location: "Marina Bay", length: "4.940 km", laps: 62, record: "1:35.867", layout: "18濱海灣街道賽.jpg" },
+    { name: "第十九輪：美國", location: "Austin", length: "5.513 km", laps: 56, record: "1:36.169", layout: "19美州賽道.jpg" },
+    { name: "第二十輪：墨西哥", location: "Mexico City", length: "4.304 km", laps: 71, record: "1:17.774", layout: "20墨西哥.jpg" },
+    { name: "第二十一輪：巴西", location: "Sao Paulo", length: "4.309 km", laps: 71, record: "1:10.540", layout: "21巴西.jpg" },
+    { name: "第二十二輪：拉斯維加斯", location: "Las Vegas", length: "6.201 km", laps: 50, record: "1:34.876", layout: "22拉斯維加斯.jpg" },
+    { name: "第二十三輪：卡達", location: "Lusail", length: "5.419 km", laps: 57, record: "1:24.319", layout: "23卡達.jpg" },
+    { name: "第二十四輪：阿布達比", location: "Yas Marina", length: "5.281 km", laps: 58, record: "1:26.103", layout: "24阿布達比.jpg" }
+];
+
 const drivers = [
-    { name: "Lando Norris", team: "McLaren", number: 4, country: "英國", flag: "🇬🇧", podiums: 18, wc: 1, points: 423, bio: "2025 年世界冠軍。Norris 以其驚人的穩定性和速度，在賽季末逆轉奪冠。他與 Piastri 組成的年輕陣容是 F1 最具活力的組合。", img: "https://media.formula1.com/content/dam/fom-website/drivers/L/LANNOR01_Lando_Norris/lannor01.png.transform/2col/image.png" },
-    { name: "Oscar Piastri", team: "McLaren", number: 81, country: "澳洲", flag: "🇦🇺", podiums: 16, wc: 0, points: 410, bio: "Piastri 在 2025 賽季表現出色，與 Norris 共同為 McLaren 帶來了巨大的成功。他冷靜的風格和出色的輪胎管理能力令人印象深刻。", img: "https://media.formula1.com/content/dam/fom-website/drivers/O/OSCPIA01_Oscar_Piastri/oscpia01.png.transform/2col/image.png" },
-    { name: "Max Verstappen", team: "Red Bull Racing", number: 1, country: "荷蘭", flag: "🇳🇱", podiums: 15, wc: 4, points: 421, bio: "四屆世界冠軍。Verstappen 依然是 F1 的標竿，儘管在 2025 年惜敗，但他無疑仍是賽道上最快的車手之一。", img: "https://media.formula1.com/content/dam/fom-website/drivers/M/MAXVER01_Max_Verstappen/maxver01.png.transform/2col/image.png" },
-    { name: "Yuki Tsunoda", team: "Red Bull Racing", number: 22, country: "日本", flag: "🇯🇵", podiums: 0, wc: 0, points: 19, bio: "Tsunoda 在 2025 年重返 Red Bull Racing，與 Verstappen 搭檔。他以其激進的駕駛風格和速度著稱。", img: "https://media.formula1.com/content/dam/fom-website/drivers/Y/YUKTSU01_Yuki_Tsunoda/yuktsu01.png.transform/2col/image.png" },
-    { name: "George Russell", team: "Mercedes", number: 63, country: "英國", flag: "🇬🇧", podiums: 9, wc: 0, points: 319, bio: "Hamilton 離隊後，Russell 成為 Mercedes 的領軍人物。他穩定的表現和技術反饋是銀箭重返巔峰的關鍵。", img: "https://media.formula1.com/content/dam/fom-website/drivers/G/GEORUS01_George_Russell/georus01.png.transform/2col/image.png" },
-    { name: "Kimi Antonelli", team: "Mercedes", number: 12, country: "義大利", flag: "🇮🇹", podiums: 3, wc: 0, points: 150, bio: "備受期待的超級新秀。Antonelli 跳級進入 F1，被視為 Mercedes 的未來。他在賽季中展現了驚人的學習速度。", img: "https://media.formula1.com/content/dam/fom-website/drivers/K/KIMANT01_Kimi_Antonelli/kimant01.png.transform/2col/image.png" },
-    { name: "Charles Leclerc", team: "Ferrari", number: 16, country: "摩納哥", flag: "🇲🇨", podiums: 7, wc: 0, points: 242, bio: "Leclerc 在 2025 年與 Hamilton 搭檔，展現了強大的排位賽速度。他渴望為法拉利贏得世界冠軍。", img: "https://media.formula1.com/content/dam/fom-website/drivers/C/CHALEC01_Charles_Leclerc/chalec01.png.transform/2col/image.png" },
-    { name: "Lewis Hamilton", team: "Ferrari", number: 44, country: "英國", flag: "🇬🇧", podiums: 4, wc: 7, points: 156, bio: "七屆世界冠軍轉投法拉利，這是 F1 歷史上最受矚目的轉會之一。他豐富的經驗將為躍馬帶來巨大價值。", img: "https://media.formula1.com/content/dam/fom-website/drivers/L/LEWHAM01_Lewis_Hamilton/lewham01.png.transform/2col/image.png" },
-    { name: "Alexander Albon", team: "Williams", number: 23, country: "泰國", flag: "🇹🇭", podiums: 0, wc: 0, points: 73, bio: "Williams 的領袖。Albon 憑藉出色的表現，為車隊爭取到了寶貴的積分，是中游集團中最受尊敬的車手之一。", img: "https://media.formula1.com/content/dam/fom-website/drivers/A/ALEALB01_Alexander_Albon/alealb01.png.transform/2col/image.png" },
-    { name: "Carlos Sainz", team: "Williams", number: 55, country: "西班牙", flag: "🇪🇸", podiums: 2, wc: 0, points: 64, bio: "Sainz 轉投 Williams，尋求新的挑戰。他穩定的表現和技術分析能力將是 Williams 復興的關鍵。", img: "https://media.formula1.com/content/dam/fom-website/drivers/C/CARSAI01_Carlos_Sainz/carsai01.png.transform/2col/image.png" },
-    { name: "Fernando Alonso", team: "Aston Martin", number: 14, country: "西班牙", flag: "🇪🇸", podiums: 0, wc: 2, points: 51, bio: "兩屆世界冠軍，經驗豐富的老將。Alonso 繼續在 Aston Martin 展現他的戰鬥精神和對細節的追求。", img: "https://media.formula1.com/content/dam/fom-website/drivers/F/FERALO01_Fernando_Alonso/feralo01.png.transform/2col/image.png" },
-    { name: "Lance Stroll", team: "Aston Martin", number: 18, country: "加拿大", flag: "🇨🇦", podiums: 0, wc: 0, points: 22, bio: "Stroll 在 Aston Martin 繼續他的 F1 生涯。他偶爾能展現出驚人的速度，但穩定性仍有待提高。", img: "https://media.formula1.com/content/dam/fom-website/drivers/L/LANSTR01_Lance_Stroll/lanstr01.png.transform/2col/image.png" },
-    { name: "Nico Hülkenberg", team: "Kick Sauber", number: 27, country: "德國", flag: "🇩🇪", podiums: 1, wc: 0, points: 51, bio: "Hülkenberg 在 2025 年重返頒獎台，證明了他的速度 and 經驗。他為 Kick Sauber 帶來了寶貴的開發方向。", img: "https://media.formula1.com/content/dam/fom-website/drivers/N/NICHUL01_Nico_Hulkenberg/nichul01.png.transform/2col/image.png" },
-    { name: "Gabriel Bortoleto", team: "Kick Sauber", number: 5, country: "巴西", flag: "🇧🇷", podiums: 0, wc: 0, points: 0, bio: "巴西新秀，被視為 F1 的未來之星。他在 Kick Sauber 開始他的 F1 旅程。", img: "https://media.formula1.com/content/dam/fom-website/drivers/G/GABBOR01_Gabriel_Bortoleto/gabor01.png.transform/2col/image.png" },
-    { name: "Isack Hadjar", team: "Racing Bulls", number: 40, country: "法國", flag: "🇫🇷", podiums: 0, wc: 0, points: 41, bio: "Red Bull 青訓的新星。Hadjar 在 Racing Bulls 展現了潛力，是 F1 賽場上的新面孔。", img: "https://media.formula1.com/content/dam/fom-website/drivers/I/ISAHAD01_Isack_Hadjar/isahad01.png.transform/2col/image.png" },
-    { name: "Liam Lawson", team: "Racing Bulls", number: 30, country: "紐西蘭", flag: "🇳🇿", podiums: 0, wc: 0, points: 38, bio: "Lawson 在代班期間表現出色，終於獲得全職席位。他被視為 Red Bull 體系中最有前途的車手之一。", img: "https://media.formula1.com/content/dam/fom-website/drivers/L/LIAMLA01_Liam_Lawson/liamla01.png.transform/2col/image.png" },
-    { name: "Oliver Bearman", team: "Haas F1 Team", number: 87, country: "英國", flag: "🇬🇧", podiums: 0, wc: 0, points: 38, bio: "Bearman 在 2025 年獲得全職席位，他的速度和潛力被廣泛看好。他將是 Haas 的未來希望。", img: "https://media.formula1.com/content/dam/fom-website/drivers/O/OLIBEA01_Oliver_Bearman/olibea01.png.transform/2col/image.png" },
-    { name: "Esteban Ocon", team: "Haas F1 Team", number: 31, country: "法國", flag: "🇫🇷", podiums: 0, wc: 0, points: 33, bio: "Ocon 轉投 Haas，帶來了豐富的經驗和穩定的表現。他是一位強硬的賽道鬥士。", img: "https://media.formula1.com/content/dam/fom-website/drivers/E/ESTOCO01_Esteban_Ocon/estoco01.png.transform/2col/image.png" },
-    { name: "Pierre Gasly", team: "Alpine", number: 10, country: "法國", flag: "🇫🇷", podiums: 0, wc: 0, points: 0, bio: "Gasly 繼續在 Alpine 擔任領導角色。他是一位分站冠軍得主，正努力帶領車隊重返中游集團前列。", img: "https://media.formula1.com/content/dam/fom-website/drivers/P/PIEGAS01_Pierre_Gasly/piegas01.png.transform/2col/image.png" },
-    { name: "Franco Colapinto", team: "Alpine", number: 6, country: "阿根廷", flag: "🇦🇷", podiums: 0, wc: 0, points: 0, bio: "阿根廷車手，Alpine 青訓體系的一員。他在 2025 年獲得了全職席位。", img: "https://media.formula1.com/content/dam/fom-website/drivers/F/FRACOL01_Franco_Colapinto/fracol01.png.transform/2col/image.png" },
+    // Red Bull
+    { name: "Max Verstappen", team: "Red Bull", number: 1, country: "荷蘭", flag: "🇳🇱", podiums: 107, wc: 3, points: 400, bio: "當代最強車手，開啟了紅牛王朝。他是狂熱的模擬賽車手。", fun: "曾在F1比賽周凌晨參加電競耐力賽並奪冠。", ig: "maxverstappen1", x: "Max33Verstappen", img: "https://media.formula1.com/content/dam/fom-website/drivers/M/MAXVER01_Max_Verstappen/maxver01.png" },
+    { name: "Liam Lawson", team: "Red Bull", number: 30, country: "紐西蘭", flag: "🇳🇿", podiums: 0, wc: 0, points: 120, bio: "紐西蘭新星，經歷多年代打與磨練後終於升上大隊。", fun: "是自布蘭登哈特利以來第一位紐西蘭F1車手。", ig: "liamlawson30", x: "LiamLawson30", img: "https://media.formula1.com/content/dam/fom-website/drivers/L/LIALAW01_Liam_Lawson/lialaw01.png" },
+    // Ferrari
+    { name: "Charles Leclerc", team: "Ferrari", number: 16, country: "摩納哥", flag: "🇲🇨", podiums: 39, wc: 0, points: 350, bio: "摩納哥之子，法拉利的希望。擁有極致的排位賽速度。", fun: "他是一位才華橫溢的鋼琴家，發行過多首單曲。", ig: "charles_leclerc", x: "Charles_Leclerc", img: "https://media.formula1.com/content/dam/fom-website/drivers/C/CHALEC01_Charles_Leclerc/chalec01.png" },
+    { name: "Lewis Hamilton", team: "Ferrari", number: 44, country: "英國", flag: "🇬🇧", podiums: 201, wc: 7, points: 300, bio: "F1傳奇，2025年震撼轉投法拉利，挑戰生涯第八冠。", fun: "他擁有一隻名叫 Roscoe 的名氣鬥牛犬。", ig: "lewishamilton", x: "LewisHamilton", img: "https://media.formula1.com/content/dam/fom-website/drivers/L/LEWHAM01_Lewis_Hamilton/lewham01.png" },
+    // McLaren
+    { name: "Lando Norris", team: "McLaren", number: 4, country: "英國", flag: "🇬🇧", podiums: 25, wc: 0, points: 423, bio: "邁凱倫領軍人物，2024年起正式跨入世界冠軍爭奪者行列。", fun: "他是電競戰隊 Quadrant 的創辦人。", ig: "landonorris", x: "LandoNorris", img: "https://media.formula1.com/content/dam/fom-website/drivers/L/LANNOR01_Lando_Norris/lannor01.png" },
+    { name: "Oscar Piastri", team: "McLaren", number: 81, country: "澳洲", flag: "🇦🇺", podiums: 9, wc: 0, points: 380, bio: "冷靜沉著的天才，被譽為「機器人」。", fun: "他在F3、F2、F1都是第一年就展現驚人實力。", ig: "oscarpiastri", x: "OscarPiastri", img: "https://media.formula1.com/content/dam/fom-website/drivers/O/OSCPIA01_Oscar_Piastri/oscpia01.png" },
+    // Mercedes
+    { name: "George Russell", team: "Mercedes", number: 63, country: "英國", flag: "🇬🇧", podiums: 14, wc: 0, points: 280, bio: "梅賽德斯的新核心，以穩定性著稱。", fun: "他是車手協會(GPDA)的理事。", ig: "georgerussell63", x: "GeorgeRussell63", img: "https://media.formula1.com/content/dam/fom-website/drivers/G/GEORUS01_George_Russell/georus01.png" },
+    { name: "Kimi Antonelli", team: "Mercedes", number: 12, country: "義大利", flag: "🇮🇹", podiums: 0, wc: 0, points: 50, bio: "18歲直升F1的超級新人，被視為下一個天才。", fun: "他的名字是為了致敬 Kimi Raikkonen。", ig: "kimi.antonelli", x: "", img: "https://media.formula1.com/content/dam/fom-website/drivers/K/KIMANT01_Kimi_Antonelli/kimant01.png" },
+    // Aston Martin
+    { name: "Fernando Alonso", team: "Aston Martin", number: 14, country: "西班牙", flag: "🇪🇸", podiums: 106, wc: 2, points: 200, bio: "圍場不老傳奇，43歲依然保持巔峰狀態。", fun: "他擁有自己的個人品牌 Kimoa。", ig: "fernandoalo_oficial", x: "alo_oficial", img: "https://media.formula1.com/content/dam/fom-website/drivers/F/FERALO01_Fernando_Alonso/feralo01.png" },
+    { name: "Lance Stroll", team: "Aston Martin", number: 18, country: "加拿大", flag: "🇨🇦", podiums: 3, wc: 0, points: 80, bio: "雖然背負壓力，但在雨戰中極具天賦。", fun: "他的父親是阿斯頓馬丁車隊的老闆。", ig: "lance_stroll", x: "lance_stroll", img: "https://media.formula1.com/content/dam/fom-website/drivers/L/LANSTR01_Lance_Stroll/lanstr01.png" },
+    // Williams
+    { name: "Alexander Albon", team: "Williams", number: 23, country: "泰國", flag: "🇹🇭", podiums: 2, wc: 0, points: 60, bio: "泰國之光，成功帶領威廉姆斯復興。", fun: "他有一大群寵物，自稱是農場主人。", ig: "alex_albon", x: "alex_albon", img: "https://media.formula1.com/content/dam/fom-website/drivers/A/ALEALB01_Alexander_Albon/alealb01.png" },
+    { name: "Carlos Sainz", team: "Williams", number: 55, country: "西班牙", flag: "🇪🇸", podiums: 25, wc: 0, points: 180, bio: "智商型車手，2025年轉會威廉姆斯。", fun: "外號 Smooth Operator，愛在電台唱歌。", ig: "carlossainz55", x: "Carlossainz55", img: "https://media.formula1.com/content/dam/fom-website/drivers/C/CARSAI01_Carlos_Sainz/carsai01.png" },
+    // Alpine
+    { name: "Pierre Gasly", team: "Alpine", number: 10, country: "法國", flag: "🇫🇷", podiums: 4, wc: 0, points: 90, bio: "阿爾派的法國大將，曾獲一場分站冠軍。", fun: "他與勒克萊爾是兒時玩伴。", ig: "pierregasly", x: "PierreGASLY", img: "https://media.formula1.com/content/dam/fom-website/drivers/P/PIEGAS01_Pierre_Gasly/piegas01.png" },
+    { name: "Jack Doohan", team: "Alpine", number: 7, country: "澳洲", flag: "🇦🇺", podiums: 0, wc: 0, points: 20, bio: "MotoGP傳奇之子，2025迎來首個完整賽季。", fun: "其父是五屆MotoGP世界冠軍。", ig: "jackdoohan", x: "jackdoohan33", img: "https://media.formula1.com/content/dam/fom-website/drivers/J/JACDOO01_Jack_Doohan/jacdoo01.png" },
+    // RB
+    { name: "Yuki Tsunoda", team: "RB", number: 22, country: "日本", flag: "🇯🇵", podiums: 0, wc: 0, points: 45, bio: "火爆日本車手，速度逐年進化。", fun: "他在義大利隊工作最大的愛好是意麵。", ig: "yukitsunoda0511", x: "yukitsunoda0511", img: "https://media.formula1.com/content/dam/fom-website/drivers/Y/YUKTSU01_Yuki_Tsunoda/yuktsu01.png" },
+    { name: "Isack Hadjar", team: "RB", number: 6, country: "法國", flag: "🇫🇷", podiums: 0, wc: 0, points: 10, bio: "紅牛青訓最新的攻擊型車手。", fun: "他在F2時期以瘋狂超車著稱。", ig: "isackhadjar", x: "", img: "https://media.formula1.com/content/dam/fom-website/drivers/I/ISAHAD01_Isack_Hadjar/isahad01.png" },
+    // Haas
+    { name: "Esteban Ocon", team: "Haas", number: 31, country: "法國", flag: "🇫🇷", podiums: 3, wc: 0, points: 70, bio: "硬派防守大師，2025年加盟哈斯。", fun: "小時候全家住在露營車供他賽車。", ig: "estebanocon", x: "OconEsteban", img: "https://media.formula1.com/content/dam/fom-website/drivers/E/ESTOCO01_Esteban_Ocon/estoco01.png" },
+    { name: "Oliver Bearman", team: "Haas", number: 87, country: "英國", flag: "🇬🇧", podiums: 0, wc: 0, points: 30, bio: "2024一代名將，2025正式出道。", fun: "他在代打法拉利時甚至還在請病假。", ig: "olliebearman", x: "OllieBearman", img: "https://media.formula1.com/content/dam/fom-website/drivers/O/OLIBEA01_Oliver_Bearman/olibea01.png" },
+    // Sauber
+    { name: "Nico Hulkenberg", team: "Sauber", number: 27, country: "德國", flag: "🇩🇪", podiums: 0, wc: 0, points: 25, bio: "排位賽專家，為奧迪進駐做準備。", fun: "他是2015年勒芒冠軍。", ig: "hulkhulkenberg", x: "HulkHulkenberg", img: "https://media.formula1.com/content/dam/fom-website/drivers/N/NICHUL01_Nico_Hulkenberg/nichul01.png" },
+    { name: "Gabriel Bortoleto", team: "Sauber", number: 5, country: "巴西", flag: "🇧🇷", podiums: 0, wc: 0, points: 5, bio: "巴西新生代希望，2025最新面孔。", fun: "經紀人是阿隆索。", ig: "gabrielbortoleto_", x: "", img: "https://media.formula1.com/content/dam/fom-website/drivers/G/GABBOR01_Gabriel_Bortoleto/gabbor01.png" }
 ];
 
 const teams = [
-    { name: "Red Bull Racing", base: "Milton Keynes, UK", powerUnit: "Honda RBPT", img: "https://media.formula1.com/content/dam/fom-website/teams/2024/red-bull-racing.png.transform/2col/image.png", achievements: { titles: 7, wins: 120, firstGP: 1997 } },
-    { name: "Mercedes-AMG", base: "Brackley, UK", powerUnit: "Mercedes", img: "https://media.formula1.com/content/dam/fom-website/teams/2024/mercedes.png.transform/2col/image.png", achievements: { titles: 8, wins: 125, firstGP: 1970 } },
-    { name: "Scuderia Ferrari", base: "Maranello, Italy", powerUnit: "Ferrari", img: "https://media.formula1.com/content/dam/fom-website/teams/2024/ferrari.png.transform/2col/image.png", achievements: { titles: 16, wins: 244, firstGP: 1950 } },
-    { name: "McLaren F1 Team", base: "Woking, UK", powerUnit: "Mercedes", img: "https://media.formula1.com/content/dam/fom-website/teams/2024/mclaren.png.transform/2col/image.png", achievements: { titles: 8, wins: 183, firstGP: 1966 } },
-    { name: "Aston Martin", base: "Silverstone, UK", powerUnit: "Mercedes", img: "https://media.formula1.com/content/dam/fom-website/teams/2024/aston-martin.png.transform/2col/image.png", achievements: { titles: 0, wins: 0, firstGP: 2021 } },
-    { name: "Alpine F1 Team", base: "Enstone, UK", powerUnit: "Renault", img: "https://media.formula1.com/content/dam/fom-website/teams/2024/alpine.png.transform/2col/image.png", achievements: { titles: 2, wins: 21, firstGP: 2021 } },
-    { name: "Williams Racing", base: "Grove, UK", powerUnit: "Mercedes", img: "https://media.formula1.com/content/dam/fom-website/teams/2024/williams.png.transform/2col/image.png", achievements: { titles: 9, wins: 114, firstGP: 1977 } },
-    { name: "Racing Bulls", base: "Faenza, Italy", powerUnit: "Honda RBPT", img: "https://media.formula1.com/content/dam/fom-website/teams/2024/vcarb.png.transform/2col/image.png", achievements: { titles: 0, wins: 2, firstGP: 2006 } },
-    { name: "Kick Sauber", base: "Hinwil, Switzerland", powerUnit: "Ferrari", img: "https://media.formula1.com/content/dam/fom-website/teams/2024/kick-sauber.png.transform/2col/image.png", achievements: { titles: 0, wins: 1, firstGP: 1993 } },
-    { name: "Haas F1 Team", base: "Kannapolis, USA", powerUnit: "Ferrari", img: "https://media.formula1.com/content/dam/fom-website/teams/2024/haas.png.transform/2col/image.png", achievements: { titles: 0, wins: 0, firstGP: 2016 } }
+    { name: "McLaren", base: "Woking, UK", chief: "Andrea Stella", engine: "Mercedes", wc: 8, img: "https://media.formula1.com/content/dam/fom-website/teams/2025/mclaren-logo.png" },
+    { name: "Ferrari", base: "Maranello, Italy", chief: "Fred Vasseur", engine: "Ferrari", wc: 16, img: "https://media.formula1.com/content/dam/fom-website/teams/2025/ferrari-logo.png" },
+    { name: "Red Bull Racing", base: "Milton Keynes, UK", chief: "Christian Horner", engine: "Honda RBPT", wc: 6, img: "https://media.formula1.com/content/dam/fom-website/teams/2025/red-bull-racing-logo.png" },
+    { name: "Mercedes", base: "Brackley, UK", chief: "Toto Wolff", engine: "Mercedes", wc: 8, img: "https://media.formula1.com/content/dam/fom-website/teams/2025/mercedes-logo.png" },
+    { name: "Aston Martin", base: "Silverstone, UK", chief: "Mike Krack", engine: "Mercedes", wc: 0, img: "https://media.formula1.com/content/dam/fom-website/teams/2025/aston-martin-logo.png" },
+    { name: "Alpine", base: "Enstone, UK", chief: "Oliver Oakes", engine: "Renault", wc: 2, img: "https://media.formula1.com/content/dam/fom-website/teams/2025/alpine-logo.png" },
+    { name: "Williams", base: "Grove, UK", chief: "James Vowles", engine: "Mercedes", wc: 9, img: "https://media.formula1.com/content/dam/fom-website/teams/2025/williams-logo.png" },
+    { name: "RB", base: "Faenza, Italy", chief: "Laurent Mekies", engine: "Honda RBPT", wc: 0, img: "https://media.formula1.com/content/dam/fom-website/teams/2025/rb-logo.png" },
+    { name: "Stake F1 Team", base: "Hinwil, Switzerland", chief: "Mattia Binotto", engine: "Ferrari", wc: 0, img: "https://media.formula1.com/content/dam/fom-website/teams/2025/kick-sauber-logo.png" },
+    { name: "Haas", base: "Kannapolis, USA", chief: "Ayao Komatsu", engine: "Ferrari", wc: 0, img: "https://media.formula1.com/content/dam/fom-website/teams/2025/haas-f1-team-logo.png" }
 ];
 
-const TRACKS_DATA = [
-    { name: "澳洲", id: "australia", imageURL: "01澳洲.jpg", flag: "🇦🇺", length: "5.303 km", firstGP: 1996, laps: 58, fastestLap: "1:20.260", distance: "307.574 km", about: "賽季開幕戰熱門地點。", holder: "Charles Leclerc", holderYear: 2022, googleMapsLink: "https://maps.app.goo.gl/9y5Q8z5F7G8H2J3K9" },
-    { name: "中國", id: "china", imageURL: "02中國.jpg", flag: "🇨🇳", length: "5.451 km", firstGP: 2004, laps: 56, fastestLap: "1:32.238", distance: "305.066 km", about: "獨特的「上」字形賽道。", holder: "Michael Schumacher", holderYear: 2004, googleMapsLink: "https://maps.app.goo.gl/8X7W6V5U4T3S2R1Q0" },
-    { name: "日本", id: "japan", imageURL: "03日本.jpg", flag: "🇯🇵", length: "5.807 km", firstGP: 1987, laps: 53, fastestLap: "1:30.983", distance: "307.471 km", about: "唯一的「8」字形立體交叉賽道。", holder: "Lewis Hamilton", holderYear: 2019, googleMapsLink: "https://maps.app.goo.gl/7A6B5C4D3E2F1G0H9" },
-    { name: "巴林", id: "bahrain", imageURL: "04巴林.jpg", flag: "🇧🇭", length: "5.412 km", firstGP: 2004, laps: 57, fastestLap: "1:31.447", distance: "308.238 km", about: "沙漠之中的夜賽。", holder: "Pedro de la Rosa", holderYear: 2005, googleMapsLink: "https://maps.app.goo.gl/6K5L4M3N2O1P0Q9R8" },
-    { name: "沙烏地阿拉伯", id: "saudi-arabia", imageURL: "05沙烏地阿拉伯.jpg", flag: "🇸🇦", length: "6.174 km", firstGP: 2021, laps: 50, fastestLap: "1:30.734", distance: "308.450 km", about: "世界上最快、最長的街道賽道之一。", holder: "Lewis Hamilton", holderYear: 2021, googleMapsLink: "https://maps.app.goo.gl/5J4I3H2G1F0E9D8C7" },
-    { name: "邁阿密", id: "miami", imageURL: "06邁阿密.jpg", flag: "🇺🇸", length: "5.412 km", firstGP: 2022, laps: 57, fastestLap: "1:29.708", distance: "308.326 km", about: "圍繞 Hard Rock 體育場建造。", holder: "Max Verstappen", holderYear: 2023, googleMapsLink: "https://maps.app.goo.gl/4B3A2Z1Y0X9W8V7U6" },
-    { name: "艾米利亞-羅馬涅", id: "imola", imageURL: "07伊莫拉.jpg", flag: "🇮🇹", length: "4.909 km", firstGP: 1980, laps: 63, fastestLap: "1:15.484", distance: "309.049 km", about: "經典的逆時針賽道。", holder: "Lewis Hamilton", holderYear: 2020, googleMapsLink: "https://maps.app.goo.gl/3S2R1Q0P9O8N7M6L5" },
-    { name: "摩納哥", id: "monaco", imageURL: "08摩納哥.jpg", flag: "🇲🇨", length: "3.337 km", firstGP: 1950, laps: 78, fastestLap: "1:12.909", distance: "260.286 km", about: "F1 皇冠上的明珠。", holder: "Lewis Hamilton", holderYear: 2021, googleMapsLink: "https://maps.app.goo.gl/2T1U0V9W8X7Y6Z5A4" },
-    { name: "西班牙", id: "spain", imageURL: "09巴塞隆納.jpg", flag: "🇪🇸", length: "4.657 km", firstGP: 1991, laps: 66, fastestLap: "1:16.330", distance: "307.236 km", about: "傳統的測試場地。", holder: "Max Verstappen", holderYear: 2023, googleMapsLink: "https://maps.app.goo.gl/1Q0P9O8N7M6L5K4J3" },
-    { name: "加拿大", id: "canada", imageURL: "10加拿大.jpg", flag: "🇨🇦", length: "4.361 km", firstGP: 1978, laps: 70, fastestLap: "1:13.622", distance: "305.270 km", about: "以「冠軍牆」聞名。", holder: "Valtteri Bottas", holderYear: 2019, googleMapsLink: "https://maps.app.goo.gl/0Z9Y8X7W6V5U4T3S2" },
-    { name: "奧地利", id: "austria", imageURL: "11奧地利.jpg", flag: "🇦🇹", length: "4.318 km", firstGP: 1970, laps: 71, fastestLap: "1:05.619", distance: "306.452 km", about: "紅牛環賽道。", holder: "Carlos Sainz", holderYear: 2020, googleMapsLink: "https://maps.app.goo.gl/9V8U7T6S5R4Q3P2O1" },
-    { name: "英國", id: "britain", imageURL: "12銀石賽道.jpg", flag: "🇬🇧", length: "5.891 km", firstGP: 1950, laps: 52, fastestLap: "1:27.097", distance: "306.198 km", about: "F1 發源地。", holder: "Max Verstappen", holderYear: 2020, googleMapsLink: "https://maps.app.goo.gl/8T7S6R5Q4P3O2N1M0" },
-    { name: "比利時", id: "belgium", imageURL: "13SPA.jpg", flag: "🇧🇪", length: "7.004 km", firstGP: 1950, laps: 44, fastestLap: "1:46.286", distance: "308.052 km", about: "F1 最長的賽道。", holder: "Valtteri Bottas", holderYear: 2018, googleMapsLink: "https://maps.app.goo.gl/7R6Q5P4O3N2M1L0K9" },
-    { name: "匈牙利", id: "hungary", imageURL: "14匈牙利.jpg", flag: "🇭🇺", length: "4.381 km", firstGP: 1986, laps: 70, fastestLap: "1:16.627", distance: "306.670 km", about: "被稱為「沒有直道的摩納哥」。", holder: "Lewis Hamilton", holderYear: 2020, googleMapsLink: "https://maps.app.goo.gl/6Q5P4O3N2M1L0K9J8" },
-    { name: "荷蘭", id: "netherlands", imageURL: "15荷蘭.jpg", flag: "🇳🇱", length: "4.259 km", firstGP: 1952, laps: 72, fastestLap: "1:11.097", distance: "306.648 km", about: "充滿沙丘地形的賽道。", holder: "Lewis Hamilton", holderYear: 2021, googleMapsLink: "https://maps.app.goo.gl/5P4O3N2M1L0K9J8I7" },
-    { name: "義大利", id: "italy", imageURL: "16Monza.jpg", flag: "🇮🇹", length: "5.793 km", firstGP: 1950, laps: 53, fastestLap: "1:21.046", distance: "306.720 km", about: "「速度殿堂」。", holder: "Rubens Barrichello", holderYear: 2004, googleMapsLink: "https://maps.app.goo.gl/4O3N2M1L0K9J8I7H6" },
-    { name: "亞塞拜然", id: "azerbaijan", imageURL: "17巴庫城市賽.jpg", flag: "🇦🇿", length: "6.003 km", firstGP: 2016, laps: 51, fastestLap: "1:43.009", distance: "306.049 km", about: "巴庫城市賽道。", holder: "Charles Leclerc", holderYear: 2019, googleMapsLink: "https://maps.app.goo.gl/3N2M1L0K9J8I7H6G5" },
-    { name: "新加坡", id: "singapore", imageURL: "18濱海灣街道賽.jpg", flag: "🇸🇬", length: "4.940 km", firstGP: 2008, laps: 62, fastestLap: "1:44.400", distance: "306.584 km", about: "F1 史上第一個夜間大獎賽。", holder: "Lewis Hamilton", holderYear: 2023, googleMapsLink: "https://maps.app.goo.gl/2M1L0K9J8I7H6G5F4" },
-    { name: "美國", id: "usa", imageURL: "19美州賽道.jpg", flag: "🇺🇸", length: "5.513 km", firstGP: 2012, laps: 56, fastestLap: "1:36.169", distance: "308.405 km", about: "美洲賽道。", holder: "Charles Leclerc", holderYear: 2019, googleMapsLink: "https://maps.app.goo.gl/1L0K9J8I7H6G5F4E3" },
-    { name: "墨西哥", id: "mexico", imageURL: "20墨西哥.jpg", flag: "🇲🇽", length: "4.304 km", firstGP: 1963, laps: 71, fastestLap: "1:17.774", distance: "305.354 km", about: "高海拔賽道。", holder: "Valtteri Bottas", holderYear: 2021, googleMapsLink: "https://maps.app.goo.gl/0K9J8I7H6G5F4E3D2" },
-    { name: "巴西", id: "brazil", imageURL: "21巴西.jpg", flag: "🇧🇷", length: "4.309 km", firstGP: 1973, laps: 71, fastestLap: "1:10.540", distance: "305.909 km", about: "逆時針賽道。", holder: "Valtteri Bottas", holderYear: 2018, googleMapsLink: "https://maps.app.goo.gl/9J8I7H6G5F4E3D2C1" },
-    { name: "拉斯維加斯", id: "las-vegas", imageURL: "22拉斯維加斯.jpg", flag: "🇺🇸", length: "6.201 km", firstGP: 2023, laps: 50, fastestLap: "1:33.365", distance: "310.050 km", about: "全新的街道夜賽。", holder: "Oscar Piastri", holderYear: 2023, googleMapsLink: "https://maps.app.goo.gl/8I7H6G5F4E3D2C1B0" },
-    { name: "卡達", id: "qatar", imageURL: "23卡達.jpg", flag: "🇶🇦", length: "5.380 km", firstGP: 2021, laps: 57, fastestLap: "1:24.319", distance: "306.660 km", about: "羅賽爾國際賽道。", holder: "Max Verstappen", holderYear: 2023, googleMapsLink: "https://maps.app.goo.gl/7H6G5F4E3D2C1B0A9" },
-    { name: "阿布達比", id: "abu-dhabi", imageURL: "24阿布達比.jpg", flag: "🇦🇪", length: "5.281 km", firstGP: 2009, laps: 58, fastestLap: "1:26.103", distance: "306.299 km", about: "賽季收官戰。", holder: "Max Verstappen", holderYear: 2021, googleMapsLink: "https://maps.app.goo.gl/6G5F4E3D2C1B0A9Z8" }
-];
-
-function getTeamColor(team) {
-    const t = team.toLowerCase();
-    if (t.includes('red bull')) return '#3671C6';
-    if (t.includes('mercedes')) return '#00D2BE';
-    if (t.includes('ferrari')) return '#E10600';
-    if (t.includes('mclaren')) return '#FF8700';
-    if (t.includes('aston')) return '#006F62';
-    if (t.includes('alpine')) return '#0090FF';
-    if (t.includes('williams')) return '#005AFF';
-    if (t.includes('racing bulls')) return '#6692FF';
-    if (t.includes('kick sauber')) return '#52E252';
-    if (t.includes('haas')) return '#B6BABD';
-    return '#FFFFFF';
-}
-
 // =========================================
-// === DOM 元素與初始化 ===
+// === 渲染功能 ===
 // =========================================
 
-const driverGridContainer = document.getElementById('driverGridContainer');
-const teamGridContainer = document.getElementById('teamGridContainer');
-const trackTabsContainer = document.getElementById('trackTabs');
-const trackContentsContainer = document.getElementById('trackContents');
-const modalOverlay = document.getElementById('infoModal');
-const modalContent = document.getElementById('modalContent');
-const modalLeft = document.getElementById('modalLeft');
-const modalRight = document.getElementById('modalRight');
-const burgerMenu = document.getElementById('burgerMenu');
-const navLinks = document.getElementById('navLinks');
-const globalSearch = document.getElementById('globalSearch');
+// --- 積分榜與領獎台 ---
+function renderStandings() {
+    const sorted = [...drivers].sort((a, b) => b.points - a.points);
+    const top3 = sorted.slice(0, 3);
+    const mainBody = document.getElementById('standingsListBody');
+    const moreBody = document.getElementById('standingsMoreBody');
 
-const lightsContainer = document.getElementById('lightsContainer');
-const gameStatus = document.getElementById('gameStatus');
-const timerDisplay = document.getElementById('timerDisplay');
-const gameButton = document.getElementById('gameButton');
+    // 渲染領獎台 (2-1-3 順序)
+    const podiumMap = [
+        { id: 'podium-2', data: top3[1] },
+        { id: 'podium-1', data: top3[0] },
+        { id: 'podium-3', data: top3[2] }
+    ];
 
-// =========================================
-// === 單頁應用程式 (SPA) 導覽邏輯 ===
-// =========================================
-
-const pages = {
-    'home': document.getElementById('home-page'),
-    'drivers': document.getElementById('drivers-page'),
-    'teams': document.getElementById('teams-page'),
-    'tracks': document.getElementById('tracks-page'),
-    'game': document.getElementById('game-page'),
-};
-
-function navigateTo(pageId) {
-    Object.values(pages).forEach(page => {
-        if (page) {
-            page.classList.remove('active');
-            page.style.display = 'none';
+    podiumMap.forEach(p => {
+        const el = document.getElementById(p.id);
+        if (el && p.data) {
+            el.innerHTML = `
+                <div class="podium-driver">
+                    <img src="${p.data.img}" alt="${p.data.name}">
+                    <div class="podium-info">
+                        <span class="p-rank">${p.id.split('-')[1]}</span>
+                        <span class="p-name">${p.data.name}</span>
+                        <span class="p-points">${p.data.points} PTS</span>
+                    </div>
+                </div>
+            `;
         }
     });
 
-    const targetPage = pages[pageId];
-    if (targetPage) {
-        targetPage.style.display = 'block';
-        setTimeout(() => {
-            targetPage.classList.add('active');
-            initScrollReveal();
-        }, 50);
-    }
-
-    document.querySelectorAll('.nav-links a').forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('data-page') === pageId) link.classList.add('active');
+    // 渲染表格
+    mainBody.innerHTML = '';
+    moreBody.innerHTML = '';
+    sorted.forEach((d, i) => {
+        const row = `<tr><td>${i+1}</td><td>${d.name}</td><td>${d.team}</td><td style="text-align:right;">${d.points}</td></tr>`;
+        if (i < 5) mainBody.innerHTML += row;
+        else moreBody.innerHTML += row;
     });
-
-    navLinks.classList.remove('active');
-
-    if (pageId === 'tracks') renderTrackTabs();
-    if (pageId === 'drivers') renderDriverCards();
-    if (pageId === 'teams') renderTeamCards();
 }
 
-document.querySelectorAll('.nav-links a').forEach(link => {
-    link.addEventListener('click', function(e) {
-        e.preventDefault();
-        const pageId = this.getAttribute('data-page');
-        if (pageId) navigateTo(pageId);
-    });
-});
-
-burgerMenu.addEventListener('click', () => navLinks.classList.toggle('active'));
-
-// =========================================
-// === 搜尋功能 ===
-// =========================================
-
-globalSearch.addEventListener('input', (e) => {
-    const query = e.target.value.toLowerCase().trim();
-    if (query === '') {
-        renderDriverCards();
-        renderTeamCards();
-        renderTrackTabs();
-        return;
-    }
-
-    const filteredDrivers = drivers.filter(d => d.name.toLowerCase().includes(query) || d.team.toLowerCase().includes(query));
-    renderDriverCards(filteredDrivers);
-
-    const filteredTeams = teams.filter(t => t.name.toLowerCase().includes(query));
-    renderTeamCards(filteredTeams);
-
-    const filteredTracks = TRACKS_DATA.filter(tr => tr.name.toLowerCase().includes(query));
-    renderTrackTabs(filteredTracks);
-});
-
-// =========================================
-// === 渲染函數 ===
-// =========================================
-
-function renderDriverCards(data = drivers) {
-    if (!driverGridContainer) return;
-    driverGridContainer.innerHTML = '';
-    if (data.length === 0) {
-        driverGridContainer.innerHTML = '<div class="no-results">找不到相關車手。</div>';
-        return;
-    }
-    data.forEach((driver, index) => {
-        const card = document.createElement('div');
-        card.className = 'data-card reveal';
-        card.style.transitionDelay = `${index * 0.05}s`;
-        const teamColor = getTeamColor(driver.team);
-        card.style.borderTopColor = teamColor;
-        
-        card.innerHTML = `
-            <div class="card-header">
-                <div class="flag-circle">${driver.flag}</div>
-                <img src="${driver.img}" alt="${driver.name}">
-            </div>
-            <div class="card-content">
-                <h3>#${driver.number} ${driver.name}</h3>
-                <p>${driver.team}</p>
-                <p>積分: <span class="stat-number" data-target="${driver.points}">0</span></p>
-            </div>
-        `;
-        card.onclick = () => showDriverModal(driver);
-        driverGridContainer.appendChild(card);
-    });
-    initTiltEffect();
-    initCounters(driverGridContainer);
+function toggleStandings() {
+    const more = document.getElementById('standingsMoreBody');
+    const btn = document.getElementById('toggleStandingsBtn');
+    more.classList.toggle('hidden');
+    btn.innerHTML = more.classList.contains('hidden') ? 
+        '<span>顯示更多</span> <i class="fas fa-chevron-down"></i>' : 
+        '<span>收合內容</span> <i class="fas fa-chevron-up"></i>';
 }
 
-function renderTeamCards(data = teams) {
-    if (!teamGridContainer) return;
-    teamGridContainer.innerHTML = '';
-    data.forEach((team, index) => {
-        const card = document.createElement('div');
-        card.className = 'data-card reveal';
-        card.style.transitionDelay = `${index * 0.1}s`;
-        const teamColor = getTeamColor(team.name);
-        card.style.borderTopColor = teamColor;
+// --- 車手卡片 ---
+function renderDrivers(filterText = '') {
+    const container = document.getElementById('driverGridContainer');
+    if (!container) return;
+    container.innerHTML = '';
+    
+    drivers.forEach(driver => {
+        if (driver.name.toLowerCase().includes(filterText.toLowerCase()) || 
+            driver.team.toLowerCase().includes(filterText.toLowerCase())) {
+            
+            const card = document.createElement('div');
+            card.className = 'data-card';
+            card.innerHTML = `
+                <div class="card-header">
+                    <img src="${driver.img}" alt="${driver.name}">
+                    <div class="flag-circle">${driver.flag}</div>
+                </div>
+                <div class="card-content">
+                    <h3>${driver.name}</h3>
+                    <p>${driver.team} #${driver.number}</p>
+                    <p>積分: <span class="stat-number">${driver.points}</span></p>
+                </div>
+            `;
+            card.onclick = () => showModal(driver);
+            container.appendChild(card);
+        }
+    });
+}
 
+// --- 車隊卡片 ---
+function renderTeams() {
+    const container = document.getElementById('teamGridContainer');
+    if (!container) return;
+    container.innerHTML = '';
+    teams.forEach(team => {
+        const card = document.createElement('div');
+        card.className = 'data-card';
         card.innerHTML = `
-            <div class="card-header" style="background: #111; display: flex; align-items: center; justify-content: center; padding: 20px;">
-                <img src="${team.img}" alt="${team.name}" style="object-fit: contain; height: 80px;">
+            <div class="card-header" style="background: white; padding: 20px;">
+                <img src="${team.img}" alt="${team.name}" style="object-fit: contain;">
             </div>
             <div class="card-content">
                 <h3>${team.name}</h3>
-                <p>勝場: <span class="stat-number" data-target="${team.achievements.wins}">0</span></p>
+                <p>領隊: ${team.chief}</p>
+                <p>引擎: ${team.engine}</p>
+                <p>世界冠軍: <span class="stat-number">${team.wc}</span></p>
             </div>
         `;
-        card.onclick = () => showTeamModal(team);
-        teamGridContainer.appendChild(card);
-    });
-    initTiltEffect();
-    initCounters(teamGridContainer);
-}
-
-function renderTrackTabs(data = TRACKS_DATA) {
-    if (!trackTabsContainer || !trackContentsContainer) return;
-    trackTabsContainer.innerHTML = '';
-    trackContentsContainer.innerHTML = '';
-
-    data.forEach((track, index) => {
-        const button = document.createElement('button');
-        button.className = `track-tab-button${index === 0 ? ' active' : ''}`;
-        button.textContent = `${track.flag} ${track.name}`;
-        button.onclick = () => switchTrackTab(track.id);
-        trackTabsContainer.appendChild(button);
-
-        if (index === 0) {
-            renderSingleTrack(track);
-        }
+        container.appendChild(card);
     });
 }
 
-function renderSingleTrack(track) {
-    trackContentsContainer.innerHTML = `
-        <div class="track-content-item active reveal neon-flow" id="track-content-${track.id}">
+// --- 賽道渲染 ---
+function renderTracks() {
+    const tabsContainer = document.getElementById('trackTabs');
+    if (!tabsContainer) return;
+    tabsContainer.innerHTML = '';
+    tracks.forEach((track, index) => {
+        const btn = document.createElement('button');
+        btn.className = `track-tab-button ${index === 0 ? 'active' : ''}`;
+        btn.textContent = track.name;
+        btn.onclick = () => switchTrack(index);
+        tabsContainer.appendChild(btn);
+    });
+    updateTrackContent(0);
+}
+
+function switchTrack(index) {
+    document.querySelectorAll('.track-tab-button').forEach((btn, i) => {
+        btn.classList.toggle('active', i === index);
+    });
+    updateTrackContent(index);
+}
+
+function updateTrackContent(index) {
+    const track = tracks[index];
+    const container = document.getElementById('trackContents');
+    container.innerHTML = `
+        <div class="track-content-item neon-flow">
             <div class="track-info">
-                <h3>${track.flag} ${track.name} 大獎賽</h3>
-                <p>${track.about}</p>
+                <h3 style="font-size: 2.5rem; margin-bottom: 20px;">${track.name}</h3>
+                <p style="color: #aaa; margin-bottom: 30px; font-size: 1.2rem;">
+                    <i class="fas fa-map-marker-alt" style="color: var(--f1-red);"></i> ${track.location}
+                </p>
                 <div class="track-stats">
-                    <div class="track-stat-item"><h4>賽道長度</h4><span class="stat-number" data-target="${parseFloat(track.length)}">0</span> km</div>
-                    <div class="track-stat-item"><h4>比賽圈數</h4><span class="stat-number" data-target="${track.laps}">0</span> 圈</div>
-                    <div class="track-stat-item"><h4>首次舉辦</h4><span class="stat-number" data-target="${track.firstGP}">0</span> 年</div>
+                    <div class="track-stat-item"><h4>長度</h4><span class="stat-number">${track.length}</span></div>
+                    <div class="track-stat-item"><h4>圈數</h4><span class="stat-number">${track.laps}</span></div>
+                    <div class="track-stat-item"><h4>紀錄</h4><span style="color:white; font-size: 0.9rem;">${track.record}</span></div>
                 </div>
-                
-                <!-- 新增紀錄保持人區塊 -->
-                <div class="record-holder-card reveal" style="margin-top: 25px; background: rgba(225, 6, 0, 0.1); padding: 20px; border-radius: 15px; border: 1px solid var(--f1-red);">
-                    <h4 style="color: var(--f1-red); text-transform: uppercase; font-size: 0.8rem; margin-bottom: 10px;">🏆 賽道歷史最快單圈紀錄保持人</h4>
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <div>
-                            <div style="font-size: 1.4rem; font-weight: 900; font-style: italic;">${track.holder}</div>
-                            <div style="color: #aaa; font-size: 0.9rem;">紀錄年份：${track.holderYear} 年</div>
-                        </div>
-                        <div style="font-size: 1.6rem; font-weight: 900; color: var(--f1-red);">${track.fastestLap}</div>
-                    </div>
-                </div>
-
-                <a href="${track.googleMapsLink}" target="_blank" class="cta-button neon-btn" style="margin-top: 25px; background: #4285F4;">🗺️ Google 地圖</a>
             </div>
             <div class="track-map">
-                <img src="${track.imageURL}" alt="${track.name}" class="track-map-image">
+                <img src="${track.layout}" class="track-map-image" alt="Layout">
             </div>
         </div>
     `;
-    initCounters(trackContentsContainer);
-}
-
-function switchTrackTab(trackId) {
-    const track = TRACKS_DATA.find(t => t.id === trackId);
-    if (!track) return;
-
-    document.querySelectorAll('.track-tab-button').forEach(btn => {
-        btn.classList.toggle('active', btn.textContent.includes(track.name));
-    });
-
-    renderSingleTrack(track);
 }
 
 // =========================================
-// === 特效與動畫 ===
+// === 其他功能 (搜尋, Modal, 粒子, 遊戲) ===
 // =========================================
 
-function initParticles() {
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    const container = document.getElementById('particles-js');
-    if (!container) return;
-    container.appendChild(canvas);
-    let particles = [];
-    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-    window.addEventListener('resize', resize);
-    resize();
-    class Particle {
-        constructor() { this.reset(); }
-        reset() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.vx = (Math.random() - 0.5) * 2; this.vy = (Math.random() - 0.5) * 2; this.size = Math.random() * 2; this.alpha = Math.random(); }
-        update() { this.x += this.vx; this.y += this.vy; if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset(); }
-        draw() { ctx.fillStyle = `rgba(225, 6, 0, ${this.alpha})`; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
+function handleSearch() {
+    const query = document.getElementById('globalSearch').value;
+    navigateTo('drivers');
+    renderDrivers(query);
+}
+
+function showModal(driver) {
+    const modal = document.getElementById('infoModal');
+    document.getElementById('modalImg').src = driver.img;
+    document.getElementById('modalName').textContent = driver.name;
+    document.getElementById('modalTeam').textContent = `${driver.team} #${driver.number}`;
+    
+    document.getElementById('modalStats').innerHTML = `
+        <div class="track-stat-item"><h4>冠軍</h4><span class="stat-number">${driver.wc}</span></div>
+        <div class="track-stat-item"><h4>積分</h4><span class="stat-number">${driver.points}</span></div>
+        <div class="track-stat-item"><h4>頒獎台</h4><span class="stat-number">${driver.podiums}</span></div>
+    `;
+
+    // 組合 Bio 與 Fun Fact
+    const fullBio = `
+        <p>${driver.bio}</p>
+        <hr style="margin: 15px 0; border-color: #333;">
+        <p><strong>💡 冷知識：</strong>${driver.fun}</p>
+        <div class="social-links" style="margin-top: 20px;">
+            ${driver.ig ? `<a href="https://instagram.com/${driver.ig}" target="_blank" style="color: #E1306C; margin-right: 15px; font-size: 1.5rem;"><i class="fab fa-instagram"></i></a>` : ''}
+            ${driver.x ? `<a href="https://twitter.com/${driver.x}" target="_blank" style="color: #1DA1F2; font-size: 1.5rem;"><i class="fab fa-twitter"></i></a>` : ''}
+        </div>
+    `;
+    document.getElementById('modalBio').innerHTML = fullBio;
+    modal.classList.add('show');
+}
+
+function closeModal(e) {
+    if (e.target.classList.contains('modal-overlay')) {
+        document.getElementById('infoModal').classList.remove('show');
     }
-    for (let i = 0; i < 100; i++) particles.push(new Particle());
-    function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
-    animate();
+}
+
+// === 修改後的動態紅色粒子系統 ===
+function initParticles() {
+    if (typeof particlesJS !== 'undefined' && document.getElementById('particles-js')) {
+        particlesJS('particles-js', {
+            "particles": {
+                "number": { 
+                    "value": 90,
+                    "density": { "enable": true, "value_area": 800 }
+                },
+                "color": { "value": "#e10600" }, // 修改回 F1 紅色
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.6, "random": true },
+                "size": { "value": 3, "random": true },
+                "line_linked": { 
+                    "enable": true, 
+                    "distance": 150, 
+                    "color": "#e10600", // 連線也改為紅色
+                    "opacity": 0.4, 
+                    "width": 1 
+                },
+                "move": { 
+                    "enable": true, 
+                    "speed": 4, // 稍微加快速度感
+                    "direction": "none", 
+                    "random": false, 
+                    "straight": false, 
+                    "out_mode": "out", 
+                    "bounce": false 
+                }
+            },
+            "interactivity": { 
+                "detect_on": "canvas",
+                "events": { 
+                    "onhover": { "enable": true, "mode": "grab" }, // 游標經過會吸附
+                    "onclick": { "enable": true, "mode": "push" },
+                    "resize": true
+                },
+                "modes": {
+                    "grab": { "distance": 200, "line_linked": { "opacity": 0.8 } }
+                }
+            },
+            "retina_detect": true
+        });
+    }
 }
 
 function initMouseGlow() {
-    const glow = document.createElement('div');
-    glow.className = 'mouse-glow';
-    document.body.appendChild(glow);
-    window.addEventListener('mousemove', (e) => {
-        glow.style.left = e.clientX + 'px';
-        glow.style.top = e.clientY + 'px';
-    });
-}
-
-function initCounters(parent = document) {
-    const counters = parent.querySelectorAll('.stat-number');
-    counters.forEach(counter => {
-        const target = +counter.getAttribute('data-target');
-        let current = 0;
-        const duration = 1500;
-        const step = target / (duration / 16);
-        const update = () => {
-            current += step;
-            if (current < target) {
-                counter.innerText = Math.floor(current);
-                requestAnimationFrame(update);
-            } else {
-                counter.innerText = target;
-            }
-        };
-        update();
-    });
-}
-
-function typeWriter() {
-    const title = document.querySelector('.map-title');
-    if (!title) return;
-    const text = title.textContent; title.textContent = '';
-    let i = 0;
-    function type() { if (i < text.length) { title.textContent += text.charAt(i); i++; setTimeout(type, 100); } }
-    type();
-}
-
-function initTiltEffect() {
-    document.querySelectorAll('.data-card').forEach(card => {
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = (e.clientX - rect.left) / rect.width - 0.5;
-            const y = (e.clientY - rect.top) / rect.height - 0.5;
-            card.style.transform = `perspective(1000px) rotateX(${-y * 20}deg) rotateY(${x * 20}deg) scale(1.05)`;
+    const glow = document.querySelector('.mouse-glow');
+    if (glow) {
+        document.addEventListener('mousemove', (e) => {
+            glow.style.left = e.clientX + 'px';
+            glow.style.top = e.clientY + 'px';
         });
-        card.addEventListener('mouseleave', () => card.style.transform = `perspective(1000px) rotateX(0) rotateY(0) scale(1)`);
-    });
-}
-
-function initScrollReveal() {
-    document.querySelectorAll('.reveal').forEach(el => {
-        const rect = el.getBoundingClientRect();
-        if (rect.top < window.innerHeight - 50) el.classList.add('active');
-    });
-}
-window.addEventListener('scroll', initScrollReveal);
-
-// =========================================
-// === Modal 邏輯 ===
-// =========================================
-
-function closeInfoModal() { modalOverlay.classList.remove('show'); }
-
-function showDriverModal(driver) {
-    const teamColor = getTeamColor(driver.team);
-    modalLeft.innerHTML = `<img src="${driver.img}" alt="${driver.name}" class="modal-driver-img">`;
-    modalRight.innerHTML = `
-        <h2 class="modal-driver-name">${driver.name} ${driver.flag}</h2>
-        <span class="modal-driver-team" style="background: ${teamColor}">${driver.team}</span>
-        <div class="modal-stats">
-            <div class="stat-item"><h4>積分</h4><span class="stat-number" data-target="${driver.points}">0</span></div>
-            <div class="stat-item"><h4>頒獎台</h4><span class="stat-number" data-target="${driver.podiums}">0</span></div>
-            <div class="stat-item"><h4>世界冠軍</h4><span class="stat-number" data-target="${driver.wc}">0</span></div>
-        </div>
-        <p class="modal-bio">${driver.bio}</p>
-    `;
-    modalContent.style.borderLeftColor = teamColor;
-    modalOverlay.classList.add('show');
-    initCounters(modalRight);
-}
-
-function showTeamModal(team) {
-    const teamColor = getTeamColor(team.name);
-    modalLeft.innerHTML = `<img src="${team.img}" alt="${team.name}" style="object-fit: contain; width: 80%; padding: 20px;">`;
-    modalRight.innerHTML = `
-        <h2 class="modal-driver-name" style="color: ${teamColor}">${team.name}</h2>
-        <div class="modal-stats">
-            <div class="stat-item"><h4>基地</h4><span>${team.base}</span></div>
-            <div class="stat-item"><h4>動力單元</h4><span>${team.powerUnit}</span></div>
-            <div class="stat-item"><h4>冠軍</h4><span class="stat-number" data-target="${team.achievements.titles}">0</span></div>
-            <div class="stat-item"><h4>勝場</h4><span class="stat-number" data-target="${team.achievements.wins}">0</span></div>
-        </div>
-    `;
-    modalContent.style.borderLeftColor = teamColor;
-    modalOverlay.classList.add('show');
-    initCounters(modalRight);
-}
-
-modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) closeInfoModal(); });
-
-// =========================================
-// === 遊戲邏輯 ===
-// =========================================
-
-function renderLights() {
-    if (!lightsContainer) return;
-    lightsContainer.innerHTML = '';
-    for (let i = 0; i < 5; i++) {
-        const light = document.createElement('div');
-        light.className = 'light';
-        light.id = `light-${i}`;
-        lightsContainer.appendChild(light);
     }
 }
 
+// --- 遊戲邏輯 ---
 let isGameRunning = false;
 let startTime = 0;
+
+function initGame() {
+    const container = document.getElementById('lightsContainer');
+    if(!container) return;
+    container.innerHTML = '';
+    for(let i=0; i<5; i++) {
+        let light = document.createElement('div');
+        light.className = 'light';
+        light.id = `light-${i}`;
+        container.appendChild(light);
+    }
+    document.getElementById('gameButton').onclick = startGameSequence;
+}
+
 function startGameSequence() {
     if (isGameRunning) return;
     isGameRunning = true;
-    gameButton.textContent = '等待燈號...';
-    gameStatus.textContent = '紅燈亮起中...';
+    const btn = document.getElementById('gameButton');
+    const status = document.getElementById('gameStatus');
+    btn.textContent = '等待燈滅...';
+    status.textContent = '準備起跑';
     document.querySelectorAll('.light').forEach(l => l.classList.remove('on'));
+    
     let count = 0;
     const interval = setInterval(() => {
         if (count < 5) {
@@ -477,10 +474,10 @@ function startGameSequence() {
             clearInterval(interval);
             setTimeout(() => {
                 document.querySelectorAll('.light').forEach(l => l.classList.remove('on'));
-                gameStatus.textContent = 'GO!';
+                status.textContent = 'GO!';
                 startTime = performance.now();
-                gameButton.textContent = '起跑！';
-                gameButton.onclick = stopGame;
+                btn.textContent = '現在！';
+                btn.onclick = stopGame;
             }, Math.random() * 3000 + 1000);
         }
     }, 800);
@@ -489,18 +486,9 @@ function startGameSequence() {
 function stopGame() {
     const reactionTime = (performance.now() - startTime) / 1000;
     isGameRunning = false;
-    gameStatus.textContent = '反應時間：';
-    timerDisplay.textContent = reactionTime.toFixed(3) + ' 秒';
-    gameButton.textContent = '再試一次';
-    gameButton.onclick = startGameSequence;
+    document.getElementById('gameStatus').textContent = '你的反應時間：';
+    document.getElementById('timerDisplay').textContent = reactionTime.toFixed(3) + ' 秒';
+    const btn = document.getElementById('gameButton');
+    btn.textContent = '再試一次';
+    btn.onclick = startGameSequence;
 }
-
-function initApp() {
-    renderDriverCards();
-    renderTeamCards();
-    renderLights();
-    initScrollReveal();
-}
-
-document.addEventListener('DOMContentLoaded', initApp);
-if (gameButton) gameButton.onclick = startGameSequence;
