@@ -3,16 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>F1 賽季資料庫</title>
+    <title>F1 賽季資料庫 2025</title>
+    <!-- 字體與圖標庫 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    <!-- 慶祝特效庫 -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <!-- 引入外部 CSS -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body class="site-hidden">
+    
+    <!-- Scroll Progress -->
+    <div id="scroll-progress"></div>
 
+    <!-- 動態背景文字 -->
+    <div class="bg-marquee-container"></div>
+
+    <!-- 背景裝飾線條 -->
+    <div class="f1-bg-decor">
+        <div class="decor-blob"></div>
+        <div class="decor-line line-1"></div>
+        <div class="decor-line line-2"></div>
+        <div class="decor-line line-3"></div>
+        <div class="decor-rect rect-1"></div>
+        <div class="decor-rect rect-2"></div>
+    </div>
+    
+    <!-- Hero Section -->
     <section id="hero">
         <center>
             <div id="particles-js"></div>
@@ -24,6 +45,7 @@
         </center>
     </section>
 
+    <!-- Header & Navigation -->
     <header id="mainHeader">
         <div class="container">
             <nav>
@@ -44,6 +66,7 @@
                             <a href="#" onclick="navigateToAbout('naming')"><i class="fas fa-tag"></i> 命名由來</a>
                             <a href="#" onclick="navigateToAbout('history')"><i class="fas fa-history"></i> 歷史</a>
                             <a href="#" onclick="navigateToAbout('tech')"><i class="fas fa-microchip"></i> 賽車技術</a>
+                            <a href="#" onclick="navigateToAbout('tyres')"><i class="fas fa-circle-notch"></i> 輪胎介紹</a>
                             <a href="#" onclick="navigateToAbout('structure')"><i class="fas fa-sitemap"></i> 比賽結構</a>
                         </div>
                     </li>
@@ -54,60 +77,110 @@
                     <li><a href="#" onclick="navigateTo('game')"><i class="fas fa-gamepad"></i> 小遊戲</a></li>
 
                     <li class="search-wrapper">
-                        <input type="text" id="globalSearch" placeholder="搜尋車手..." onkeyup="if(event.key==='Enter') handleSearch()">
-                        <button onclick="handleSearch()"><i class="fas fa-search"></i></button>
+                        <input type="text" id="globalSearch" placeholder="搜尋車手、賽道、動力..." autocomplete="off">
+                        <button><i class="fas fa-search"></i></button>
+                        <!-- 搜尋結果下拉選單 -->
+                        <ul id="searchResults" class="search-results"></ul>
                     </li>
                 </ul>
             </nav>
         </div>
     </header>
 
-    <div class="news-ticker">
-        <div class="ticker-title">BREAKING NEWS</div>
-        <div class="ticker-content">
-            <div class="ticker-item">🏆恭喜 Lando Norris 拿下 2025 年世界冠軍！！</div>
-            <div class="ticker-item">🏆恭喜 Lando Norris 拿下 2025 年世界冠軍！！</div>
-            <div class="ticker-item">🏆恭喜 Lando Norris 拿下 2025 年世界冠軍！！</div>
-            <div class="ticker-item">🏆恭喜 Lando Norris 拿下 2025 年世界冠軍！！</div>
-        </div>
-    </div>
-
     <main class="container">
         
+        <!-- Home Page -->
         <section id="home-page" class="page-content active">
-            <div class="home-slider">
+            <div class="home-slider reveal-item" style="padding: 0; overflow: hidden;">
                 <div class="slides">
                     <div class="slide active">
-                        <img src="https://images.unsplash.com/photo-1504454663576-40768e166943?q=80&w=2000" alt="F1 Racing">
+                        <img src="ALL3.jpg" alt="F1 Racing" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
                     <div class="slide">
-                        <img src="https://images.unsplash.com/photo-1532906623266-407494ad802a?q=80&w=2000" alt="F1 Cockpit">
+                        <img src="ALL.png" alt="F1 Cockpit" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
                     <div class="slide">
-                        <img src="https://images.unsplash.com/photo-1571607388333-93665c7968b4?q=80&w=2000" alt="Ferrari Pitstop">
+                        <img src="ALL2.jpg" alt="Ferrari Pitstop" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
                 </div>
                 <button class="slider-prev" onclick="moveSlide(-1)">&#10094;</button>
                 <button class="slider-next" onclick="moveSlide(1)">&#10095;</button>
             </div>
 
-            <div class="news-ticker-v2">
-                <div class="ticker-label">公告</div>
+            <div class="news-ticker reveal-item" style="margin-bottom: 30px; border-radius: 5px; padding: 0 !important;">
+                <div class="ticker-title">BREAKING NEWS</div>
                 <div class="ticker-wrap">
-                    <div class="ticker-move">
-                        歡迎來到 2025 F1 賽季資料庫！Lewis Hamilton 即將轉投法拉利！ | 2025 年規則將迎來重大更新，敬請期待！ | 測試你的反應速度，挑戰職業車手紀錄！
+                    <div class="ticker-content">
+                        <div class="ticker-item">🏆 恭喜 Lando Norris 拿下 2025 年世界冠軍！！</div>
+                        <div class="ticker-item">🏎️ Lewis Hamilton 轉隊法拉利首秀奪冠！</div>
+                        <div class="ticker-item">📅 2026 新賽制發布：更輕、更快的賽車即將來臨。</div>
+                        <div class="ticker-item">🚨 紅牛車隊宣佈全新空氣動力套件升級。</div>
+                        <div class="ticker-item">🏆 恭喜 Lando Norris 拿下 2025 年世界冠軍！！</div>
+                        <div class="ticker-item">🏎️ Lewis Hamilton 轉隊法拉利首秀奪冠！</div>
+                        <div class="ticker-item">📅 2026 新賽制發布：更輕、更快的賽車即將來臨。</div>
+                        <div class="ticker-item">🚨 紅牛車隊宣佈全新空氣動力套件升級。</div>
                     </div>
                 </div>
             </div>
 
-            <div class="home-intro-box">
-                <h2 class="section-title"><i class="fas fa-info-circle"></i> 關於 F1 一級方程式</h2>
-                <p class="intro-text">
-                    　　世界一級方程式錦標賽（英語：Formula One World Championship，也叫Formula One,Formula 1或者F1）是由國際汽車聯盟（FIA）舉辦的最高級別的賽車比賽。名稱中的「方程式」是指所有參賽車手 and 車輛都必須遵守的規則...
-                </p>
+            <h3 class="section-title" style="font-size: 2.5rem; justify-content: start; margin-bottom: 20px;">
+                <i class="fas fa-bullhorn"></i> 最新賽季公告
+            </h3>
+            <div class="news-grid reveal-item">
+                <div class="news-card">
+                    <h4><i class="fas fa-exchange-alt"></i> 轉會大地震</h4>
+                    <p>Lewis Hamilton 正式披上法拉利紅袍！2025 賽季首場比賽將是他身著紅色賽車服的歷史性時刻，全球車迷屏息以待。</p>
+                </div>
+                <div class="news-card">
+                    <h4><i class="fas fa-book"></i> 2026 規則前哨</h4>
+                    <p>雖然 2026 才是規則大改年，但 2025 年底各車隊已開始秘密測試新一代底盤，旨在適應未來的混動引擎變革。</p>
+                </div>
+                <div class="news-card">
+                    <h4><i class="fas fa-flag"></i> 新增街道賽</h4>
+                    <p>F1 宣佈考慮在馬德里舉辦全新的城市街道賽，這將挑戰車手在狹窄賽道上的極限反應與超車技術。</p>
+                </div>
             </div>
 
-            <div class="home-media-layout">
+            <div class="home-intro-box reveal-item">
+                <h2 class="section-title"><i class="fas fa-info-circle"></i> F1 一級方程式簡介 </h2>
+                
+                <div class="intro-section">
+                    <h4>1. 賽事定位與規範</h4>
+                    <ul>
+                        <li><strong>最高殿堂：</strong>由國際汽聯 (FIA) 主辦，是世界等級最高的單人座賽車比賽。</li>
+                        <li><strong>「方程式」意涵：</strong>指所有車手與車隊必須嚴格遵守的「規則」與「規格」。</li>
+                        <li><strong>頂級門檻：</strong>車手須持有「超級駕照」，比賽則必須在「一級賽道」進行。</li>
+                    </ul>
+                </div>
+
+                <div class="intro-section">
+                    <h4>2. 極限技術與性能</h4>
+                    <ul>
+                        <li><strong>速度與重力：</strong>最高時速可破 350 公里，過彎時的橫向加速度可達 5G。</li>
+                        <li><strong>核心技術：</strong>性能高度依賴空氣動力學 (下壓力)、懸吊系統、輪胎以及昂貴的高科技材料。</li>
+                        <li><strong>規則限制：</strong>引擎轉速上限 15,000 轉，且自 2008 年起禁止循跡控制等輔助駕駛電子系統。</li>
+                    </ul>
+                </div>
+
+                <div class="intro-section">
+                    <h4>3. 商業與規模</h4>
+                    <ul>
+                        <li><strong>全球化擴張：</strong>雖起源於歐洲，但現已風靡全球，賽季包含超過 20 站「大獎賽」。</li>
+                        <li><strong>高昂成本：</strong>被譽為最昂貴的體育運動，每年支出達數十億美元，吸引頂尖製造商（如 2026 年將加入的凱迪拉克）與贊助商。</li>
+                        <li><strong>經營權：</strong>目前由自由媒體 (Liberty Media) 擁有（2017 年收購）。</li>
+                    </ul>
+                </div>
+
+                <div class="intro-section">
+                    <h4>4. 冠軍爭奪機制</h4>
+                    <ul>
+                        <li><strong>雙冠軍制度：</strong>每場比賽依排名獲得積分，年度結算產生兩座世界冠軍獎盃：車手冠軍與車隊冠軍。</li>
+                        <li><strong>競爭現狀：</strong>目前維持 10 支車隊競爭，透過整季的巡迴賽累積積分決定勝負。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="home-media-layout reveal-item">
                 <div class="media-social-horizontal">
                     <h3><i class="fas fa-share-nodes"></i> 追蹤我們的社交媒體</h3>
                     <div class="social-links-row">
@@ -120,45 +193,122 @@
             </div>
         </section>
 
+        <!-- About Page -->
         <section id="about-f1-page" class="page-content">
             <h2 class="section-title"><i class="fas fa-book-open"></i> 關於 F1</h2>
-            <div class="about-layout">
+            <div class="about-layout reveal-item">
                 <aside class="about-sidebar">
                     <ul class="about-menu">
                         <li onclick="switchAboutTab('naming')" id="tab-naming" class="active"><i class="fas fa-signature"></i> 命名由來</li>
                         <li onclick="switchAboutTab('history')" id="tab-history"><i class="fas fa-landmark"></i> 歷史</li>
-                        <li onclick="switchAboutTab('tech')" id="tab-tech"><i class="fas fa-wrench"></i> 賽車技術與規則變化</li>
-                        <li onclick="switchAboutTab('structure')" id="tab-structure"><i class="fas fa-check-double"></i> 比賽結構</li>
+                        <li onclick="switchAboutTab('tech')" id="tab-tech"><i class="fas fa-wrench"></i> 賽車技術</li>
+                        <li onclick="switchAboutTab('tyres')" id="tab-tyres"><i class="fas fa-circle-notch"></i> 輪胎介紹</li>
+                        <li onclick="switchAboutTab('structure')" id="tab-structure"><i class="fas fa-sitemap"></i> 比賽結構</li>
                     </ul>
                 </aside>
                 <article class="about-main-content">
                     <div id="content-naming" class="about-tab-panel active">
                         <h3><i class="fas fa-tag"></i> 命名由來</h3>
-                        <p>F1（Formula One），中文全稱為「世界一級方程式錦標賽」...</p>
+                        <p>「一級方程式」（Formula One）中的「方程式」是指一套所有參賽車輛都必須遵守的規則。這些規則由國際汽車聯盟（FIA）制定，涵蓋了車輛的規格、引擎參數、安全標準等。</p>
+                        <p>「一級」（One）則代表了這是賽車運動中最高等級的賽事，無論是在速度、科技含量還是車手水準上，F1 都是單座賽車金字塔的頂端。F1 的歷史可以追溯到 1920 和 30 年代的歐洲大獎賽，二戰後在 1946 年正式確立了規則，並於 1950 年舉辦了首屆世界錦標賽。</p>
                     </div>
+                    
                     <div id="content-history" class="about-tab-panel">
                         <h3><i class="fas fa-hourglass-start"></i> 歷史發展</h3>
-                        <p>...</p>
+                        <p><strong>1950年代：</strong> F1 世界錦標賽於 1950 年在英國銀石賽道（Silverstone）正式開跑。早期的賽車手如 Juan Manuel Fangio 是這個時代的傳奇，駕駛著 Alfa Romeo 和 Maserati 等品牌的賽車稱霸賽道。</p>
+                        <p><strong>1960-70年代：</strong> 英國車隊開始崛起，如 Lotus、McLaren 和 Williams。這個時期見證了空氣動力學的引入（如尾翼）和贊助商塗裝的出現。安全性仍然很低，事故頻發。</p>
+                        <p><strong>1980-90年代：</strong> 渦輪增壓引擎時代與電子輔助系統的興起。Ayrton Senna 與 Alain Prost 的宿敵對決定義了這個時代。同時，Michael Schumacher 在 90 年代中期開始嶄露頭角。</p>
+                        <p><strong>2000年代至今：</strong> Ferrari 與 Schumacher 的王朝，隨後是 Red Bull 與 Vettel 的連霸，以及 Mercedes 在混合動力時代的統治。現代 F1 更注重環保、永續發展以及車手的安全性（如 Halo 系統的引入）。</p>
                     </div>
+                    
                     <div id="content-tech" class="about-tab-panel">
                         <h3><i class="fas fa-cogs"></i> 賽車技術</h3>
-                        <p>...</p>
+                        <h4>動力單元 (Power Unit)</h4>
+                        <p>目前的 F1 賽車使用 1.6 升 V6 渦輪增壓混合動力引擎。它不只是一個內燃機，還結合了兩個電動馬達系統：
+                        <br><strong>MGU-K：</strong> 回收煞車時的動能。
+                        <br><strong>MGU-H：</strong> 回收廢氣熱能。
+                        這使得現代 F1 引擎的熱效率超過 50%，是世界上最高效的引擎。</p>
+                        
+                        <h4>空氣動力學 (Aerodynamics)</h4>
+                        <p>F1 賽車依靠複雜的空氣動力學設計來產生巨大的下壓力（Downforce），使賽車能緊貼地面，以極高的速度過彎。2022 年引入的新規則強調「地面效應」（Ground Effect），旨在減少前車產生的亂流，讓後車更容易跟車與超車。</p>
+                        
+                        <h4>DRS (Drag Reduction System)</h4>
+                        <p>減阻系統，車手在特定區域且距離前車一秒內時，可以打開尾翼，減少空氣阻力以提升直線速度，輔助超車。</p>
                     </div>
+                    
+                    <div id="content-tyres" class="about-tab-panel">
+                        <h3><i class="fas fa-circle-notch"></i> 輪胎介紹</h3>
+                        <p>F1 賽車使用倍耐力 (Pirelli) 提供的單一輪胎。在每個比賽週末，倍耐力會提供三種乾地配方與兩種雨地配方。</p>
+                        
+                        <div class="tyre-interaction-container">
+                            <div class="tyre-selector">
+                                <div class="tyre-btn soft active" onclick="selectTyre('soft')">Soft (軟胎)</div>
+                                <div class="tyre-btn medium" onclick="selectTyre('medium')">Medium (中性)</div>
+                                <div class="tyre-btn hard" onclick="selectTyre('hard')">Hard (硬胎)</div>
+                                <div class="tyre-btn inter" onclick="selectTyre('inter')">Intermediate</div>
+                                <div class="tyre-btn wet" onclick="selectTyre('wet')">Wet (全雨胎)</div>
+                            </div>
+                            
+                            <div class="tyre-display">
+                                <div id="tyreModel" class="tyre-model soft"></div>
+                            </div>
+                            
+                            <div class="tyre-info-box">
+                                <h4 id="tyreTitle">Soft (軟胎)</h4>
+                                <p id="tyreDesc">紅色標識。抓地力最強，升溫最快，適合排位賽和正賽起跑，但磨損速度也最快，壽命最短。</p>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div id="content-structure" class="about-tab-panel">
                         <h3><i class="fas fa-tasks"></i> 比賽結構</h3>
-                        <p>...</p>
+                        <p>一個標準的 F1 大獎賽週末通常持續三天：</p>
+                        
+                        <h4>週五：練習賽 (Practice)</h4>
+                        <p>通常有兩節自由練習（FP1 和 FP2），每節一小時。車隊利用這段時間測試賽車設置、輪胎性能，並讓車手熟悉賽道。如果是衝刺賽週末，週五下午則進行排位賽。</p>
+                        
+                        <h4>週六：排位賽 (Qualifying)</h4>
+                        <p>通常包含第三節練習賽（FP3）和排位賽。排位賽決定週日正賽的起跑順序，分為三個階段（Q1, Q2, Q3），每個階段淘汰最慢的五名車手，直到剩下前十名爭奪桿位（Pole Position）。</p>
+                        
+                        <h4>週日：正賽 (Race)</h4>
+                        <p>週末的重頭戲。比賽長度通常約為 305 公里（摩納哥除外）或不超過 2 小時。車手必須在比賽中至少使用兩種不同配方的乾地輪胎（雨戰除外）。</p>
+                        
+                        <h4>積分系統 (Points System)</h4>
+                        <p>F1 的積分系統獎勵前十名完賽的車手，以及做出最快圈速的車手（前提是必須在前十名完賽）。</p>
+                        
+                        <table class="f1-table">
+                            <thead>
+                                <tr>
+                                    <th>排名 (Position)</th>
+                                    <th>積分 (Points)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>第 1 名</td><td>25</td></tr>
+                                <tr><td>第 2 名</td><td>18</td></tr>
+                                <tr><td>第 3 名</td><td>15</td></tr>
+                                <tr><td>第 4 名</td><td>12</td></tr>
+                                <tr><td>第 5 名</td><td>10</td></tr>
+                                <tr><td>第 6 名</td><td>8</td></tr>
+                                <tr><td>第 7 名</td><td>6</td></tr>
+                                <tr><td>第 8 名</td><td>4</td></tr>
+                                <tr><td>第 9 名</td><td>2</td></tr>
+                                <tr><td>第 10 名</td><td>1</td></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </article>
             </div>
         </section>
 
+        <!-- Drivers Page -->
         <section id="drivers-page" class="page-content">
             <h2 class="section-title"><i class="fas fa-trophy"></i> 2025 車手積分排行</h2>
-            <div class="standings-container">
+            <div class="standings-container reveal-item">
                 <div class="podium-section">
                     <div class="podium-container">
                         <div class="podium-item rank-2" id="podium-2"></div>
-                        <div class="podium-item rank-1" id="podium-1"></div>
+                        <div class="podium-item rank-1" id="podium-1" title="點擊這裡慶祝！"></div>
                         <div class="podium-item rank-3" id="podium-3"></div>
                     </div>
                 </div>
@@ -182,59 +332,62 @@
                 </div>
             </div>
 
-            <!-- 我的最愛區塊移動到這裡 -->
-            <div id="favoritesSection" class="favorites-section reveal-item" style="margin-top: 60px; display: none;">
-                <h2 class="section-title" style="justify-content: flex-start;">
-                    <i class="fas fa-star" style="color: #ffcc00;"></i> 我的最愛車手
-                </h2>
-                <div class="favorites-grid" id="favoritesContainer"></div>
-            </div>
+            <h2 class="section-title" style="margin-top: 60px;"><i class="fas fa-user-astronaut"></i> 2025 車手陣容</h2>
+            
+            <div id="driverFilterContainer" class="reveal-item track-filter-container">
+                </div>
 
-            <h2 class="section-title" style="margin-top: 60px;"><i class="fas fa-user-astronaut"></i> 2025 車手</h2>
             <div class="data-grid" id="driverGridContainer"></div>
         </section>
 
+        <!-- Teams Page -->
         <section id="teams-page" class="page-content">
             <h2 class="section-title"><i class="fas fa-users-cog"></i> 2025 車隊積分排行</h2>
-            
-            <div class="podium-section">
-                <div class="podium-container" id="teamPodium"></div>
-            </div>
-
-            <div class="standings-list-wrapper">
-                <table class="standings-table">
-                    <thead>
-                        <tr>
-                            <th>名次</th>
-                            <th>車隊</th>
-                            <th>積分</th>
-                        </tr>
-                    </thead>
-                    <tbody id="teamStandingsBody"></tbody> 
-                </table>
+            <div class="reveal-item">
+                <div class="podium-section">
+                    <div class="podium-container" id="teamPodium"></div>
+                </div>
+                <div class="standings-list-wrapper">
+                    <table class="standings-table">
+                        <thead>
+                            <tr>
+                                <th>名次</th>
+                                <th>車隊</th>
+                                <th>積分</th>
+                            </tr>
+                        </thead>
+                        <tbody id="teamStandingsBody"></tbody> 
+                    </table>
+                </div>
             </div>
 
             <h2 class="section-title"><i class="fas fa-shield-halved"></i> 2025 車隊</h2>
             <div class="teams-grid" id="teamsGridContainer"></div>
         </section>
 
+        <!-- Tracks Page -->
         <section id="tracks-page" class="page-content">
             <h2 class="section-title"><i class="fas fa-flag-checkered"></i> 2025 賽道巡禮</h2>
-            <!-- 賽道實景圖展示區 -->
             <div id="trackHeroContainer" class="reveal-item" style="margin-bottom: 30px; background: rgba(0,0,0,0.5); border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); position: relative; aspect-ratio: 21/9;">
-                <img id="currentTrackHeroImg" src="" alt="賽道實景" style="width: 100%; height: 100%; object-fit: cover; transition: 0.5s;">
-                <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 40px 20px 20px; background: linear-gradient(transparent, rgba(0,0,0,0.8));">
-                    <h3 id="currentTrackHeroName" style="color: white; font-size: 2rem; margin: 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);"></h3>
                 </div>
+            
+            <!-- 賽道分類過濾與顯示 -->
+            <!-- 確保分類按鈕容器存在 -->
+            <div class="track-filter-container reveal-item">
+                <div class="filter-tag active" onclick="filterTracks('all', this)">全部</div>
+                <div class="filter-tag" onclick="filterTracks('傳統', this)">傳統賽道</div>
+                <div class="filter-tag" onclick="filterTracks('街道', this)">街道賽</div>
+                <div class="filter-tag" onclick="filterTracks('夜戰', this)">夜間賽事</div>
+                <div class="filter-tag" onclick="filterTracks('高速', this)">高速賽道</div>
             </div>
+            
             <div class="track-tabs" id="trackTabs"></div>
             <div id="trackContents"></div>
         </section>
 
+        <!-- Game Page -->
         <section id="game-page" class="page-content">
             <h2 class="section-title"><i class="fas fa-gamepad"></i> 互動遊戲</h2>
-            
-            <!-- 反應測試遊戲 -->
             <div class="lights-out-game-container reveal-item" style="margin-bottom: 60px;">
                 <h3>反應測試：燈滅起跑</h3>
                 <p>盯緊紅燈，當燈滅的一瞬間立即點擊按鈕！(偷跑會失敗喔)</p>
@@ -242,23 +395,26 @@
                 <div class="game-controls">
                     <div class="game-status" id="gameStatus">準備好了嗎？</div>
                     <div class="timer-display" id="timerDisplay">0.000 秒</div>
-                    <button class="game-btn" id="gameButton">開始測試</button>
+                    <button class="f1-game-btn" id="gameButton">開始測試</button>
                 </div>
             </div>
-
-            <!-- 新增遊戲：記憶力大挑戰 -->
+            
             <div class="memory-game-container reveal-item">
                 <h3>F1 記憶力大挑戰</h3>
-                <p>配對相同的車隊 Logo，挑戰你的記憶極限！</p>
+                <p id="memoryStatusLabel">配對相同的車隊 Logo，挑戰你的記憶極限！</p>
                 <div class="memory-stats">
-                    <span>步數：<span id="moveCount">0</span></span>
-                    <span>配對：<span id="matchCount">0</span>/6</span>
-                    <button onclick="initMemoryGame()" class="mini-btn">重新開始</button>
+                    <div style="margin-bottom: 15px;">
+                        <span>步數：<span id="moveCount">0</span></span>
+                        <span style="margin-left: 20px;">配對：<span id="matchCount">0</span>/6</span>
+                    </div>
+                    <div class="button-group">
+                        <button onclick="startMemoryChallenge()" class="f1-game-btn">開始遊戲</button>
+                        <button onclick="startMemoryChallenge()" class="f1-game-btn secondary">重新開始</button>
+                    </div>
                 </div>
                 <div class="memory-grid" id="memoryGrid"></div>
             </div>
         </section>
-
     </main>
 
     <footer class="f1-footer">
@@ -288,27 +444,56 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 F1 Season Database. All Rights Reserved. Designed for Front-end Interaction Course.</p>
+                <p>&copy; 2025 F1 Season Database. All Rights Reserved.</p>
             </div>
         </div>
     </footer>
 
+    <!-- Modal (Popup) Structure -->
     <div class="modal-overlay" id="infoModal" onclick="closeModal(event)">
         <div class="modal-content">
-            <div class="modal-left"><img id="modalImg" src="" alt=""></div>
-            <div class="modal-right">
-                <h2 id="modalName" class="modal-driver-name"></h2>
-                <span id="modalTeam" class="modal-driver-team"></span>
-                <div id="modalStats" class="modal-stats"></div>
-                <p id="modalBio" class="modal-bio"></p>
-                <div id="modalSocial" class="modal-social-links" style="margin-top: 20px; display: flex; gap: 15px;"></div>
+            <div class="modal-header-section">
+                <button class="close-modal-btn" onclick="closeModal({target:{id:'infoModal'}})">×</button>
+                <img id="modalImg" src="" alt="" class="modal-hero-img">
+                <div class="modal-title-overlay">
+                    <span id="modalNumber" class="driver-number"></span>
+                    <h2 id="modalName" class="modal-driver-name"></h2>
+                    <span id="modalTeam" class="modal-driver-team"></span>
+                </div>
+            </div>
+            
+            <div class="modal-body-section">
+                <div class="quote-container">
+                    <i class="fas fa-quote-left quote-icon"></i>
+                    <p id="modalQuote" class="driver-quote"></p>
+                    <i class="fas fa-quote-right quote-icon"></i>
+                </div>
+
+                <!-- 這裡的內容會由 JS 動態生成，先插入視覺化數據，再插入 stats grid -->
+                <div class="driver-stats-grid" id="modalStatsGrid"></div>
+                
+                <div class="modal-bio-container">
+                    <h4>關於</h4>
+                    <p id="modalBio" class="modal-bio"></p>
+                </div>
+
+                <div id="modalSocial" class="modal-social-links"></div>
             </div>
         </div>
     </div>
 
+    <!-- Image Lightbox Modal (For Tracks) -->
+    <div class="image-modal" id="imageLightbox" onclick="closeImageModal()">
+        <span class="close-image-btn" onclick="closeImageModal()">&times;</span>
+        <img class="image-modal-content" id="lightboxImage">
+    </div>
+
     <div class="mouse-glow"></div>
 
+    <!-- 粒子特效庫 -->
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    
+    <!-- 引入外部 JS -->
     <script src="script.js"></script>
 </body>
 </html>
