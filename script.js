@@ -1,5 +1,5 @@
 // =========================================
-// === 初始化與核心邏輯 ===
+// === 初始化與核心邏輯 (Modified for new Loading) ===
 // =========================================
 
 let currentTrackFilter = 'all';
@@ -7,27 +7,26 @@ let currentDriverFilter = 'all';
 let searchIndex = []; // 全域搜尋索引
 let activeTrackList = []; // 當前顯示的賽道列表
 
-function enterSite() {
-    const hero = document.getElementById('hero');
-    if (hero) {
-        hero.classList.add('hero-fade-out');
-        
-        setTimeout(() => {
-            hero.style.display = 'none';
-            document.body.classList.remove('site-hidden');
-            initApp(); 
-            initScrollReveal();
-            initTiltEffect();
-        }, 800);
-    }
-}
+// 1. Move startLoadingSequence to global scope or ensure hoisting.
+// 2. Execute it immediately on DOMContentLoaded before anything else.
 
 document.addEventListener('DOMContentLoaded', () => {
-    document.body.classList.add('site-hidden');
-    initParticles();
-    
-    // 初始化主題 - 強制 Light Mode 樣式
-    
+    // 優先檢查並執行 Loading Sequence
+    const hero = document.getElementById('hero');
+    if (hero) {
+        // 確保初始狀態正確
+        document.body.classList.add('site-hidden');
+        startLoadingSequence();
+    } else {
+        // 如果沒有 hero，直接顯示內容 (Fallback)
+        document.body.classList.remove('site-hidden');
+        initApp();
+    }
+
+    // 延遲初始化粒子，避免搶佔資源
+    setTimeout(() => initParticles(), 100);
+
+    // Standard initializations (UI event listeners)
     const burgerMenu = document.getElementById('burgerMenu');
     const navLinks = document.getElementById('navLinks');
     const dropdown = document.querySelector('.dropdown');
@@ -86,6 +85,96 @@ document.addEventListener('DOMContentLoaded', () => {
     // 初始化輪胎
     selectTyre('soft');
 });
+
+// =========================================
+// === New Loading Sequence Logic ===
+// =========================================
+
+function startLoadingSequence() {
+    // Generate RPM bars
+    const barsContainer = document.getElementById('rpmBars');
+    const totalBars = 30; // 10 green, 10 red, 10 blue
+    if(barsContainer) {
+        barsContainer.innerHTML = ''; // Clear existing bars if any
+        for(let i=0; i<totalBars; i++) {
+            const bar = document.createElement('div');
+            bar.className = 'rpm-bar';
+            if(i < 10) bar.classList.add('green');
+            else if(i < 20) bar.classList.add('red');
+            else bar.classList.add('blue');
+            barsContainer.appendChild(bar);
+        }
+    }
+
+    // Sequence Timing
+    // 0s: Start
+    // 1s: 1st Light Pair
+    // 2s: 2nd Light Pair
+    // 3s: 3rd Light Pair
+    // 4s: 4th Light Pair
+    // 5s: 5th Light Pair -> Lights OUT -> Go
+    
+    const lights = [
+        ['light-1', 'light-2'],
+        ['light-3', 'light-4'],
+        ['light-5', 'light-6'],
+        ['light-7', 'light-8'],
+        ['light-9', 'light-10']
+    ];
+    
+    let rpmIndex = 0;
+    const rpmInterval = setInterval(() => {
+        const bars = document.querySelectorAll('.rpm-bar');
+        if(rpmIndex < bars.length) {
+            bars[rpmIndex].classList.add('active');
+            rpmIndex++;
+            // Update percentage text
+            const pct = Math.floor((rpmIndex / totalBars) * 100);
+            const percentText = document.getElementById('loadingPercent');
+            if(percentText) percentText.innerText = pct + '%';
+        }
+    }, 150); // Fill bars over approx 4.5 seconds
+
+    // Light Sequence
+    for (let i = 0; i < 5; i++) {
+        setTimeout(() => {
+            const l1 = document.getElementById(lights[i][0]);
+            const l2 = document.getElementById(lights[i][1]);
+            if(l1) l1.classList.add('on');
+            if(l2) l2.classList.add('on');
+        }, (i + 1) * 1000);
+    }
+
+    // Lights Out (5.5s to allow full 5th light viz)
+    setTimeout(() => {
+        // Turn off all lights
+        document.querySelectorAll('.light-bulb').forEach(l => {
+            l.classList.remove('on');
+            l.classList.add('go'); // Optional styling
+        });
+        
+        clearInterval(rpmInterval);
+        const percentText = document.getElementById('loadingPercent');
+        if(percentText) percentText.innerText = '100%';
+
+        // Transition out
+        setTimeout(() => {
+            const hero = document.getElementById('hero');
+            if (hero) {
+                hero.classList.add('hero-fade-out');
+                
+                setTimeout(() => {
+                    hero.style.display = 'none';
+                    document.body.classList.remove('site-hidden');
+                    initApp(); 
+                    initScrollReveal();
+                    initTiltEffect();
+                }, 800);
+            }
+        }, 500); // Short delay after lights out
+    }, 5500);
+}
+
 
 function initApp() {
     renderStandings();     
