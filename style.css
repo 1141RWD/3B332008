@@ -1125,7 +1125,11 @@ body.hovering .cursor-outline {
     .social-icons { justify-content: center; }
     
     /* RWD FIX: 社交媒體按鈕在手機上單欄排列，確保不被切掉 */
-    .social-links-row { grid-template-columns: 1fr; gap: 15px; }
+    .social-links-row { 
+        display: flex; /* 改用 Flexbox */
+        flex-direction: column; /* 垂直排列 */
+        gap: 15px; 
+    }
 
     /* 3. Hero Adjustments */
     .start-lights-container { gap: 8px; padding: 10px; }
@@ -1169,28 +1173,51 @@ body.hovering .cursor-outline {
         height: auto;
         min-height: auto; 
         flex-direction: column; 
+        justify-content: flex-start;
         align-items: center; 
         text-align: center; 
-        padding: 60px 20px 20px; 
+        padding: 50px 20px 20px; 
     }
     /* RWD FIX: 圖片與文字垂直堆疊，不重疊 */
     .modal-hero-img { 
-        width: 80%; 
-        max-height: 250px; 
-        margin-bottom: 0; 
+        width: 60%; 
+        max-width: 250px;
+        height: auto;
+        margin-bottom: 20px; 
         object-fit: contain; 
         order: 1; /* 圖片在上方 */
+        filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
     }
     .modal-title-overlay { 
-        margin-left: 0; 
         width: 100%; 
-        margin-top: 10px;
+        margin: 0;
+        padding: 0;
+        text-align: center;
         order: 2; /* 文字在下方 */
         position: static; /* 取消絕對定位的影響 */
     }
-    .driver-number { font-size: 4rem; display: block; line-height: 1; }
-    .modal-driver-name { font-size: 2.5rem; display: block; margin-top: 5px; }
-    .driver-quote { font-size: 1.2rem; margin: 0; margin-top: 20px; }
+    .driver-number { 
+        font-size: 3.5rem; 
+        display: block; 
+        line-height: 1; 
+        margin-bottom: 5px;
+    }
+    .modal-driver-name { 
+        font-size: 2rem; 
+        display: block; 
+        line-height: 1.2;
+        margin-bottom: 5px; 
+    }
+    .modal-driver-team {
+        font-size: 1rem;
+        display: block;
+    }
+    .driver-quote { 
+        font-size: 1.2rem; 
+        margin: 0; 
+        margin-top: 20px; 
+    }
+    .quote-container { margin-top: 20px; }
     .close-modal-btn { top: 15px; right: 15px; background: rgba(0,0,0,0.1); color: #333; }
     
     /* 8. Table Compression (表格壓縮) */
