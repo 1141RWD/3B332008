@@ -111,7 +111,7 @@
                     <li><a href="#" onclick="navigateTo('game')"><i class="fas fa-gamepad"></i> 小遊戲</a></li>
 
                     <li class="search-wrapper">
-                        <input type="text" id="globalSearch" placeholder="搜尋車手、賽道..." autocomplete="off">
+                        <input type="text" id="globalSearch" placeholder="搜尋..." autocomplete="off">
                         <button><i class="fas fa-search"></i></button>
                         <!-- 搜尋結果下拉選單 -->
                         <ul id="searchResults" class="search-results"></ul>
@@ -310,26 +310,28 @@
                         <h4>積分系統 (Points System)</h4>
                         <p>F1 的積分系統獎勵前十名完賽的車手，以及做出最快圈速的車手（前提是必須在前十名完賽）。</p>
                         
-                        <table class="f1-table">
-                            <thead>
-                                <tr>
-                                    <th>排名 (Position)</th>
-                                    <th>積分 (Points)</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>第 1 名</td><td>25</td></tr>
-                                <tr><td>第 2 名</td><td>18</td></tr>
-                                <tr><td>第 3 名</td><td>15</td></tr>
-                                <tr><td>第 4 名</td><td>12</td></tr>
-                                <tr><td>第 5 名</td><td>10</td></tr>
-                                <tr><td>第 6 名</td><td>8</td></tr>
-                                <tr><td>第 7 名</td><td>6</td></tr>
-                                <tr><td>第 8 名</td><td>4</td></tr>
-                                <tr><td>第 9 名</td><td>2</td></tr>
-                                <tr><td>第 10 名</td><td>1</td></tr>
-                            </tbody>
-                        </table>
+                        <div style="overflow-x: auto;">
+                            <table class="f1-table">
+                                <thead>
+                                    <tr>
+                                        <th>排名 (Position)</th>
+                                        <th>積分 (Points)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>第 1 名</td><td>25</td></tr>
+                                    <tr><td>第 2 名</td><td>18</td></tr>
+                                    <tr><td>第 3 名</td><td>15</td></tr>
+                                    <tr><td>第 4 名</td><td>12</td></tr>
+                                    <tr><td>第 5 名</td><td>10</td></tr>
+                                    <tr><td>第 6 名</td><td>8</td></tr>
+                                    <tr><td>第 7 名</td><td>6</td></tr>
+                                    <tr><td>第 8 名</td><td>4</td></tr>
+                                    <tr><td>第 9 名</td><td>2</td></tr>
+                                    <tr><td>第 10 名</td><td>1</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </article>
             </div>
@@ -347,21 +349,20 @@
                     </div>
                 </div>
                 <div class="standings-list-wrapper">
-                    <div style="overflow-x: auto;">
-                        <table class="standings-table">
-                            <thead>
-                                <tr>
-                                    <th>排名</th>
-                                    <th>車手</th>
-                                    <th>國籍</th>
-                                    <th>車隊</th>
-                                    <th style="text-align: right;">積分</th>
-                                </tr>
-                            </thead>
-                            <tbody id="standingsListBody"></tbody>
-                            <tbody id="standingsMoreBody" class="hidden"></tbody>
-                        </table>
-                    </div>
+                    <!-- 移除 table-scroll-wrapper，改用 CSS 強制壓縮 -->
+                    <table class="standings-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>車手</th>
+                                <th class="hide-on-mobile">國籍</th>
+                                <th>車隊</th>
+                                <th style="text-align: right;">積分</th>
+                            </tr>
+                        </thead>
+                        <tbody id="standingsListBody"></tbody>
+                        <tbody id="standingsMoreBody" class="hidden"></tbody>
+                    </table>
                     <button class="show-more-btn" id="toggleStandingsBtn" onclick="toggleStandings()">
                         <span>顯示更多</span> <i class="fas fa-chevron-down"></i>
                     </button>
@@ -384,18 +385,16 @@
                     <div class="podium-container" id="teamPodium"></div>
                 </div>
                 <div class="standings-list-wrapper">
-                    <div style="overflow-x: auto;">
-                        <table class="standings-table">
-                            <thead>
-                                <tr>
-                                    <th>名次</th>
-                                    <th>車隊</th>
-                                    <th style="text-align: right;">積分</th>
-                                </tr>
-                            </thead>
-                            <tbody id="teamStandingsBody"></tbody> 
-                        </table>
-                    </div>
+                    <table class="standings-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>車隊</th>
+                                <th style="text-align: right;">積分</th>
+                            </tr>
+                        </thead>
+                        <tbody id="teamStandingsBody"></tbody> 
+                    </table>
                 </div>
             </div>
 

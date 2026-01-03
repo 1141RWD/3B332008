@@ -515,9 +515,10 @@ nav { display: flex; justify-content: space-between; align-items: center; }
 
 /* === Standings Table === */
 .standings-list-wrapper { background: var(--card-bg); border-radius: 15px; overflow: hidden; border: 1px solid var(--card-border); box-shadow: var(--shadow-md); }
-.standings-table { width: 100%; border-collapse: collapse; min-width: 500px; /* 防止表格太擠 */ }
+/* RWD FIX: 強制不捲動，自動縮小 */
+.standings-table { width: 100%; border-collapse: collapse; min-width: auto; table-layout: fixed; }
 .standings-table th { background: #f9fafb; padding: 18px; font-size: 0.85rem; color: #4b5563; text-transform: uppercase; text-align: left; font-weight: 800; letter-spacing: 0.5px; border-bottom: 2px solid var(--card-border); }
-.standings-table td { padding: 18px; border-bottom: 1px solid var(--card-border); color: var(--text-main); font-weight: 500; }
+.standings-table td { padding: 18px; border-bottom: 1px solid var(--card-border); color: var(--text-main); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .standings-table tr:hover { background: #f9fafb; }
 .hidden { display: none; }
 .show-more-btn {
@@ -1130,17 +1131,28 @@ body.hovering .cursor-outline {
     .f1-title { font-size: 13vw; }
     .rpm-loader { width: 90%; }
     
-    /* 4. Podium (防止跑版) */
+    /* 4. Podium (防止跑版，限制高度) */
     .podium-container { height: auto; align-items: flex-end; gap: 5px; }
     .podium-item { height: 260px; /* 固定高度，避免太扁 */ } 
-    .p-rank { font-size: 3rem; }
-    /* 限制頒獎台車手圖片高度，避免遮住文字 */
-    .podium-driver img { max-height: 100px; }
+    .p-rank { font-size: 2.5rem; top: 5px; left: 5px; }
+    /* RWD FIX: 限制頒獎台車手圖片高度，避免遮住文字 */
+    .podium-driver img { max-height: 80px; }
+    .p-name { font-size: 0.9rem; margin-top: 5px; }
+    .p-points { font-size: 0.75rem; padding: 2px 8px; }
     
     /* 5. Tracks */
     .track-tabs { grid-template-columns: repeat(6, 1fr); }
     .track-detail-grid { grid-template-columns: 1fr; }
     .track-info-text h2 { font-size: 2rem; }
+    /* RWD FIX: Slider 強制橫向比例 */
+    .home-slider {
+        height: 220px !important; /* 固定手機高度 */
+    }
+    .slide img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover; /* 確保填滿 */
+    }
     
     /* 6. About Page */
     .about-layout { flex-direction: column; }
@@ -1148,25 +1160,41 @@ body.hovering .cursor-outline {
     .tyre-interaction-container { flex-direction: column; text-align: center; }
     .tyre-selector { flex-direction: row; flex-wrap: wrap; justify-content: center; width: 100%; }
     
-    /* 7. Modal (全螢幕手機版) */
+    /* 7. Modal (全螢幕手機版，修正圖片大小) */
     .modal-content { height: 100vh; width: 100%; max-width: 100%; border-radius: 0; }
     .modal-header-section { 
-        height: auto; min-height: 250px; 
+        height: auto; min-height: 30vh; 
         flex-direction: column; align-items: center; text-align: center; 
-        padding: 60px 20px 20px; 
+        padding: 50px 20px 20px; 
     }
-    .modal-hero-img { max-width: 60%; max-height: 200px; margin-bottom: 10px; }
+    /* RWD FIX: 限制彈窗圖片最大高度 */
+    .modal-hero-img { 
+        max-width: 80%; 
+        max-height: 25vh; 
+        margin-bottom: 10px; 
+        object-fit: contain; 
+    }
     .modal-title-overlay { margin-left: 0; width: 100%; }
     .modal-driver-name { font-size: 2rem; }
     .driver-quote { font-size: 1.2rem; margin: 0; }
     .close-modal-btn { top: 15px; right: 15px; background: rgba(0,0,0,0.1); color: #333; }
     
-    /* 8. Spacing Fixes */
+    /* 8. Table Compression (表格壓縮) */
+    .standings-table th, .standings-table td {
+        padding: 8px 4px; /* 減少內距 */
+        font-size: 0.75rem; /* 縮小字體 */
+    }
+    .standings-table .hide-on-mobile {
+        display: none; /* 隱藏次要欄位 (國籍) 以節省空間 */
+    }
+    .flag-circle { width: 30px; height: 30px; } /* 縮小頭像 */
+    
+    /* 9. Spacing Fixes */
     .container { padding: 0 15px; }
     .section-title { font-size: 2rem; margin-bottom: 30px; }
     .reveal-item { padding: 20px; }
     
-    /* 9. Game */
+    /* 10. Game */
     .f1-gantry { min-width: auto; gap: 5px; padding: 10px; }
     .gantry-light { width: 30px; height: 30px; }
 }

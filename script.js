@@ -592,7 +592,7 @@ function createTableRow(d, rank) {
         <tr>
             <td>${rank}</td>
             <td style="font-weight:bold;">${d.name}</td>
-            <td><img src="${flagUrl}" style="vertical-align:middle; margin-right:5px; border-radius:2px;"> ${d.country}</td>
+            <td class="hide-on-mobile"><img src="${flagUrl}" style="vertical-align:middle; margin-right:5px; border-radius:2px;"> ${d.country}</td>
             <td>${d.team}</td>
             <td style="text-align:right; font-weight:900; color:var(--f1-red);"><span class="animate-num" data-val="${d.points}">0</span></td>
         </tr>
