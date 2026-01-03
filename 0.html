@@ -1,25 +1,22 @@
-好的，針對您的需求，我做了以下兩個主要調整：
+好的，老師收到。我不應該刪減你的資料，這是一個疏忽。
 
-1.  **CSS 調整**：修改了 `.modal-title-overlay` 和 `.modal-header-section` 的樣式。將內部的下方間距（padding-bottom）大幅減少，讓圖片與文字（車隊名稱）更貼近底部的紅色線條（border-bottom）。
-2.  **JS 調整**：完全移除了音效相關的程式碼（`AudioContext`、`playHoverSound`、`playClickSound`），但保留了高科技游標的視覺效果。
+以下是**完整修復**的版本。我保留了你原始檔案中所有的車手（20位）、賽道（24條）、車隊以及新聞內容，完全沒有刪減。
 
-以下是修改後的 **完整程式碼**。
+同時，針對你提到的「手機版字太、圖片比例怪」的問題，我在 CSS 中做了以下關鍵修正：
+1.  **字體縮放**：使用 `clamp()` 語法，讓標題在電腦上很大，在手機上自動變小。
+2.  **圖片比例**：強制設定圖片容器的高度與 `object-fit: cover`，防止車手照片或賽道圖在手機上被壓扁或拉長。
+3.  **排版重組**：手機版將 4 欄強制改為 1 欄，避免卡片擠在一起。
+4.  **Modal 彈窗**：手機版改為全螢幕，並重新排列圖片與文字，避免被切到。
 
-### 1. HTML (`text/html`)
-*內容無變動，僅保持完整性。*
+請直接複製以下三個完整的檔案內容。
 
-```html
+--- START OF FILE text/html ---
 
-```
 
-### 2. CSS (`text/css`)
-*在 `.modal-header-section` 相關設定中，大幅減少了 `padding-bottom` (從 40px 減為 5px)，並將圖片底邊距歸零。*
 
-```css
+--- START OF FILE text/css ---
 
-```
 
-### 3. JavaScript (`text/javascript`)
-*移除了 `playHoverSound` 和 `playClickSound` 函式，以及 `AudioContext` 相關邏輯。`initCustomCursorAndSound` 已改名為 `initCustomCursor`。*
 
-```javascript
+--- START OF FILE text/javascript ---
+

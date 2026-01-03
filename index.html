@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>F1 賽季資料庫 2025</title>
     <!-- 字體與圖標庫 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,7 +20,7 @@
     <!-- Scroll Progress -->
     <div id="scroll-progress"></div>
 
-    <!-- 火花特效畫布 (新增) -->
+    <!-- 火花特效畫布 -->
     <canvas id="sparksCanvas"></canvas>
 
     <!-- 動態背景文字 -->
@@ -111,7 +111,7 @@
                     <li><a href="#" onclick="navigateTo('game')"><i class="fas fa-gamepad"></i> 小遊戲</a></li>
 
                     <li class="search-wrapper">
-                        <input type="text" id="globalSearch" placeholder="搜尋車手、賽道、動力..." autocomplete="off">
+                        <input type="text" id="globalSearch" placeholder="搜尋車手、賽道..." autocomplete="off">
                         <button><i class="fas fa-search"></i></button>
                         <!-- 搜尋結果下拉選單 -->
                         <ul id="searchResults" class="search-results"></ul>
@@ -157,7 +157,7 @@
                 </div>
             </div>
 
-            <h3 class="section-title" style="font-size: 2.5rem; justify-content: start; margin-bottom: 20px;">
+            <h3 class="section-title" style="font-size: 2.5rem; justify-content: center; margin-bottom: 20px;">
                 <i class="fas fa-bullhorn"></i> 最新賽季公告
             </h3>
             <div class="news-grid reveal-item">
@@ -347,19 +347,21 @@
                     </div>
                 </div>
                 <div class="standings-list-wrapper">
-                    <table class="standings-table">
-                        <thead>
-                            <tr>
-                                <th>排名</th>
-                                <th>車手</th>
-                                <th>國籍</th>
-                                <th>車隊</th>
-                                <th style="text-align: right;">積分</th>
-                            </tr>
-                        </thead>
-                        <tbody id="standingsListBody"></tbody>
-                        <tbody id="standingsMoreBody" class="hidden"></tbody>
-                    </table>
+                    <div style="overflow-x: auto;">
+                        <table class="standings-table">
+                            <thead>
+                                <tr>
+                                    <th>排名</th>
+                                    <th>車手</th>
+                                    <th>國籍</th>
+                                    <th>車隊</th>
+                                    <th style="text-align: right;">積分</th>
+                                </tr>
+                            </thead>
+                            <tbody id="standingsListBody"></tbody>
+                            <tbody id="standingsMoreBody" class="hidden"></tbody>
+                        </table>
+                    </div>
                     <button class="show-more-btn" id="toggleStandingsBtn" onclick="toggleStandings()">
                         <span>顯示更多</span> <i class="fas fa-chevron-down"></i>
                     </button>
@@ -382,16 +384,18 @@
                     <div class="podium-container" id="teamPodium"></div>
                 </div>
                 <div class="standings-list-wrapper">
-                    <table class="standings-table">
-                        <thead>
-                            <tr>
-                                <th>名次</th>
-                                <th>車隊</th>
-                                <th>積分</th>
-                            </tr>
-                        </thead>
-                        <tbody id="teamStandingsBody"></tbody> 
-                    </table>
+                    <div style="overflow-x: auto;">
+                        <table class="standings-table">
+                            <thead>
+                                <tr>
+                                    <th>名次</th>
+                                    <th>車隊</th>
+                                    <th style="text-align: right;">積分</th>
+                                </tr>
+                            </thead>
+                            <tbody id="teamStandingsBody"></tbody> 
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -402,7 +406,7 @@
         <!-- Tracks Page -->
         <section id="tracks-page" class="page-content">
             <h2 class="section-title"><i class="fas fa-flag-checkered"></i> 2025 賽道巡禮</h2>
-            <div id="trackHeroContainer" class="reveal-item" style="margin-bottom: 30px; background: rgba(0,0,0,0.5); border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); position: relative; aspect-ratio: 21/9;">
+            <div id="trackHeroContainer" class="reveal-item" style="margin-bottom: 30px; background: rgba(0,0,0,0.5); border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); position: relative; aspect-ratio: 16/9;">
                 </div>
             
             <!-- 賽道分類過濾與顯示 -->

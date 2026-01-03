@@ -205,6 +205,9 @@ function initApp() {
 // =========================================
 
 function initTiltEffect() {
+    // 手機版禁用 Tilt 效果以節省效能與避免操作怪異
+    if (window.innerWidth <= 900) return;
+
     document.addEventListener('mousemove', (e) => {
         const card = e.target.closest('.data-card, .team-card');
         if (!card) return;
@@ -303,7 +306,7 @@ function selectTyre(type) {
 }
 
 // =========================================
-// === 數據定義 ===
+// === 數據定義 (完整資料) ===
 // =========================================
 
 const tracks = [
@@ -669,7 +672,7 @@ function renderDrivers(data = drivers) {
                 <div class="card-content">
                     <h3>${d.name}</h3>
                     <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:10px;">${d.team}</p>
-                    <div style="display:flex; justify-content:space-around; border-top:1px solid var(--border-color); padding-top:10px;">
+                    <div style="display:flex; justify-content:space-around; border-top:1px solid var(--card-border); padding-top:10px;">
                         <div><span class="stat-number">${d.points}</span><br><small>積分</small></div>
                         <div><span class="stat-number">${d.podiums}</span><br><small>頒獎台</small></div>
                     </div>
@@ -691,7 +694,7 @@ function renderTeamStandings() {
         podium.innerHTML = `
             <div class="podium-item rank-2 reveal-item">
                 <span class="p-rank">2</span>
-                <div class="podium-team-logo"><img src="${top3[1].logo}"></div>
+                <div class="podium-driver"><img src="${top3[1].logo}"></div>
                 <div class="podium-info">
                     <span class="p-name">${top3[1].name}</span>
                     <span class="p-points"><span class="animate-num" data-val="${top3[1].points}">0</span> PTS</span>
@@ -699,7 +702,7 @@ function renderTeamStandings() {
             </div>
             <div class="podium-item rank-1 reveal-item" style="cursor:pointer" onclick="celebrateWinner()" title="點擊這裡慶祝！">
                 <span class="p-rank">1</span>
-                <div class="podium-team-logo"><img src="${top3[0].logo}"></div>
+                <div class="podium-driver"><img src="${top3[0].logo}"></div>
                 <div class="podium-info">
                     <span class="p-name">${top3[0].name}</span>
                     <span class="p-points"><span class="animate-num" data-val="${top3[0].points}">0</span> PTS</span>
@@ -707,7 +710,7 @@ function renderTeamStandings() {
             </div>
             <div class="podium-item rank-3 reveal-item">
                 <span class="p-rank">3</span>
-                <div class="podium-team-logo"><img src="${top3[2].logo}"></div>
+                <div class="podium-driver"><img src="${top3[2].logo}"></div>
                 <div class="podium-info">
                     <span class="p-name">${top3[2].name}</span>
                     <span class="p-points"><span class="animate-num" data-val="${top3[2].points}">0</span> PTS</span>
@@ -771,7 +774,7 @@ function renderTracks() {
             <div class="track-detail-grid">
                 <div class="track-info-text">
                     <div style="margin-bottom: 10px;">
-                        ${t.tags.map(tag => `<span class="track-tag">${tag}</span>`).join('')}
+                        ${t.tags.map(tag => `<span class="filter-tag" style="display:inline-block; margin-right:5px; font-size:0.8rem; padding: 5px 10px;">${tag}</span>`).join('')}
                     </div>
                     <h2>${t.name}</h2>
                     <p><i class="fas fa-map-marker-alt"></i> <strong>地點：</strong> ${t.location}</p>
