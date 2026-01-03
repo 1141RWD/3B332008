@@ -992,7 +992,7 @@ nav { display: flex; justify-content: space-between; align-items: center; }
     width: 100%; 
     color: var(--frame-text);
 }
-.footer-content { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 50px; margin-bottom: 50px; }
+.footer-content { display: grid; grid-template-columns: 2fr 1fr 1.5fr; gap: 50px; margin-bottom: 50px; }
 .footer-logo .logo { font-size: 2rem; font-weight: 900; color: #fff; text-decoration: none; }
 .footer-logo p { color: var(--frame-text-muted); margin-top: 20px; line-height: 1.6; font-size: 0.95rem; }
 .footer-links h4, .footer-contact h4 { color: #fff; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; font-weight: 800; border-left: 3px solid var(--f1-red); padding-left: 10px; }
@@ -1123,6 +1123,9 @@ body.hovering .cursor-outline {
     .footer-content { grid-template-columns: 1fr; text-align: center; }
     .footer-links h4, .footer-contact h4 { border-left: none; padding-left: 0; }
     .social-icons { justify-content: center; }
+    
+    /* RWD FIX: 社交媒體按鈕在手機上單欄排列，確保不被切掉 */
+    .social-links-row { grid-template-columns: 1fr; gap: 15px; }
 
     /* 3. Hero Adjustments */
     .start-lights-container { gap: 8px; padding: 10px; }
@@ -1160,23 +1163,34 @@ body.hovering .cursor-outline {
     .tyre-interaction-container { flex-direction: column; text-align: center; }
     .tyre-selector { flex-direction: row; flex-wrap: wrap; justify-content: center; width: 100%; }
     
-    /* 7. Modal (全螢幕手機版，修正圖片大小) */
+    /* 7. Modal (全螢幕手機版，修正重疊) */
     .modal-content { height: 100vh; width: 100%; max-width: 100%; border-radius: 0; }
     .modal-header-section { 
-        height: auto; min-height: 30vh; 
-        flex-direction: column; align-items: center; text-align: center; 
-        padding: 50px 20px 20px; 
+        height: auto;
+        min-height: auto; 
+        flex-direction: column; 
+        align-items: center; 
+        text-align: center; 
+        padding: 60px 20px 20px; 
     }
-    /* RWD FIX: 限制彈窗圖片最大高度 */
+    /* RWD FIX: 圖片與文字垂直堆疊，不重疊 */
     .modal-hero-img { 
-        max-width: 80%; 
-        max-height: 25vh; 
-        margin-bottom: 10px; 
+        width: 80%; 
+        max-height: 250px; 
+        margin-bottom: 0; 
         object-fit: contain; 
+        order: 1; /* 圖片在上方 */
     }
-    .modal-title-overlay { margin-left: 0; width: 100%; }
-    .modal-driver-name { font-size: 2rem; }
-    .driver-quote { font-size: 1.2rem; margin: 0; }
+    .modal-title-overlay { 
+        margin-left: 0; 
+        width: 100%; 
+        margin-top: 10px;
+        order: 2; /* 文字在下方 */
+        position: static; /* 取消絕對定位的影響 */
+    }
+    .driver-number { font-size: 4rem; display: block; line-height: 1; }
+    .modal-driver-name { font-size: 2.5rem; display: block; margin-top: 5px; }
+    .driver-quote { font-size: 1.2rem; margin: 0; margin-top: 20px; }
     .close-modal-btn { top: 15px; right: 15px; background: rgba(0,0,0,0.1); color: #333; }
     
     /* 8. Table Compression (表格壓縮) */

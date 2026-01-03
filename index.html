@@ -440,29 +440,37 @@
         </section>
     </main>
 
+    <!-- Footer Updated with New Links and Newsletter -->
     <footer class="f1-footer">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-logo">
                     <a href="#" onclick="navigateTo('home')">F1 DATABASE <span>2025</span></a>
-                    <p>您的終極一級方程式賽車資訊來源。</p>
+                    <p>您的終極一級方程式賽車資訊來源。提供最新賽況、數據分析與互動體驗。</p>
                 </div>
                 <div class="footer-links">
                     <h4>快速連結</h4>
                     <ul>
                         <li><a href="#" onclick="navigateTo('home')">主頁</a></li>
+                        <li><a href="#" onclick="navigateToAbout('history')">關於 F1</a></li> <!-- Added -->
                         <li><a href="#" onclick="navigateTo('drivers')">車手</a></li>
                         <li><a href="#" onclick="navigateTo('teams')">車隊</a></li>
                         <li><a href="#" onclick="navigateTo('tracks')">賽道</a></li>
+                        <li><a href="#" onclick="navigateTo('game')">小遊戲</a></li> <!-- Added -->
                     </ul>
                 </div>
                 <div class="footer-contact">
-                    <h4>聯絡我們</h4>
+                    <h4>加入發車格</h4> <!-- Changed Header -->
+                    <p style="font-size:0.9rem; color:var(--frame-text-muted); margin-bottom:15px;">訂閱我們的電子報，不錯過任何一場精彩賽事！</p>
+                    <div class="newsletter-box" style="display:flex; gap:5px; margin-bottom:20px;">
+                        <input type="email" placeholder="您的 Email..." style="width:100%; padding:10px; border-radius:5px; border:none; background:rgba(255,255,255,0.1); color:white;">
+                        <button style="background:var(--f1-red); color:white; border:none; padding:0 15px; border-radius:5px; cursor:pointer; font-weight:bold;"><i class="fas fa-paper-plane"></i></button>
+                    </div>
                     <div class="social-icons">
-                        <a href="#"><i class="fab fa-facebook"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-x-twitter"></i></a>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="https://www.facebook.com/Formula1"><i class="fab fa-facebook"></i></a>
+                        <a href="https://www.instagram.com/f1/"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.instagram.com/f1/"><i class="fab fa-x-twitter"></i></a>
+                        <a href="https://www.youtube.com/f1"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
             </div>
