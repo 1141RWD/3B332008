@@ -35,6 +35,13 @@ document.addEventListener('DOMContentLoaded', () => {
         burgerMenu.addEventListener('click', () => {
             burgerMenu.classList.toggle('open');
             navLinks.classList.toggle('active');
+            
+            // Toggle body scrolling to prevent background scroll when menu is open
+            if(navLinks.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
         });
     }
 
@@ -50,7 +57,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll('.nav-links a:not(.dropbtn)').forEach(link => {
         link.addEventListener('click', () => {
-            if (navLinks) navLinks.classList.remove('active');
+            if (navLinks) {
+                navLinks.classList.remove('active');
+                // Restore scrolling when link is clicked
+                document.body.style.overflow = '';
+            }
             if (burgerMenu) burgerMenu.classList.remove('open');
         });
     });
@@ -184,8 +195,9 @@ function initApp() {
     renderTeams();         
     renderTracks();    
     initGame();        
-    initMemoryGame();
     buildSearchIndex(); // 建立搜尋索引
+    initCustomCursor(); // 初始化游標 (已移除音效)
+    initSparks(); // 初始化火花特效
 }
 
 // =========================================
@@ -397,121 +409,121 @@ const drivers = [
         name: "Max Verstappen", team: "Red Bull Racing", number: 1, points: 421, podiums: 15, img: "MV.jpg", country: "荷蘭", flagCode: "nl", wc: 3, 
         quote: "I HATE LOSING!",
         stats: { grandsPrix: 185, highestFinish: 1, highestGrid: 1, birthPlace: "比利時 哈瑟爾特" },
-        bio: "當代最強。Verstappen 以其激進的駕駛風格和無與倫比的速度統治賽道。作為 Red Bull 的核心，他總是能在關鍵時刻展現出冠軍的冷靜與霸氣。", ig: "maxverstappen1", x: "Max33Verstappen", shop: "https://www.redbullracing.com/" 
+        bio: "Max Verstappen 17 歲即登陸 F1，是史上最年輕的出賽者。這位擁有「獅子心」的荷蘭車手以本能般的直覺駕駛紅牛賽車，打破無數紀錄。他不僅是史上最年輕的分站冠軍，更憑藉硬派的防守與無畏的超車風格成為焦點。歷經早期的青澀磨練，Verstappen 展現出驚人的成熟度，並在 2021 至 2024 年間達成四連霸壯舉。出身賽車世家的他，雖然在場上直言不諱，私下卻保有靦腆的一面。作為新世代的領軍人物，他正持續改寫 F1 的歷史極限。", ig: "maxverstappen1", x: "Max33Verstappen", shop: "https://www.redbullracing.com/" 
     },
     { 
         name: "Yuki Tsunoda", team: "Red Bull Racing", number: 22, points: 33, podiums: 0, img: "YT.jpg", country: "日本", flagCode: "jp", wc: 0, 
         quote: "I REALLY LIKE TO BATTLE AND I DON'T LOSE MUCH WHEN BATTLE HAPPENS.",
         stats: { grandsPrix: 66, highestFinish: 4, highestGrid: 6, birthPlace: "日本 相模原" },
-        bio: "激情四射。角田裕毅以其直率的性格和日益精進的駕駛技術贏得了車迷的喜愛。升上大紅牛後，他面臨著生涯最大的挑戰與機遇。", ig: "yukitsunoda0511", x: "yukitsunoda0711", shop: "https://www.redbullracing.com/" 
+        bio: "角田裕毅在短短三年內從日本 F4 躍升至 F1，展現驚人天賦。儘管初入歐洲時對賽道陌生，他仍憑藉 F2 殿軍的強悍實力闖入最高殿堂。歷經四個賽季的磨練，他從起步的青澀轉向穩定成熟，並於 2025 年初正式入主紅牛（Red Bull）車隊。作為日本史上最接近分站冠軍的車手，Red Bull 對他寄予厚望，看好他能打破日本車手零勝的紀錄，書寫歷史新篇章。", ig: "yukitsunoda0511", x: "yukitsunoda0711", shop: "https://www.redbullracing.com/" 
     },
     { 
         name: "Lando Norris", team: "McLaren", number: 4, points: 423, podiums: 12, img: "LN.jpg", country: "英國", flagCode: "gb", wc: 0, 
-        quote: "证明他們是錯的。",
+        quote: "'M READY TO BRING THE FIGHT TO EVERYONE.",
         stats: { grandsPrix: 104, highestFinish: 1, highestGrid: 1, birthPlace: "英國 布里斯托" },
-        bio: "麥拉倫領軍人物。Lando 不僅是場上的開心果，更是速度的化身。隨著 McLaren 賽車競爭力的提升，他已成為世界冠軍的有力爭奪者。", ig: "landonorris", x: "LandoNorris", shop: "https://www.mclarenstore.com/" 
+        bio: "2025 年世界冠軍 Lando Norris 以華麗車技與鬥志著稱。自 2019 年加入 McLaren 以來，他展現出超越資深隊友的排位速度。2024 年他奪下首勝，助車隊重返榮耀；2025 年更憑藉單季 7 勝，在季末逆轉 34 分分差，擊敗 Verstappen 封王。場外他熱衷設計，性格謙遜卻野心勃勃。隨著 2026 新規到來，身為車隊核心的他將引領 McLaren 續寫輝煌。", ig: "landonorris", x: "LandoNorris", shop: "https://www.mclarenstore.com/" 
     },
     { 
         name: "Oscar Piastri", team: "McLaren", number: 81, points: 410, podiums: 9, img: "OP.jpg", country: "澳洲", flagCode: "au", wc: 0, 
-        quote: "保持冷靜，保持速度。",
+        quote: "I LIKE CARS, I LIKE RACING, BUT I THINK THE COMPETITION SIDE OF THINGS IS PROBABLY THE NUMBER ONE THING.",
         stats: { grandsPrix: 44, highestFinish: 1, highestGrid: 2, birthPlace: "澳洲 墨爾本" },
-        bio: "冷靜的超級新人。Piastri 展現出了超越年齡的成熟度。他的穩定性和速度讓 McLaren 擁有了圍場內最強的車手組合之一。", ig: "oscarpiastri", x: "OscarPiastri", shop: "https://www.mclarenstore.com/" 
+        bio: "Oscar Piastri 展現了史上最強的晉升履歷，連續奪下 F3 與 F2 冠軍後，引發兩大車隊爭奪。2023 年加入 McLaren 首季即登頒獎台，2024 年更以兩座分站冠軍助車隊奪回車隊總冠軍。2025 年，僅是第三年參賽的他展現爭冠實力，單季豪取 7 勝並長期領跑積分榜，最終在收官戰激鬥後獲得年度季軍。其冷靜與天賦讓眾人深信，他成為世界冠軍只是時間問題。", ig: "oscarpiastri", x: "OscarPiastri", shop: "https://www.mclarenstore.com/" 
     },
     { 
         name: "Charles Leclerc", team: "Ferrari", number: 16, points: 242, podiums: 11, img: "CL.jpg", country: "摩納哥", flagCode: "mc", wc: 0, 
-        quote: "我永遠不會放棄我的夢想。",
+        quote: "WHATEVER THE POSITION IS AT STAKE, YOU'VE GOT TO DO YOUR ABSOLUTE BEST AS A DRIVER WHETHER YOU'RE FIGHTING FOR THE FIFTH, FOURTH OR FIRST POSITION.",
         stats: { grandsPrix: 125, highestFinish: 1, highestGrid: 1, birthPlace: "摩納哥 蒙地卡羅" },
-        bio: "摩納哥之子。Leclerc 的單圈速度無人能敵，排位賽之王的美譽實至名歸。他肩負著帶領法拉利重返榮耀的重責大任。", ig: "charles_leclerc", x: "Charles_Leclerc", shop: "https://store.ferrari.com/" 
+        bio: "出身摩納哥的 Leclerc 以 GP3 與 F2 雙冠王氣勢登陸 F1。2019 年入主 Ferrari 後，他憑藉強悍實力擊敗隊友 Vettel，並在蒙札主場奪冠，成為 Tifosi 的新英雄。2022 年他展現爭冠實力，是唯一能威脅 Verstappen 的對手。場外的他謙遜體貼，承載著已故父親與恩師 Jules Bianchi 的夢想前行。儘管車隊近年陷入苦戰，他卓越的排位速度與鬥志，仍證明自己是 F1 最閃耀的巨星之一。", ig: "charles_leclerc", x: "Charles_Leclerc", shop: "https://store.ferrari.com/" 
     },
     { 
         name: "Lewis Hamilton", team: "Ferrari", number: 44, points: 156, podiums: 197, img: "LH.jpg", country: "英國", flagCode: "gb", wc: 7, 
-        quote: "我仍將升起。",
+        quote: "DRIVING A SCUDERIA FERRARI HP CAR FOR THE FIRST TIME WAS ONE OF THE BEST FEELINGS OF MY LIFE.",
         stats: { grandsPrix: 332, highestFinish: 1, highestGrid: 1, birthPlace: "英國 斯蒂夫尼奇" },
-        bio: "F1 活傳奇。轉隊法拉利震驚了世界，七屆世界冠軍 Hamilton 渴望在紅色的傳奇車隊中，奪下屬於他的第八座世界冠軍獎盃。", ig: "lewishamilton", x: "LewisHamilton", shop: "https://store.ferrari.com/" 
+        bio: "「Still I Rise」是 Lewis Hamilton 的座右銘。這位七屆世界冠軍締造了 F1 史上最多的桿位與勝場紀錄，實力足以與洗拿、舒馬赫並肩。他以獨特的個人風格打破傳統框架，贏得所有對手的敬重。儘管 2025 年轉投 Ferrari 的首賽季面臨極大挑戰，生涯首度未能站上頒獎台，但這位受封爵位的傳奇車手依然鬥志昂揚。當「Hammertime」降臨，全球車迷都在期待他如何在歷史扉頁寫下新篇章。", ig: "lewishamilton", x: "LewisHamilton", shop: "https://store.ferrari.com/" 
     },
     { 
         name: "George Russell", team: "Mercedes", number: 63, points: 319, podiums: 14, img: "GR.jpg", country: "英國", flagCode: "gb", wc: 0, 
-        quote: "穩定是關鍵。",
+        quote: "ON GEORGE, YOU CAN RELY ON HIM WHEN IT COMES TO LAP TIMES AND RACING, SO SPIRITS ARE HIGH.",
         stats: { grandsPrix: 104, highestFinish: 1, highestGrid: 1, birthPlace: "英國 金斯林" },
-        bio: "Mercedes 領袖。在 Hamilton 離隊後，Russell 正式接過了銀箭的旗幟。他精準的駕駛風格和強大的心理素質，將引領賓士重回巔峰。", ig: "georgerussell63", x: "GeorgeRussell63", shop: "https://shop.mercedesamgf1.com/" 
+        bio: "秉持「猶豫就全速衝刺」的座右銘，George Russell 憑藉 GP3 與 F2 冠軍頭銜強勢登陸 F1。在 Williams 時期他便展現驚人速度，2022 年入主 Mercedes 首季即奪分站冠軍。隨著 Hamilton 於 2025 年轉投 Ferrari，Russell 正式接棒領導車隊，在 McLaren 統治性的賽季中仍強勢奪下兩勝。面對 2026 年新規挑戰，這位兼具鬥志與速度的英國車手，已準備好帶領銀箭車隊衝擊世界冠軍。", ig: "georgerussell63", x: "GeorgeRussell63", shop: "https://shop.mercedesamgf1.com/" 
     },
     { 
         name: "Kimi Antonelli", team: "Mercedes", number: 12, points: 150, podiums: 0, img: "KA.jpg", country: "義大利", flagCode: "it", wc: 0, 
-        quote: "速度無需翻譯。",
+        quote: "RACING FOR MERCEDES IS A BIG RESPONSIBILITY, BUT AT THE SAME TIME IT’S A GREAT OPPORTUNITY AND A PRIVILEGE.",
         stats: { grandsPrix: 0, highestFinish: "N/A", highestGrid: "N/A", birthPlace: "義大利 波隆那" },
-        bio: "超級新人。被譽為天才少年的 Antonelli 直接跳級進入 F1 頂級車隊。全世界都在關注這位義大利新星能否承受住巨大的壓力。", ig: "kimi.antonelli", x: "KimiAntonelli", shop: "https://shop.mercedesamgf1.com/" 
+        bio: "Antonelli 的崛起堪稱神速，他在卡丁車與 F4 橫掃冠軍後，被 Mercedes 提拔跳級至 F2。儘管承擔著接替 Hamilton 的巨大壓力，他仍以銀石與匈牙利站的勝場證明實力，尤其在比利時站的勇敢超車更令人驚豔。2025 年，這位剛滿 18 歲的義大利新秀正式入主 Mercedes，並在新人球季奪下 150 積分與 3 座頒獎台。雖然偶有波折，但他非凡的天賦已證明自己正是銀箭軍團未來的希望。", ig: "kimi.antonelli", x: "KimiAntonelli", shop: "https://shop.mercedesamgf1.com/" 
     },
     { 
         name: "Fernando Alonso", team: "Aston Martin", number: 14, points: 56, podiums: 106, img: "FA.jpg", country: "西班牙", flagCode: "es", wc: 2, 
-        quote: "我總是充滿渴望。",
+        quote: "I NEVER REGRET ANYTHING.",
         stats: { grandsPrix: 380, highestFinish: 1, highestGrid: 1, birthPlace: "西班牙 奧維耶多" },
-        bio: "不老傳奇。Alonso 證明了年齡只是數字。他的比賽閱讀能力和防守技巧依然是圍場內的教科書，隨時準備抓住登上頒獎台的機會。", ig: "fernandoalo_oficial", x: "alo_oficial", shop: "https://shop.astonmartinf1.com/" 
+        bio: "Fernando Alonso 是終結舒馬赫王朝的傳奇，曾刷新 F1 最年輕冠軍等多項紀錄。他擁有頂尖速度與戰略頭腦，自評全方位能力達 9/10。即便生涯中期待的第三冠遲未到來，他在重返 F1 後仍於 Alpine 與 Aston Martin 屢創佳績。現年逾 40 歲的他已創下史上首次 400 場參賽紀錄，並隨著技術大師 Adrian Newey 的加盟，這位老將正蓄勢待發，準備在綠色賽車中完成他未竟的奪冠大業。", ig: "fernandoalo_oficial", x: "alo_oficial", shop: "https://shop.astonmartinf1.com/" 
     },
     { 
         name: "Lance Stroll", team: "Aston Martin", number: 18, points: 33, podiums: 3, img: "LS.jpg", country: "加拿大", flagCode: "ca", wc: 0, 
-        quote: "埋頭苦幹，全力以赴。",
+        quote: "WE’VE GROWN SO MUCH AS A TEAM AND THERE’S STILL SO MUCH MORE TO LOOK FORWARD TO.",
         stats: { grandsPrix: 143, highestFinish: 3, highestGrid: 1, birthPlace: "加拿大 蒙特婁" },
-        bio: "穩定的得分手。儘管備受爭議，Stroll 在雨戰和起跑圈的表現往往令人驚艷。他需要更穩定的表現來證明自己的實力。", ig: "lance_stroll", x: "lance_stroll", shop: "https://shop.astonmartinf1.com/" 
+        bio: "Lance Stroll 18 歲即加盟 Williams 登陸 F1，並在首季於巴庫站站上頒獎台，創下最年輕新秀領獎紀錄。身為企業家 Lawrence Stroll 之子，他不僅擁有優渥背景，更在蒙札與土耳其站的豪雨中證明了卓越的雨戰天賦。隨著車隊轉型為 Aston Martin，並迎來傳奇設計師 Adrian Newey 與老將 Alonso 加盟，這位擅長在起跑首圈搶位的加拿大車手，正準備在頂尖競爭中持續發光發熱。", ig: "lance_stroll", x: "lance_stroll", shop: "https://shop.astonmartinf1.com/" 
     },
     { 
         name: "Carlos Sainz", team: "Williams", number: 55, points: 64, podiums: 25, img: "CS.jpg", country: "西班牙", flagCode: "es", wc: 0, 
-        quote: "平穩的操作者。",
+        quote: "I ALWAYS PERFORM AT MY BEST WHEN I JUST DON’T CARE ABOUT THE SITUATION AND HAVE A SINGLE MENTALITY THAT IT’S JUST GO FOR IT.",
         stats: { grandsPrix: 185, highestFinish: 1, highestGrid: 1, birthPlace: "西班牙 馬德里" },
-        bio: "經驗豐富。來到 Williams 的 Sainz 帶來了冠軍車隊的經驗。他的策略頭腦和穩定的速度，將是威廉斯復興計畫的關鍵拼圖。", ig: "carlossainz55", x: "Carlossainz55", shop: "https://www.williamsf1.com/store" 
+        bio: "綽號「Chilli」的 Sainz 出身賽車世家，繼承了拉力傳奇父親的細膩車感與抗壓性。他在賽場上以直覺與智慧並重，能精準策劃比賽奪取積分。Sainz 職業生涯接連承接 Alonso 與 Vettel 等巨星的席位，壓力之下仍為 Ferrari 奪得四座分站冠軍。2025 年轉投 Williams 後，他迅速助車隊重返頒獎台。這位不畏挑戰的西班牙名將，正以實力走出屬於自己的輝煌道路。", ig: "carlossainz55", x: "Carlossainz55", shop: "https://www.williamsf1.com/store" 
     },
     { 
         name: "Alexander Albon", team: "Williams", number: 23, points: 73, podiums: 2, img: "AA.jpg", country: "泰國", flagCode: "th", wc: 0, 
-        quote: "永不放棄。",
+        quote: "I’M READY TO WIN RACES, TO FIGHT FOR A CHAMPIONSHIP.",
         stats: { grandsPrix: 83, highestFinish: 3, highestGrid: 4, birthPlace: "英國 倫敦" },
-        bio: "核心車手。Albon 已完全重生，成為 Williams 的絕對領袖。他經常能駕駛著性能較差的賽車創造奇蹟，榨取每一分積分。", ig: "alex_albon", x: "alex_albon", shop: "https://www.williamsf1.com/store" 
+        bio: "Alex Albon 出生於倫敦，代表泰國出賽。他在 2019 年以優異表現迅速從 Toro Rosso 晉升至紅牛車隊，雖在與 Verstappen 搭檔期間遭遇低潮並一度失去席次，但他憑藉測試車手的穩定表現於 2022 年成功重返圍場加盟 Williams。Albon 以超車冷靜、排位賽速度快且性格親和著稱，在 2024 與 2025 賽季不僅確立了車隊領袖地位，更以成熟的技術抓住這珍貴的第二次機會，成為圍場內最受敬重的車手之一。", ig: "alex_albon", x: "alex_albon", shop: "https://www.williamsf1.com/store" 
     },
     { 
         name: "Pierre Gasly", team: "Alpine", number: 10, points: 22, podiums: 4, img: "PG.jpg", country: "法國", flagCode: "fr", wc: 0, 
-        quote: "全速前進。",
+        quote: "THE MOMENT I LOVE THE MOST IS WHENEVER I GET IN THAT CAR, FIGHTING THE BEST 19 DRIVERS IN THE WORLD, AND THIS EXERCISE OF BEATING THEM.",
         stats: { grandsPrix: 132, highestFinish: 1, highestGrid: 2, birthPlace: "法國 魯昂" },
-        bio: "法國支柱。Gasly 在 Alpine 承擔著巨大的期望。這位曾經的分站冠軍渴望擁有一輛能讓他重返頒獎台前列的賽車。", ig: "pierregasly", x: "PierreGASLY", shop: "https://boutique.alpinecars.com/" 
+        bio: "Pierre Gasly 的 F1 生涯宛如雲霄飛車。2019 年晉升紅牛車隊後，因表現不敵隊友 Verstappen 而遭降編回 Toro Rosso。但他展現驚人韌性，於 2020 年在蒙札奪下激動人心的首勝。Gasly 隨後成為車隊核心，2021 年更單人貢獻全隊近八成積分。2023 年轉投法國車隊 Alpine 後，他持續站上頒獎台並尋求再次突破。這位「永不言棄」的車手正用實力證明，他具備立足頂尖戰區的絕對速度。", ig: "pierregasly", x: "PierreGASLY", shop: "https://boutique.alpinecars.com/" 
     },
     { 
         name: "Franco Colapinto", team: "Alpine", number: 43, points: 0, podiums: 0, img: "FC.jpg", country: "阿根廷", flagCode: "ar", wc: 0, 
-        quote: "I'm here to stay.",
+        quote: "I WILL GIVE IT MY ALL TO DELIVER THE BEST POSSIBLE RESULTS.",
         stats: { grandsPrix: 9, highestFinish: 8, highestGrid: 9, birthPlace: "阿根廷 Pilar" },
-        bio: "阿根廷的驕傲。在 2024 年震撼登場後，Colapinto 憑藉其無所畏懼的駕駛風格贏得了席位。他是威廉斯未來的關鍵人物。", ig: "francolapinto", x: "FranColapinto", shop: "https://www.williamsf1.com/store" 
+        bio: "Franco Colapinto 的 F1 生涯充滿戲劇性。2024 年中，他受 Williams 提拔接替 Sargeant，成為 23 年來首位阿根廷 F1 車手，隨即展現出不遜於老將的驚人速度。雖然 2025 年初因 Sainz 加盟而轉任 Alpine 儲備車手，但他很快再次獲得徵召，於第七站起取代新秀 Doohan 重返正賽，並憑藉優異表現成功鎖定 2026 年的正賽席次。這位實力派新星正以強悍的競技狀態，掀起一場阿根廷賽車旋風。", ig: "francolapinto", x: "FranColapinto", shop: "https://www.williamsf1.com/store" 
     },
     { 
         name: "Esteban Ocon", team: "Haas", number: 31, points: 38, podiums: 3, img: "EO.jpg", country: "法國", flagCode: "fr", wc: 0, 
-        quote: "為每一寸土地而戰。",
+        quote: "TOUGH RACING IS ALWAYS COOL TO ME. RACING SIDE-BY-SIDE, BEING VERY CLOSE, THAT’S WHAT RACING IS ALL ABOUT.",
         stats: { grandsPrix: 133, highestFinish: 1, highestGrid: 3, birthPlace: "法國 埃夫勒" },
-        bio: "強硬防守。Ocon 以其強硬的防守風格聞名。加入 Haas 後，他將與新秀 Bearman 搭檔，利用豐富的經驗帶領車隊前進。", ig: "estebanocon", x: "OconEsteban", shop: "https://haasf1team.store/" 
+        bio: "Esteban Ocon 的賽車生涯始於父母賣屋支持的「犧牲」。他曾擊敗 Verstappen 奪下 F3 冠軍，並於 2016 年踏入 F1。儘管曾因車隊資金問題在 2019 年被迫退居幕後，他仍憑藉信念於 2020 年回歸 Renault（現 Alpine），並在 2021 年匈牙利站奪得生涯首勝。2025 年轉投 Haas 車隊開啟新篇章。這位歷經起伏的車手證明了只要具備堅定的鬥志與才華，即便出身平凡也能在頂尖殿堂站穩腳步。", ig: "estebanocon", x: "OconEsteban", shop: "https://haasf1team.store/" 
     },
     { 
         name: "Oliver Bearman", team: "Haas", number: 87, points: 41, podiums: 0, img: "OB.jpg", country: "英國", flagCode: "gb", wc: 0, 
-        quote: "夢想遠大。",
+        quote: "I’M A COMPETITIVE GUY, I LIKE TO BE GOOD AT EVERYTHING I DO.",
         stats: { grandsPrix: 1, highestFinish: 7, highestGrid: 11, birthPlace: "英國 切姆斯福德" },
-        bio: "一戰成名。當年臨危受命代打法拉利一戰成名，如今正式獲得全職席位。Bearman 是 F1 圍場內最受矚目的年輕天才之一。", ig: "olliebearman", x: "OllieBearman", shop: "https://haasf1team.store/" 
+        bio: "Oliver Bearman 在 2024 年沙烏地站替補受傷的 Sainz 出賽，首秀即奪第七名驚豔圍場。憑藉這份過人天賦，他成功鎖定 2025 年 Haas 車隊的正賽席次。在新人球季中，他展現出超越年齡的成熟，不僅在墨西哥站奪得車隊年度最佳的第四名，積分更超越了經驗豐富的隊友 Ocon。身為 Ferrari 儲備體系的核心，這位強勢崛起的新星正以表現證明，他絕對是未來入主躍馬車隊的頭號人選。", ig: "olliebearman", x: "OllieBearman", shop: "https://haasf1team.store/" 
     },
     { 
         name: "Liam Lawson", team: "RB", number: 30, points: 38, podiums: 2, img: "LL.jpg", country: "紐西蘭", flagCode: "nz", wc: 0, 
-        quote: "最大化一切。",
+        quote: "I'M NOT HERE TO MAKE FRIENDS. I'M HERE TO WIN - THAT'S WHAT I'M FOCUSED ON DOING.",
         stats: { grandsPrix: 5, highestFinish: 9, highestGrid: 10, birthPlace: "紐西蘭 哈斯廷斯" },
-        bio: "紐西蘭新星。Lawson 在有限的代打機會中展現了驚人的速度。如今坐穩 RB 席位，他的目標是晉升大紅牛車隊。", ig: "liamlawson30", x: "LiamLawson30", shop: "https://f1store.formula1.com/" 
+        bio: "Liam Lawson 在 2023 年頂替受傷的 Ricciardo 出賽，於新加坡站擊敗 Verstappen 闖入 Q3 並奪分，一戰成名。他在 2024 年底重返賽場，並於 2025 年獲得晉升紅牛一隊的黃金機會。儘管在經歷兩場艱難賽事後被調回 Racing Bulls（原 AlphaTauri），這位受《汽車總動員》啟發的紐西蘭人並未氣餒，反而迅速重建聲望，以穩健表現證明自己是圍場中不可或缺的實力派成員。", ig: "liamlawson30", x: "LiamLawson30", shop: "https://f1store.formula1.com/" 
     },
     { 
         name: "Isack Hadjar", team: "RB", number: 6, points: 51, podiums: 0, img: "IH.jpg", country: "法國", flagCode: "fr", wc: 0, 
-        quote: "挑戰極限。",
+        quote: "I’M SOMEONE WHO FOUGHT HIS WAY TO F1 THE HARD WAY.",
         stats: { grandsPrix: 0, highestFinish: "N/A", highestGrid: "N/A", birthPlace: "法國 巴黎" },
-        bio: "青訓希望。紅牛青訓體系最新的畢業生。Hadjar 風格激進，他需要在殘酷的 F1 環境中快速學習並存活下來。", ig: "isackhadjar", x: "IsackHadjar", shop: "https://f1store.formula1.com/" 
+        bio: "巴黎出生的 Hadjar 經歷 F2 時期的低潮後，憑藉 2024 年奪得年度亞軍的強悍實力，於 2025 年加入 Racing Bulls 登陸 F1。儘管開幕戰失利，但他迅速展現天賦，在賽季後半段頻繁闖入 Q3，並在荷蘭站奪得生涯首座頒獎台。最終他以年度 51 分超越隊友 Lawson，卓越表現使他獲得紅牛高層青睞，宣布將於 2026 年晉升紅牛一隊，正式與 Max Verstappen 搭檔，完成生涯的華麗跳躍。", ig: "isackhadjar", x: "IsackHadjar", shop: "https://f1store.formula1.com/" 
     },
     { 
         name: "Nico Hülkenberg", team: "Stake F1 Team", number: 27, points: 51, podiums: 0, img: "NH.jpg", country: "德國", flagCode: "de", wc: 0, 
-        quote: "浩克歸來。",
+        quote: "YOU’VE GOT TO BE THERE WHEN THE OPPORTUNITY PRESENTS ITSELF, BECAUSE THE RACE IS NOT OVER UNTIL IT’S OVER.",
         stats: { grandsPrix: 206, highestFinish: 4, highestGrid: 1, birthPlace: "德國 埃梅里希" },
-        bio: "排位大師。經驗極其豐富的老將，加入即將轉型為奧迪的車隊。Hülkenberg 的開發能力對於車隊未來的轉型至關重要。", ig: "hulkhulkenberg", x: "HulkHulkenberg", shop: "https://www.sauber-group.com/" 
+        bio: "自 2010 年出道以來，Hulkenberg 以強大的穩定性與雨戰天賦著稱，甚至曾於新人之姿奪下桿位並贏得利曼 24 小時耐力賽冠軍。儘管長期保有「史上最多出賽卻未登領獎台」的尷尬紀錄，他仍憑藉幽默與實力重返 Haas 並轉戰 Kick Sauber。2025 年，他終於在該隊奪得生涯首座 F1 頒獎台。隨著車隊即將在 2026 年轉為 Audi 廠隊，這位經驗豐富的德國老將已準備好在職業生涯末期再創巔峰。", ig: "hulkhulkenberg", x: "HulkHulkenberg", shop: "https://www.sauber-group.com/" 
     },
     { 
         name: "Gabriel Bortoleto", team: "Stake F1 Team", number: 5, points: 19, podiums: 0, img: "GB.jpg", country: "巴西", flagCode: "br", wc: 0, 
-        quote: "全速衝刺。",
+        quote: "I WANT TO BE ABLE TO FIGHT FOR THINGS AND TO MAKE MY COUNTRY PROUD OF EVERYTHING I CAN ACHIEVE.",
         stats: { grandsPrix: 0, highestFinish: "N/A", highestGrid: "N/A", birthPlace: "巴西 聖保羅" },
-        bio: "巴西新星。F2 冠軍強勢加盟，承載著巴西車迷的希望。Bortoleto 將在老大哥 Hülkenberg 的指導下開啟他的 F1 生涯。", ig: "gabrielbortoleto", x: "G_Bortoleto", shop: "https://www.sauber-group.com/" 
+        bio: "身為 Senna 的崇拜者，Bortoleto 在 Alonso 經紀公司的助力下，連續奪得 2023 年 F3 與 2024 年 F2 年度總冠軍，其中在蒙札站從墊底追至第一的表現更是驚豔全球。2025 年他加盟 Kick Sauber 開啟 F1 生涯，成為自 2017 年後首位巴西全職車手。儘管家鄉賽事遭遇波折，但他憑藉 5 次前十名的穩定積分表現，成功贏得奧迪（Audi）高層認可，鎖定了 2026 年 Audi 廠隊的首賽季席次。", ig: "gabrielbortoleto", x: "G_Bortoleto", shop: "https://www.sauber-group.com/" 
     }
 ];
 
@@ -949,7 +961,7 @@ function buildSearchIndex() {
             name: "反應測試遊戲", 
             id: "game", 
             category: "遊戲", 
-            keywords: ["反應", "game", "燈滅", "起跑", "玩", "記憶"], 
+            keywords: ["反應", "game", "燈滅", "起跑", "玩"], 
             icon: "fas fa-gamepad" 
         }
     ];
@@ -1344,7 +1356,7 @@ function handleSearch(query) {
 }
 
 // =========================================
-// === 1. 反應測試遊戲 ===
+// === 1. 反應測試遊戲 (F1 Gantry Style) ===
 // =========================================
 let isGameRunning = false;
 let isLightsOut = false;
@@ -1356,12 +1368,26 @@ function initGame() {
     const container = document.getElementById('lightsContainer');
     if(!container) return;
     container.innerHTML = '';
+    
+    // 建立 5 個燈柱，每個燈柱有 2 個燈
     for(let i=0; i<5; i++) {
-        let light = document.createElement('div');
-        light.className = 'light';
-        light.id = `light-${i}`;
-        container.appendChild(light);
+        let col = document.createElement('div');
+        col.className = 'gantry-column';
+        col.id = `gantry-col-${i}`;
+        
+        // 上燈
+        let topLight = document.createElement('div');
+        topLight.className = 'gantry-light';
+        
+        // 下燈
+        let botLight = document.createElement('div');
+        botLight.className = 'gantry-light';
+        
+        col.appendChild(topLight);
+        col.appendChild(botLight);
+        container.appendChild(col);
     }
+
     const btn = document.getElementById('gameButton');
     if(btn) {
         btn.textContent = '開始測試';
@@ -1371,6 +1397,7 @@ function initGame() {
 
 function startGameSequence() {
     if (isGameRunning) return;
+    
     isGameRunning = true;
     isLightsOut = false; 
     
@@ -1383,32 +1410,55 @@ function startGameSequence() {
     status.innerHTML = '<i class="fas fa-flag-checkered"></i> 準備起跑...';
     timer.textContent = '0.000 秒';
     
-    document.querySelectorAll('.light').forEach(l => l.classList.remove('on'));
+    // 重置所有燈號 (移除 .on)
+    document.querySelectorAll('.gantry-light').forEach(l => l.classList.remove('on'));
     
     let count = 0;
+    
+    // 立即亮起第一組 (count = 0)
+    activateColumn(0);
+    count++;
+
     gameInterval = setInterval(() => {
         if (count < 5) {
-            document.getElementById(`light-${count}`).classList.add('on');
+            activateColumn(count);
             count++;
         } else {
             clearInterval(gameInterval);
             const delay = Math.random() * 3000 + 1000;
             gameTimeout = setTimeout(() => {
-                document.querySelectorAll('.light').forEach(l => l.classList.remove('on'));
+                // LIGHTS OUT
+                document.querySelectorAll('.gantry-light').forEach(l => l.classList.remove('on'));
                 isLightsOut = true; 
                 startTime = performance.now(); 
                 status.innerHTML = '<i class="fas fa-bolt" style="color:#ffcc00"></i> GO GO GO!';
             }, delay);
         }
-    }, 800);
+    }, 1000); // F1 燈號間隔大約一秒
+}
+
+function activateColumn(colIndex) {
+    const col = document.getElementById(`gantry-col-${colIndex}`);
+    if(col) {
+        const lights = col.querySelectorAll('.gantry-light');
+        lights.forEach(l => l.classList.add('on'));
+    }
 }
 
 function handleGameClick() {
+    // 點擊後必須清除計時器，防止後續燈號邏輯繼續跑
+    clearInterval(gameInterval);
+    clearTimeout(gameTimeout);
+    
+    // 若遊戲未開始且未等待起跑 (e.g. 已經結束)，則重置
+    if (!isGameRunning && !isLightsOut) {
+        startGameSequence();
+        return;
+    }
+
     if (!isLightsOut) {
-        clearInterval(gameInterval);
-        clearTimeout(gameTimeout);
+        // 偷跑 (Jump Start)
         isGameRunning = false;
-        isLightsOut = false;
         
         const status = document.getElementById('gameStatus');
         status.innerHTML = '<i class="fas fa-times-circle" style="color:var(--f1-red)"></i> 搶跑違規！(Jump Start)';
@@ -1417,10 +1467,12 @@ function handleGameClick() {
         btn.textContent = '重新開始';
         btn.onclick = startGameSequence;
         
-        document.querySelectorAll('.light').forEach(l => l.classList.remove('on'));
+        // 保持當前燈號狀態，或全滅
+        document.querySelectorAll('.gantry-light').forEach(l => l.classList.remove('on'));
         return;
     }
 
+    // 成功起跑
     const reactionTime = (performance.now() - startTime) / 1000;
     isGameRunning = false;
     isLightsOut = false;
@@ -1436,106 +1488,143 @@ function handleGameClick() {
 }
 
 // =========================================
-// === 2. 記憶力大挑戰 ===
+// === Custom Cursor (Sound Removed) ===
 // =========================================
-let memoryCards = [];
-let flippedCards = [];
-let moves = 0;
-let matches = 0;
-let isPreviewing = false; 
-let isGameStarted = false; 
 
-function initMemoryGame() {
-    const grid = document.getElementById('memoryGrid');
-    if (!grid) return;
-    
-    moves = 0;
-    matches = 0;
-    flippedCards = [];
-    isPreviewing = false;
-    isGameStarted = false;
+function initCustomCursor() {
+    // 1. 建立游標元素
+    const dot = document.createElement('div');
+    dot.className = 'cursor-dot';
+    const outline = document.createElement('div');
+    outline.className = 'cursor-outline';
+    document.body.appendChild(dot);
+    document.body.appendChild(outline);
 
-    document.getElementById('moveCount').textContent = moves;
-    document.getElementById('matchCount').textContent = matches;
-    
-    const statusLabel = document.getElementById('memoryStatusLabel');
-    if (statusLabel) statusLabel.innerHTML = '配對相同的車隊 Logo';
+    // 2. 游標移動邏輯
+    window.addEventListener('mousemove', (e) => {
+        const posX = e.clientX;
+        const posY = e.clientY;
 
-    const teamLogos = teams.slice(0, 6).map(t => t.logo);
-    const cardValues = [...teamLogos, ...teamLogos];
-    cardValues.sort(() => Math.random() - 0.5);
+        // 核心點直接移動
+        dot.style.left = `${posX}px`;
+        dot.style.top = `${posY}px`;
+
+        // 外圈稍微延遲 (使用 animate 達到平滑效果)
+        outline.animate({
+            left: `${posX}px`,
+            top: `${posY}px`
+        }, { duration: 500, fill: "forwards" });
+    });
+
+    // 3. 互動元素偵測 (Hover Effect)
+    // 監聽更多元素，包括導航按鈕、圖片、表格行等
+    const interactables = document.querySelectorAll('a, button, .data-card, .team-card, .podium-item, .tyre-btn, .filter-tag, tr, .track-video-link');
     
-    grid.innerHTML = cardValues.map((logo) => `
-        <div class="memory-card" data-logo="${logo}" onclick="flipCard(this)">
-            <div class="memory-card-back"><i class="fas fa-question"></i></div>
-            <div class="memory-card-front"><img src="${logo}"></div>
-        </div>
-    `).join('');
+    interactables.forEach(el => {
+        el.addEventListener('mouseenter', () => {
+            document.body.classList.add('hovering');
+        });
+        el.addEventListener('mouseleave', () => {
+            document.body.classList.remove('hovering');
+        });
+    });
 }
 
-function startMemoryChallenge() {
-    if (isPreviewing) return; 
+// =========================================
+// === F1 Titanium Sparks Effect ===
+// =========================================
 
-    initMemoryGame(); 
-    isGameStarted = true;
-    isPreviewing = true;
-    
-    const allCards = document.querySelectorAll('.memory-card');
-    const statusLabel = document.getElementById('memoryStatusLabel');
-    
-    allCards.forEach(card => card.classList.add('flipped'));
+function initSparks() {
+    const canvas = document.getElementById('sparksCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let particles = [];
 
-    let timeLeft = 5;
-    if (statusLabel) statusLabel.innerHTML = `<i class="fas fa-eye"></i> 記住位置：${timeLeft}s`;
+    // 調整畫布大小
+    function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
 
-    const countdown = setInterval(() => {
-        timeLeft--;
-        if (statusLabel) statusLabel.innerHTML = `<i class="fas fa-eye"></i> 記住位置：${timeLeft}s`;
+    // 火花粒子類別
+    class Particle {
+        constructor(x, y, velocityX, velocityY) {
+            this.x = x;
+            this.y = y;
+            // 模擬物理噴濺：加上隨機擴散
+            this.vx = velocityX * 0.5 + (Math.random() - 0.5) * 4; 
+            this.vy = velocityY * 0.5 + (Math.random() - 0.5) * 4;
+            this.life = 1; // 生命週期 (100%)
+            this.decay = Math.random() * 0.03 + 0.02; // 衰減速度
+            this.size = Math.random() * 3 + 1;
+            // F1 火花顏色：金黃色到紅色漸層
+            this.color = Math.random() > 0.5 ? '#ffcc00' : '#ff4d00'; 
+        }
+
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            this.vy += 0.2; // 重力效果 (火花會稍微下墜)
+            this.vx *= 0.95; // 空氣阻力
+            this.vy *= 0.95;
+            this.life -= this.decay;
+        }
+
+        draw() {
+            ctx.globalAlpha = this.life;
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    // 追蹤滑鼠速度
+    let lastX = 0;
+    let lastY = 0;
+    let currentX = 0;
+    let currentY = 0;
+
+    window.addEventListener('mousemove', (e) => {
+        currentX = e.clientX;
+        currentY = e.clientY;
         
-        if (timeLeft <= 0) {
-            clearInterval(countdown);
-            allCards.forEach(card => card.classList.remove('flipped'));
-            isPreviewing = false;
-            if (statusLabel) statusLabel.innerHTML = `<i class="fas fa-play"></i> 挑戰開始！`;
-        }
-    }, 1000);
-}
+        // 計算滑鼠移動速度
+        const dx = currentX - lastX;
+        const dy = currentY - lastY;
+        const speed = Math.sqrt(dx * dx + dy * dy);
 
-function flipCard(card) {
-    if (!isGameStarted || isPreviewing || flippedCards.length === 2 || 
-        card.classList.contains('flipped') || card.classList.contains('matched')) return;
-    
-    card.classList.add('flipped');
-    flippedCards.push(card);
-    
-    if (flippedCards.length === 2) {
-        moves++;
-        document.getElementById('moveCount').textContent = moves;
-        checkMatch();
-    }
-}
-
-function checkMatch() {
-    const [card1, card2] = flippedCards;
-    const isMatch = card1.dataset.logo === card2.dataset.logo;
-    
-    if (isMatch) {
-        card1.classList.add('matched');
-        card2.classList.add('matched');
-        matches++;
-        document.getElementById('matchCount').textContent = matches;
-        flippedCards = [];
-        if (matches === 6) {
-            setTimeout(() => {
-                celebrateWinner();
-                alert(`恭喜完成！總共花了 ${moves} 步。`);
-            }, 500);
+        // 只有移動速度夠快時才產生火花 (模擬摩擦力)
+        if (speed > 5) {
+            const count = Math.floor(speed / 3); // 速度越快火花越多
+            for (let i = 0; i < count; i++) {
+                // 讓火花從游標的相反方向噴出
+                particles.push(new Particle(currentX, currentY, -dx * 0.1, -dy * 0.1));
+            }
         }
-    } else {
-        setTimeout(() => {
-            card1.classList.remove('flipped');
-            card2.classList.remove('flipped');
-            flippedCards = [];
-        }, 1000);
+
+        lastX = currentX;
+        lastY = currentY;
+    });
+
+    // 動畫迴圈
+    function animate() {
+        ctx.clearRect(0, 0, width, height);
+        
+        // 使用倒序迴圈以便移除粒子
+        for (let i = particles.length - 1; i >= 0; i--) {
+            const p = particles[i];
+            p.update();
+            p.draw();
+            if (p.life <= 0) {
+                particles.splice(i, 1);
+            }
+        }
+        
+        requestAnimationFrame(animate);
     }
+    animate();
 }

@@ -1,29 +1,25 @@
-這份完整的代碼針對您的需求進行了以下修正：
+好的，針對您的需求，我做了以下兩個主要調整：
 
-1.  **Loading 畫面手機版優化**：
-    *   修正了 `.start-lights-container` 和 `.light-bulb` 在手機上的尺寸，防止超出螢幕邊緣。
-    *   調整了標題字體大小與 RPM 條的寬度，確保在手機直向操作時能完整顯示且比例協調。
-2.  **主頁輪播圖片 (Slider)**：
-    *   在手機版移除了固定的 `500px` 高度。
-    *   改用 `aspect-ratio: 16/9`，強迫圖片容器保持橫向寬螢幕比例，這樣在手機上就能看到完整的橫向照片，不會被裁切成直條狀。
-3.  **手機版比例調整**：
-    *   優化了 Modal (彈窗) 在手機上的高度與邊距。
-    *   調整了導覽列與內容的間距。
+1.  **CSS 調整**：修改了 `.modal-title-overlay` 和 `.modal-header-section` 的樣式。將內部的下方間距（padding-bottom）大幅減少，讓圖片與文字（車隊名稱）更貼近底部的紅色線條（border-bottom）。
+2.  **JS 調整**：完全移除了音效相關的程式碼（`AudioContext`、`playHoverSound`、`playClickSound`），但保留了高科技游標的視覺效果。
 
-以下是完整的 HTML、CSS 和 JavaScript 代碼。
+以下是修改後的 **完整程式碼**。
 
-### 1. HTML (`index.html`)
+### 1. HTML (`text/html`)
+*內容無變動，僅保持完整性。*
 
 ```html
 
 ```
 
-### 2. CSS (`style.css`)
+### 2. CSS (`text/css`)
+*在 `.modal-header-section` 相關設定中，大幅減少了 `padding-bottom` (從 40px 減為 5px)，並將圖片底邊距歸零。*
 
 ```css
 
 ```
 
-### 3. JavaScript (`script.js`)
+### 3. JavaScript (`text/javascript`)
+*移除了 `playHoverSound` 和 `playClickSound` 函式，以及 `AudioContext` 相關邏輯。`initCustomCursorAndSound` 已改名為 `initCustomCursor`。*
 
 ```javascript

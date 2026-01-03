@@ -20,6 +20,9 @@
     <!-- Scroll Progress -->
     <div id="scroll-progress"></div>
 
+    <!-- 火花特效畫布 (新增) -->
+    <canvas id="sparksCanvas"></canvas>
+
     <!-- 動態背景文字 -->
     <div class="bg-marquee-container"></div>
 
@@ -37,7 +40,7 @@
     <section id="hero">
         <div class="speed-overlay"></div>
         <div class="hero-content-wrapper">
-            <!-- Starting Lights -->
+            <!-- Starting Lights (Hero Animation) -->
             <div class="start-lights-container">
                 <div class="light-box">
                     <div class="light-bulb" id="light-1"></div>
@@ -125,13 +128,13 @@
             <div class="home-slider reveal-item" style="padding: 0; overflow: hidden;">
                 <div class="slides">
                     <div class="slide active">
-                        <img src="ALL3.jpg" alt="F1 Racing">
+                        <img src="ALL3.jpg" alt="F1 Racing" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
                     <div class="slide">
-                        <img src="ALL.png" alt="F1 Cockpit">
+                        <img src="ALL.png" alt="F1 Cockpit" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
                     <div class="slide">
-                        <img src="ALL2.jpg" alt="Ferrari Pitstop">
+                        <img src="ALL2.jpg" alt="Ferrari Pitstop" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
                 </div>
                 <button class="slider-prev" onclick="moveSlide(-1)">&#10094;</button>
@@ -415,34 +418,21 @@
             <div id="trackContents"></div>
         </section>
 
-        <!-- Game Page -->
+        <!-- Game Page (Only Lights Out) -->
         <section id="game-page" class="page-content">
             <h2 class="section-title"><i class="fas fa-gamepad"></i> 互動遊戲</h2>
             <div class="lights-out-game-container reveal-item" style="margin-bottom: 60px;">
                 <h3>反應測試：燈滅起跑</h3>
                 <p>盯緊紅燈，當燈滅的一瞬間立即點擊按鈕！(偷跑會失敗喔)</p>
-                <div class="lights-container" id="lightsContainer"></div>
+                <div class="f1-game-gantry-wrapper">
+                    <!-- 燈號將由 JS 生成，模擬真實 F1 5個燈柱 -->
+                    <div class="lights-container f1-gantry" id="lightsContainer"></div>
+                </div>
                 <div class="game-controls">
                     <div class="game-status" id="gameStatus">準備好了嗎？</div>
                     <div class="timer-display" id="timerDisplay">0.000 秒</div>
                     <button class="f1-game-btn" id="gameButton">開始測試</button>
                 </div>
-            </div>
-            
-            <div class="memory-game-container reveal-item">
-                <h3>F1 記憶力大挑戰</h3>
-                <p id="memoryStatusLabel">配對相同的車隊 Logo，挑戰你的記憶極限！</p>
-                <div class="memory-stats">
-                    <div style="margin-bottom: 15px;">
-                        <span>步數：<span id="moveCount">0</span></span>
-                        <span style="margin-left: 20px;">配對：<span id="matchCount">0</span>/6</span>
-                    </div>
-                    <div class="button-group">
-                        <button onclick="startMemoryChallenge()" class="f1-game-btn">開始遊戲</button>
-                        <button onclick="startMemoryChallenge()" class="f1-game-btn secondary">重新開始</button>
-                    </div>
-                </div>
-                <div class="memory-grid" id="memoryGrid"></div>
             </div>
         </section>
     </main>
@@ -499,7 +489,6 @@
                     <i class="fas fa-quote-right quote-icon"></i>
                 </div>
 
-                <!-- 這裡的內容會由 JS 動態生成，先插入視覺化數據，再插入 stats grid -->
                 <div class="driver-stats-grid" id="modalStatsGrid"></div>
                 
                 <div class="modal-bio-container">
