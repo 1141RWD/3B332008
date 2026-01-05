@@ -422,7 +422,7 @@ const drivers = [
     },
     { 
         name: "Lando Norris", team: "McLaren", number: 4, points: 423, podiums: 12, img: "LN.jpg", country: "英國", flagCode: "gb", wc: 0, 
-        quote: "'M READY TO BRING THE FIGHT TO EVERYONE.",
+        quote: "I'M READY TO BRING THE FIGHT TO EVERYONE.",
         stats: { grandsPrix: 104, highestFinish: 1, highestGrid: 1, birthPlace: "英國 布里斯托" },
         bio: "2025 年世界冠軍 Lando Norris 以華麗車技與鬥志著稱。自 2019 年加入 McLaren 以來，他展現出超越資深隊友的排位速度。2024 年他奪下首勝，助車隊重返榮耀；2025 年更憑藉單季 7 勝，在季末逆轉 34 分分差，擊敗 Verstappen 封王。場外他熱衷設計，性格謙遜卻野心勃勃。隨著 2026 新規到來，身為車隊核心的他將引領 McLaren 續寫輝煌。", ig: "landonorris", x: "LandoNorris", shop: "https://www.mclarenstore.com/" 
     },
