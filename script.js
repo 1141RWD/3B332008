@@ -384,7 +384,7 @@ const tracks = [
 
     { name: "美國大獎賽", location: "Austin", length: "5.513 km", laps: 56, record: "1:36.169", 
       url: "https://www.youtube.com/watch?v=CdKwc1bC44c&t=233s", videoId: "CdKwc1bC44c", img: "https://img.youtube.com/vi/CdKwc1bC44c/maxresdefault.jpg", 
-      map: "19美州賽道.jpg", tags: ["傳統", "技術"] },
+      map: "19美洲賽道.jpg", tags: ["傳統", "技術"] },
 
     { name: "墨西哥大獎賽", location: "Mexico City", length: "4.304 km", laps: 71, record: "1:17.774", 
       url: "https://www.youtube.com/watch?v=hTqxfkWRimk", videoId: "hTqxfkWRimk", img: "https://img.youtube.com/vi/hTqxfkWRimk/maxresdefault.jpg", 
@@ -421,67 +421,67 @@ const drivers = [
         bio: "角田裕毅在短短三年內從日本 F4 躍升至 F1，展現驚人天賦。儘管初入歐洲時對賽道陌生，他仍憑藉 F2 殿軍的強悍實力闖入最高殿堂。歷經四個賽季的磨練，他從起步的青澀轉向穩定成熟，並於 2025 年初正式入主紅牛（Red Bull）車隊。作為日本史上最接近分站冠軍的車手，Red Bull 對他寄予厚望，看好他能打破日本車手零勝的紀錄，書寫歷史新篇章。", ig: "yukitsunoda0511", x: "yukitsunoda0711", shop: "https://www.redbullracing.com/" 
     },
     { 
-        name: "Lando Norris", team: "McLaren", number: 4, points: 423, podiums: 12, img: "LN.jpg", country: "英國", flagCode: "gb", wc: 0, 
+        name: "Lando Norris", team: "McLaren", number: 4, points: 423, podiums: 18, img: "LN.jpg", country: "英國", flagCode: "gb", wc: 0, 
         quote: "I'M READY TO BRING THE FIGHT TO EVERYONE.",
         stats: { grandsPrix: 104, highestFinish: 1, highestGrid: 1, birthPlace: "英國 布里斯托" },
         bio: "2025 年世界冠軍 Lando Norris 以華麗車技與鬥志著稱。自 2019 年加入 McLaren 以來，他展現出超越資深隊友的排位速度。2024 年他奪下首勝，助車隊重返榮耀；2025 年更憑藉單季 7 勝，在季末逆轉 34 分分差，擊敗 Verstappen 封王。場外他熱衷設計，性格謙遜卻野心勃勃。隨著 2026 新規到來，身為車隊核心的他將引領 McLaren 續寫輝煌。", ig: "landonorris", x: "LandoNorris", shop: "https://www.mclarenstore.com/" 
     },
     { 
-        name: "Oscar Piastri", team: "McLaren", number: 81, points: 410, podiums: 9, img: "OP.jpg", country: "澳洲", flagCode: "au", wc: 0, 
+        name: "Oscar Piastri", team: "McLaren", number: 81, points: 410, podiums: 16, img: "OP.jpg", country: "澳洲", flagCode: "au", wc: 0, 
         quote: "I LIKE CARS, I LIKE RACING, BUT I THINK THE COMPETITION SIDE OF THINGS IS PROBABLY THE NUMBER ONE THING.",
         stats: { grandsPrix: 44, highestFinish: 1, highestGrid: 2, birthPlace: "澳洲 墨爾本" },
         bio: "Oscar Piastri 展現了史上最強的晉升履歷，連續奪下 F3 與 F2 冠軍後，引發兩大車隊爭奪。2023 年加入 McLaren 首季即登頒獎台，2024 年更以兩座分站冠軍助車隊奪回車隊總冠軍。2025 年，僅是第三年參賽的他展現爭冠實力，單季豪取 7 勝並長期領跑積分榜，最終在收官戰激鬥後獲得年度季軍。其冷靜與天賦讓眾人深信，他成為世界冠軍只是時間問題。", ig: "oscarpiastri", x: "OscarPiastri", shop: "https://www.mclarenstore.com/" 
     },
     { 
-        name: "Charles Leclerc", team: "Ferrari", number: 16, points: 242, podiums: 11, img: "CL.jpg", country: "摩納哥", flagCode: "mc", wc: 0, 
+        name: "Charles Leclerc", team: "Ferrari", number: 16, points: 242, podiums: 7, img: "CL.jpg", country: "摩納哥", flagCode: "mc", wc: 0, 
         quote: "WHATEVER THE POSITION IS AT STAKE, YOU'VE GOT TO DO YOUR ABSOLUTE BEST AS A DRIVER WHETHER YOU'RE FIGHTING FOR THE FIFTH, FOURTH OR FIRST POSITION.",
         stats: { grandsPrix: 125, highestFinish: 1, highestGrid: 1, birthPlace: "摩納哥 蒙地卡羅" },
         bio: "出身摩納哥的 Leclerc 以 GP3 與 F2 雙冠王氣勢登陸 F1。2019 年入主 Ferrari 後，他憑藉強悍實力擊敗隊友 Vettel，並在蒙札主場奪冠，成為 Tifosi 的新英雄。2022 年他展現爭冠實力，是唯一能威脅 Verstappen 的對手。場外的他謙遜體貼，承載著已故父親與恩師 Jules Bianchi 的夢想前行。儘管車隊近年陷入苦戰，他卓越的排位速度與鬥志，仍證明自己是 F1 最閃耀的巨星之一。", ig: "charles_leclerc", x: "Charles_Leclerc", shop: "https://store.ferrari.com/" 
     },
     { 
-        name: "Lewis Hamilton", team: "Ferrari", number: 44, points: 156, podiums: 197, img: "LH.jpg", country: "英國", flagCode: "gb", wc: 7, 
+        name: "Lewis Hamilton", team: "Ferrari", number: 44, points: 156, podiums: 0, img: "LH.jpg", country: "英國", flagCode: "gb", wc: 7, 
         quote: "DRIVING A SCUDERIA FERRARI HP CAR FOR THE FIRST TIME WAS ONE OF THE BEST FEELINGS OF MY LIFE.",
         stats: { grandsPrix: 332, highestFinish: 1, highestGrid: 1, birthPlace: "英國 斯蒂夫尼奇" },
         bio: "「Still I Rise」是 Lewis Hamilton 的座右銘。這位七屆世界冠軍締造了 F1 史上最多的桿位與勝場紀錄，實力足以與洗拿、舒馬赫並肩。他以獨特的個人風格打破傳統框架，贏得所有對手的敬重。儘管 2025 年轉投 Ferrari 的首賽季面臨極大挑戰，生涯首度未能站上頒獎台，但這位受封爵位的傳奇車手依然鬥志昂揚。當「Hammertime」降臨，全球車迷都在期待他如何在歷史扉頁寫下新篇章。", ig: "lewishamilton", x: "LewisHamilton", shop: "https://store.ferrari.com/" 
     },
     { 
-        name: "George Russell", team: "Mercedes", number: 63, points: 319, podiums: 14, img: "GR.jpg", country: "英國", flagCode: "gb", wc: 0, 
+        name: "George Russell", team: "Mercedes", number: 63, points: 319, podiums: 0, img: "GR.jpg", country: "英國", flagCode: "gb", wc: 0, 
         quote: "ON GEORGE, YOU CAN RELY ON HIM WHEN IT COMES TO LAP TIMES AND RACING, SO SPIRITS ARE HIGH.",
         stats: { grandsPrix: 104, highestFinish: 1, highestGrid: 1, birthPlace: "英國 金斯林" },
         bio: "秉持「猶豫就全速衝刺」的座右銘，George Russell 憑藉 GP3 與 F2 冠軍頭銜強勢登陸 F1。在 Williams 時期他便展現驚人速度，2022 年入主 Mercedes 首季即奪分站冠軍。隨著 Hamilton 於 2025 年轉投 Ferrari，Russell 正式接棒領導車隊，在 McLaren 統治性的賽季中仍強勢奪下兩勝。面對 2026 年新規挑戰，這位兼具鬥志與速度的英國車手，已準備好帶領銀箭車隊衝擊世界冠軍。", ig: "georgerussell63", x: "GeorgeRussell63", shop: "https://shop.mercedesamgf1.com/" 
     },
     { 
-        name: "Kimi Antonelli", team: "Mercedes", number: 12, points: 150, podiums: 0, img: "KA.jpg", country: "義大利", flagCode: "it", wc: 0, 
+        name: "Kimi Antonelli", team: "Mercedes", number: 12, points: 150, podiums: 3, img: "KA.jpg", country: "義大利", flagCode: "it", wc: 0, 
         quote: "RACING FOR MERCEDES IS A BIG RESPONSIBILITY, BUT AT THE SAME TIME IT’S A GREAT OPPORTUNITY AND A PRIVILEGE.",
         stats: { grandsPrix: 0, highestFinish: "N/A", highestGrid: "N/A", birthPlace: "義大利 波隆那" },
         bio: "Antonelli 的崛起堪稱神速，他在卡丁車與 F4 橫掃冠軍後，被 Mercedes 提拔跳級至 F2。儘管承擔著接替 Hamilton 的巨大壓力，他仍以銀石與匈牙利站的勝場證明實力，尤其在比利時站的勇敢超車更令人驚豔。2025 年，這位剛滿 18 歲的義大利新秀正式入主 Mercedes，並在新人球季奪下 150 積分與 3 座頒獎台。雖然偶有波折，但他非凡的天賦已證明自己正是銀箭軍團未來的希望。", ig: "kimi.antonelli", x: "KimiAntonelli", shop: "https://shop.mercedesamgf1.com/" 
     },
     { 
-        name: "Fernando Alonso", team: "Aston Martin", number: 14, points: 56, podiums: 106, img: "FA.jpg", country: "西班牙", flagCode: "es", wc: 2, 
+        name: "Fernando Alonso", team: "Aston Martin", number: 14, points: 56, podiums: 0, img: "FA.jpg", country: "西班牙", flagCode: "es", wc: 2, 
         quote: "I NEVER REGRET ANYTHING.",
         stats: { grandsPrix: 380, highestFinish: 1, highestGrid: 1, birthPlace: "西班牙 奧維耶多" },
         bio: "Fernando Alonso 是終結舒馬赫王朝的傳奇，曾刷新 F1 最年輕冠軍等多項紀錄。他擁有頂尖速度與戰略頭腦，自評全方位能力達 9/10。即便生涯中期待的第三冠遲未到來，他在重返 F1 後仍於 Alpine 與 Aston Martin 屢創佳績。現年逾 40 歲的他已創下史上首次 400 場參賽紀錄，並隨著技術大師 Adrian Newey 的加盟，這位老將正蓄勢待發，準備在綠色賽車中完成他未竟的奪冠大業。", ig: "fernandoalo_oficial", x: "alo_oficial", shop: "https://shop.astonmartinf1.com/" 
     },
     { 
-        name: "Lance Stroll", team: "Aston Martin", number: 18, points: 33, podiums: 3, img: "LS.jpg", country: "加拿大", flagCode: "ca", wc: 0, 
+        name: "Lance Stroll", team: "Aston Martin", number: 18, points: 33, podiums: 0, img: "LS.jpg", country: "加拿大", flagCode: "ca", wc: 0, 
         quote: "WE’VE GROWN SO MUCH AS A TEAM AND THERE’S STILL SO MUCH MORE TO LOOK FORWARD TO.",
         stats: { grandsPrix: 143, highestFinish: 3, highestGrid: 1, birthPlace: "加拿大 蒙特婁" },
         bio: "Lance Stroll 18 歲即加盟 Williams 登陸 F1，並在首季於巴庫站站上頒獎台，創下最年輕新秀領獎紀錄。身為企業家 Lawrence Stroll 之子，他不僅擁有優渥背景，更在蒙札與土耳其站的豪雨中證明了卓越的雨戰天賦。隨著車隊轉型為 Aston Martin，並迎來傳奇設計師 Adrian Newey 與老將 Alonso 加盟，這位擅長在起跑首圈搶位的加拿大車手，正準備在頂尖競爭中持續發光發熱。", ig: "lance_stroll", x: "lance_stroll", shop: "https://shop.astonmartinf1.com/" 
     },
     { 
-        name: "Carlos Sainz", team: "Williams", number: 55, points: 64, podiums: 25, img: "CS.jpg", country: "西班牙", flagCode: "es", wc: 0, 
+        name: "Carlos Sainz", team: "Williams", number: 55, points: 64, podiums: 2, img: "CS.jpg", country: "西班牙", flagCode: "es", wc: 0, 
         quote: "I ALWAYS PERFORM AT MY BEST WHEN I JUST DON’T CARE ABOUT THE SITUATION AND HAVE A SINGLE MENTALITY THAT IT’S JUST GO FOR IT.",
         stats: { grandsPrix: 185, highestFinish: 1, highestGrid: 1, birthPlace: "西班牙 馬德里" },
         bio: "綽號「Chilli」的 Sainz 出身賽車世家，繼承了拉力傳奇父親的細膩車感與抗壓性。他在賽場上以直覺與智慧並重，能精準策劃比賽奪取積分。Sainz 職業生涯接連承接 Alonso 與 Vettel 等巨星的席位，壓力之下仍為 Ferrari 奪得四座分站冠軍。2025 年轉投 Williams 後，他迅速助車隊重返頒獎台。這位不畏挑戰的西班牙名將，正以實力走出屬於自己的輝煌道路。", ig: "carlossainz55", x: "Carlossainz55", shop: "https://www.williamsf1.com/store" 
     },
     { 
-        name: "Alexander Albon", team: "Williams", number: 23, points: 73, podiums: 2, img: "AA.jpg", country: "泰國", flagCode: "th", wc: 0, 
+        name: "Alexander Albon", team: "Williams", number: 23, points: 73, podiums: 0, img: "AA.jpg", country: "泰國", flagCode: "th", wc: 0, 
         quote: "I’M READY TO WIN RACES, TO FIGHT FOR A CHAMPIONSHIP.",
         stats: { grandsPrix: 83, highestFinish: 3, highestGrid: 4, birthPlace: "英國 倫敦" },
         bio: "Alex Albon 出生於倫敦，代表泰國出賽。他在 2019 年以優異表現迅速從 Toro Rosso 晉升至紅牛車隊，雖在與 Verstappen 搭檔期間遭遇低潮並一度失去席次，但他憑藉測試車手的穩定表現於 2022 年成功重返圍場加盟 Williams。Albon 以超車冷靜、排位賽速度快且性格親和著稱，在 2024 與 2025 賽季不僅確立了車隊領袖地位，更以成熟的技術抓住這珍貴的第二次機會，成為圍場內最受敬重的車手之一。", ig: "alex_albon", x: "alex_albon", shop: "https://www.williamsf1.com/store" 
     },
     { 
-        name: "Pierre Gasly", team: "Alpine", number: 10, points: 22, podiums: 4, img: "PG.jpg", country: "法國", flagCode: "fr", wc: 0, 
+        name: "Pierre Gasly", team: "Alpine", number: 10, points: 22, podiums: 0, img: "PG.jpg", country: "法國", flagCode: "fr", wc: 0, 
         quote: "THE MOMENT I LOVE THE MOST IS WHENEVER I GET IN THAT CAR, FIGHTING THE BEST 19 DRIVERS IN THE WORLD, AND THIS EXERCISE OF BEATING THEM.",
         stats: { grandsPrix: 132, highestFinish: 1, highestGrid: 2, birthPlace: "法國 魯昂" },
         bio: "Pierre Gasly 的 F1 生涯宛如雲霄飛車。2019 年晉升紅牛車隊後，因表現不敵隊友 Verstappen 而遭降編回 Toro Rosso。但他展現驚人韌性，於 2020 年在蒙札奪下激動人心的首勝。Gasly 隨後成為車隊核心，2021 年更單人貢獻全隊近八成積分。2023 年轉投法國車隊 Alpine 後，他持續站上頒獎台並尋求再次突破。這位「永不言棄」的車手正用實力證明，他具備立足頂尖戰區的絕對速度。", ig: "pierregasly", x: "PierreGASLY", shop: "https://boutique.alpinecars.com/" 
@@ -493,7 +493,7 @@ const drivers = [
         bio: "Franco Colapinto 的 F1 生涯充滿戲劇性。2024 年中，他受 Williams 提拔接替 Sargeant，成為 23 年來首位阿根廷 F1 車手，隨即展現出不遜於老將的驚人速度。雖然 2025 年初因 Sainz 加盟而轉任 Alpine 儲備車手，但他很快再次獲得徵召，於第七站起取代新秀 Doohan 重返正賽，並憑藉優異表現成功鎖定 2026 年的正賽席次。這位實力派新星正以強悍的競技狀態，掀起一場阿根廷賽車旋風。", ig: "francolapinto", x: "FranColapinto", shop: "https://www.williamsf1.com/store" 
     },
     { 
-        name: "Esteban Ocon", team: "Haas", number: 31, points: 38, podiums: 3, img: "EO.jpg", country: "法國", flagCode: "fr", wc: 0, 
+        name: "Esteban Ocon", team: "Haas", number: 31, points: 38, podiums: 0, img: "EO.jpg", country: "法國", flagCode: "fr", wc: 0, 
         quote: "TOUGH RACING IS ALWAYS COOL TO ME. RACING SIDE-BY-SIDE, BEING VERY CLOSE, THAT’S WHAT RACING IS ALL ABOUT.",
         stats: { grandsPrix: 133, highestFinish: 1, highestGrid: 3, birthPlace: "法國 埃夫勒" },
         bio: "Esteban Ocon 的賽車生涯始於父母賣屋支持的「犧牲」。他曾擊敗 Verstappen 奪下 F3 冠軍，並於 2016 年踏入 F1。儘管曾因車隊資金問題在 2019 年被迫退居幕後，他仍憑藉信念於 2020 年回歸 Renault（現 Alpine），並在 2021 年匈牙利站奪得生涯首勝。2025 年轉投 Haas 車隊開啟新篇章。這位歷經起伏的車手證明了只要具備堅定的鬥志與才華，即便出身平凡也能在頂尖殿堂站穩腳步。", ig: "estebanocon", x: "OconEsteban", shop: "https://haasf1team.store/" 
@@ -505,19 +505,19 @@ const drivers = [
         bio: "Oliver Bearman 在 2024 年沙烏地站替補受傷的 Sainz 出賽，首秀即奪第七名驚豔圍場。憑藉這份過人天賦，他成功鎖定 2025 年 Haas 車隊的正賽席次。在新人球季中，他展現出超越年齡的成熟，不僅在墨西哥站奪得車隊年度最佳的第四名，積分更超越了經驗豐富的隊友 Ocon。身為 Ferrari 儲備體系的核心，這位強勢崛起的新星正以表現證明，他絕對是未來入主躍馬車隊的頭號人選。", ig: "olliebearman", x: "OllieBearman", shop: "https://haasf1team.store/" 
     },
     { 
-        name: "Liam Lawson", team: "RB", number: 30, points: 38, podiums: 2, img: "LL.jpg", country: "紐西蘭", flagCode: "nz", wc: 0, 
+        name: "Liam Lawson", team: "RB", number: 30, points: 38, podiums: 0, img: "LL.jpg", country: "紐西蘭", flagCode: "nz", wc: 0, 
         quote: "I'M NOT HERE TO MAKE FRIENDS. I'M HERE TO WIN - THAT'S WHAT I'M FOCUSED ON DOING.",
         stats: { grandsPrix: 5, highestFinish: 9, highestGrid: 10, birthPlace: "紐西蘭 哈斯廷斯" },
         bio: "Liam Lawson 在 2023 年頂替受傷的 Ricciardo 出賽，於新加坡站擊敗 Verstappen 闖入 Q3 並奪分，一戰成名。他在 2024 年底重返賽場，並於 2025 年獲得晉升紅牛一隊的黃金機會。儘管在經歷兩場艱難賽事後被調回 Racing Bulls（原 AlphaTauri），這位受《汽車總動員》啟發的紐西蘭人並未氣餒，反而迅速重建聲望，以穩健表現證明自己是圍場中不可或缺的實力派成員。", ig: "liamlawson30", x: "LiamLawson30", shop: "https://f1store.formula1.com/" 
     },
     { 
-        name: "Isack Hadjar", team: "RB", number: 6, points: 51, podiums: 0, img: "IH.jpg", country: "法國", flagCode: "fr", wc: 0, 
+        name: "Isack Hadjar", team: "RB", number: 6, points: 51, podiums: 1, img: "IH.jpg", country: "法國", flagCode: "fr", wc: 0, 
         quote: "I’M SOMEONE WHO FOUGHT HIS WAY TO F1 THE HARD WAY.",
         stats: { grandsPrix: 0, highestFinish: "N/A", highestGrid: "N/A", birthPlace: "法國 巴黎" },
         bio: "巴黎出生的 Hadjar 經歷 F2 時期的低潮後，憑藉 2024 年奪得年度亞軍的強悍實力，於 2025 年加入 Racing Bulls 登陸 F1。儘管開幕戰失利，但他迅速展現天賦，在賽季後半段頻繁闖入 Q3，並在荷蘭站奪得生涯首座頒獎台。最終他以年度 51 分超越隊友 Lawson，卓越表現使他獲得紅牛高層青睞，宣布將於 2026 年晉升紅牛一隊，正式與 Max Verstappen 搭檔，完成生涯的華麗跳躍。", ig: "isackhadjar", x: "IsackHadjar", shop: "https://f1store.formula1.com/" 
     },
     { 
-        name: "Nico Hülkenberg", team: "Stake F1 Team", number: 27, points: 51, podiums: 0, img: "NH.jpg", country: "德國", flagCode: "de", wc: 0, 
+        name: "Nico Hülkenberg", team: "Stake F1 Team", number: 27, points: 51, podiums: 1, img: "NH.jpg", country: "德國", flagCode: "de", wc: 0, 
         quote: "YOU’VE GOT TO BE THERE WHEN THE OPPORTUNITY PRESENTS ITSELF, BECAUSE THE RACE IS NOT OVER UNTIL IT’S OVER.",
         stats: { grandsPrix: 206, highestFinish: 4, highestGrid: 1, birthPlace: "德國 埃梅里希" },
         bio: "自 2010 年出道以來，Hulkenberg 以強大的穩定性與雨戰天賦著稱，甚至曾於新人之姿奪下桿位並贏得利曼 24 小時耐力賽冠軍。儘管長期保有「史上最多出賽卻未登領獎台」的尷尬紀錄，他仍憑藉幽默與實力重返 Haas 並轉戰 Kick Sauber。2025 年，他終於在該隊奪得生涯首座 F1 頒獎台。隨著車隊即將在 2026 年轉為 Audi 廠隊，這位經驗豐富的德國老將已準備好在職業生涯末期再創巔峰。", ig: "hulkhulkenberg", x: "HulkHulkenberg", shop: "https://www.sauber-group.com/" 
